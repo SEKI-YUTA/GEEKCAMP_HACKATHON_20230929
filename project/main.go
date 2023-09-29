@@ -38,6 +38,7 @@ func main() {
 
 	router := gin.Default()
 	router.GET("/restaurants", responseAllRestaurants)
+	router.GET("/restaurants/categories", responseRestaurantCategories)
 
 	router.Run()
 }
@@ -77,7 +78,35 @@ func queryAllRestaurants() []common.Restaurant {
 	return restaurants
 }
 
+func queryAllRestaurantCategories() []common.Category {
+	rows, err := pool.Query(
+		context.Background(),
+		"SELECT id, name FROM restaurant_categories;",
+	)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to query restaurant categories \n%s\n", err)
+	}
+	categories := []common.Category{}
+	for rows.Next() {
+		var c common.Category
+		err := rows.Scan(&c.Id, &c.Name)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to scan data \n%s\n", err)
+		}
+		categories = append(categories, c)
+	}
+	return categories
+}
+
 func responseAllRestaurants(ctx *gin.Context) {
 	restaurants := queryAllRestaurants()
 	ctx.JSON(200, restaurants)
+}
+
+func responseRestaurantCategories(ctx *gin.Context) {
+	var res common.CategoryResponse
+	restaurantCategories := queryAllRestaurantCategories()
+	res.CategoryName = "restaurant_categories"
+	res.Categories = restaurantCategories
+	ctx.JSON(200, res)
 }

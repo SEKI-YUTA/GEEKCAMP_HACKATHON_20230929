@@ -20,3 +20,13 @@ type Menu struct {
 	IsSoldOut bool `json:"is_sold_out"`
 	LikeCount int `json:"like_count"`
 }
+
+type Category struct {
+	Id int `json:"id"`
+	Name string `json:"name"`
+}
+
+type CategoryResponse struct {
+	CategoryName string `json:"category_name"`
+	Categories []Category `json:"categories"`
+}

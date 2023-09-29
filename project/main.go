@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"main/common"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4"
@@ -39,6 +40,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/restaurants", responseAllRestaurants)
 	router.GET("/restaurants/categories", responseRestaurantCategories)
+	router.GET("/restaurants/:id", responseSpecificRestaurants)
 
 	router.Run()
 }
@@ -98,6 +100,19 @@ func queryAllRestaurantCategories() []common.Category {
 	return categories
 }
 
+func queryRestaurantById(id int) common.Restaurant {
+	var restaurant common.Restaurant
+	categoryId := 0
+	pool.QueryRow(
+		context.Background(),
+		"SELECT id, email, name, address, description, category_id FROM restaurants WHERE id = $1;",
+		id,
+	).Scan(&restaurant.Id, &restaurant.Email, &restaurant.Name, &restaurant.Address, &restaurant.Description, &categoryId)
+	categoryName := queryCategoryName(categoryId, "restaurant_categories")
+	restaurant.Category = categoryName
+	return restaurant
+}
+
 func responseAllRestaurants(ctx *gin.Context) {
 	restaurants := queryAllRestaurants()
 	ctx.JSON(200, restaurants)
@@ -109,4 +124,11 @@ func responseRestaurantCategories(ctx *gin.Context) {
 	res.CategoryName = "restaurant_categories"
 	res.Categories = restaurantCategories
 	ctx.JSON(200, res)
+}
+
+func responseSpecificRestaurants(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	fmt.Println("id: ", id)
+	restaurants := queryRestaurantById(id)
+	ctx.JSON(200, restaurants)
 }

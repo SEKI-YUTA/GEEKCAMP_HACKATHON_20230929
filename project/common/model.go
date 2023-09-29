@@ -30,3 +30,8 @@ type CategoryResponse struct {
 	CategoryName string `json:"category_name"`
 	Categories []Category `json:"categories"`
 }
+
+type MenuSetResponse struct {
+	Status string `json:"status"`
+	MenuSet []Menu `json:"menu_set"`
+}

@@ -43,6 +43,7 @@ func main() {
 	router.GET("/restaurants/:id", responseSpecificRestaurants)
 	router.GET("/restaurants/:id/menus", responseRestaurantAllMenu)
 	router.GET("/restaurants/:id/menus/:menuid", responseRestaurantSpecificMenu)
+	router.GET("/restaurants/:id/menus/yosan", responseMenuSetByPrice)
 
 	router.Run()
 }
@@ -177,6 +178,37 @@ func queryMenuByRestaurantIdAndMenuId(id int, menuid int) common.Menu {
 	return menu
 }
 
+func queryMenuSetByPrice(price int, restaurant_id int) []common.Menu {
+	var menus []common.Menu
+	var category_id int
+	rows, err := pool.Query(
+		context.Background(),
+		"SELECT id, name, price, description, photo_url, category_id " +
+		"FROM menus WHERE restaurant_id = $1 ORDER BY price ASC;",
+		restaurant_id,
+	)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to query menus \n%s\n", err)
+		return menus
+	}
+	priceSum := 0
+	for rows.Next() {
+		var m common.Menu
+		err := rows.Scan(&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id)
+		categoryName := queryCategoryName(category_id, "menu_categories")
+		m.Category = categoryName
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to scan data \n%s\n", err)
+		}
+		priceSum += m.Price
+		if(priceSum > price) {
+			break
+		}
+		menus = append(menus, m)
+	}
+	return menus
+}
+
 func responseAllRestaurants(ctx *gin.Context) {
 	restaurants := queryAllRestaurants()
 	ctx.JSON(200, restaurants)
@@ -217,4 +249,29 @@ func responseRestaurantSpecificMenu(ctx *gin.Context) {
 	fmt.Println("menuid: ", menuid)
 	menu := queryMenuByRestaurantIdAndMenuId(id, menuid)
 	ctx.JSON(200, menu)
+}
+
+func responseMenuSetByPrice(ctx *gin.Context) {
+	var res common.MenuSetResponse
+	price, err := strconv.Atoi(ctx.Query("price"))
+	if err != nil {
+		res.Status = "failed"
+		ctx.JSON(400, res)
+		return
+	}
+	restaurant_id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		res.Status = "failed"
+		ctx.JSON(400, res)
+		return
+	}
+	// 2000円以下or-円の値が渡ってきた場合はエラー
+	if price < 0 || price < 2000 {
+		res.Status = "failed"
+		ctx.JSON(400, res)
+		return
+	}
+	res.Status = "ok"
+	res.MenuSet = queryMenuSetByPrice(price, restaurant_id)
+	ctx.JSON(200, res)
 }

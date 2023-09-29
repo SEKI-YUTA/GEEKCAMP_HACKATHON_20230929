@@ -44,8 +44,57 @@ func main() {
 	router.GET("/restaurants/:id/menus", responseRestaurantAllMenu)
 	router.GET("/restaurants/:id/menus/:menuid", responseRestaurantSpecificMenu)
 	router.GET("/restaurants/:id/menus/yosan", responseMenuSetByPrice)
+	router.POST("/restaurants/login", loginFunc)
+	router.POST("/restaurants/signup", signupFunc)
 
 	router.Run()
+}
+
+
+func signupFunc(ctx *gin.Context) {
+	var signupPost common.SignupPost
+	insertedId := 0
+	ctx.BindJSON(&signupPost)
+	pool.QueryRow(
+		context.Background(),
+		"INSERT INTO restaurants (email, password, name, phone_number, address, description, category_id) " +
+		"VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;",
+		signupPost.Email, signupPost.Password, signupPost.Name, signupPost.PhoneNumber, signupPost.Address, signupPost.Description, signupPost.CategoryId,
+	).Scan(&insertedId)
+	if(insertedId == 0) {
+		ctx.JSON(401, gin.H{
+			"message": "failed to create restaurant",
+		})
+		return
+	}
+	ctx.JSON(200, gin.H{
+		"message": "ok",
+		"restaurant_id": insertedId,
+	})
+}
+
+func loginFunc(ctx *gin.Context) {
+	var loginPost common.LoginPost
+	restaurantId := 0
+	ctx.BindJSON(&loginPost)
+	fmt.Println("email: ", loginPost.Email)
+	fmt.Println("password: ", loginPost.Password)
+	pool.QueryRow(
+		context.Background(),
+		"SELECT id FROM restaurants WHERE email = $1 AND password = $2;",
+		loginPost.Email,
+		loginPost.Password,
+	).Scan(&restaurantId)
+	if(restaurantId == 0) {
+		ctx.JSON(401, gin.H{
+			"message": "unauthorized",
+		})
+	} else {
+		ctx.JSON(200, gin.H{
+			"message": "ok",
+			"restaurant_id": restaurantId,
+		})
+	}
 }
 
 func queryCategoryName(categoryId int, tableName string) string {

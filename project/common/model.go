@@ -35,3 +35,19 @@ type MenuSetResponse struct {
 	Status string `json:"status"`
 	MenuSet []Menu `json:"menu_set"`
 }
+
+type LoginPost struct {
+	Email string `json:"email"`
+	Password string `json:"password"`
+}
+
+type SignupPost struct {
+	Id      int    `json:"id"`
+	Email   string `json:"email"`
+	Password string `json:"password"`
+	Name    string `json:"name"`
+	PhoneNumber string `json:"phone_number"`
+	Address string `json:"address"`
+	Description string `json:"description"`
+	CategoryId int `json:"category_id"`
+}

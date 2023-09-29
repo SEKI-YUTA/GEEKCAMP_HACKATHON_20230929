@@ -36,6 +36,7 @@ CREATE TABLE restaurants (
     email VARCHAR(255) not null,
     password VARCHAR(255) not null,
     name VARCHAR(255) not null,
+    address VARCHAR(255) DEFAULT '',
     description VARCHAR(1000) DEFAULT '',
     category_id INTEGER not null,
     phone_number VARCHAR(255) DEFAULT '',

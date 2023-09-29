@@ -1,0 +1,38 @@
+version: "1"
+
+services:
+  db:
+    container_name: api_db
+    image: postgres:15
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    tty: true
+    networks: [restaurant-network]
+    ports:
+      - 5432:5432
+
+  api:
+    container_name: api
+    image: golang:1.20.4-bullseye
+    volumes:
+      - ./project:/project/
+    working_dir: /project
+    ports:
+        - 8080:8080
+    # これでもいい
+    # command: /bin/bash -c "go mod tidy && go run main.go"
+    # command: >
+    #   /bin/bash -c "
+    #     go mod tidy &&
+    #     go run main.go
+    #   "
+    tty: true
+    networks: [restaurant-network]
+    depends_on:
+      - db
+networks:
+  restaurant-network:
+    driver: bridge

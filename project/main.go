@@ -41,6 +41,8 @@ func main() {
 	router.GET("/restaurants", responseAllRestaurants)
 	router.GET("/restaurants/categories", responseRestaurantCategories)
 	router.GET("/restaurants/:id", responseSpecificRestaurants)
+	router.GET("/restaurants/:id/menus", responseRestaurantAllMenu)
+	router.GET("/restaurants/:id/menus/:menuid", responseRestaurantSpecificMenu)
 
 	router.Run()
 }
@@ -113,6 +115,68 @@ func queryRestaurantById(id int) common.Restaurant {
 	return restaurant
 }
 
+func queryMenusByRestaurantId(id int, lower int, higher int, keyword string) []common.Menu {
+	var menus []common.Menu
+	var category_id int
+	sql := ""
+	if(lower != 0 && higher != 0) {
+		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price BETWEEN " + strconv.Itoa(higher) + " AND " + strconv.Itoa(lower)
+	} else if(lower != 0) {
+		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price <= " + strconv.Itoa(lower)
+	} else if(higher != 0) {
+		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price >= " + strconv.Itoa(higher)
+	} else {
+		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1"
+	}
+	fmt.Printf("sql: %s\n", sql)
+	rows, err := pool.Query(
+		context.Background(),
+		sql + " AND name LIKE '%" + keyword + "%';",
+		id,
+	)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to query menus \n%s\n", err)
+		return menus
+	}
+
+	for rows.Next() {
+		var m common.Menu
+		err := rows.Scan(
+			&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id,
+		)
+		categoryName := queryCategoryName(category_id, "menu_categories")
+		m.Category = categoryName
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to scan data \n%s\n", err)
+		}
+		menus = append(menus, m)
+	}
+
+	return menus
+}
+
+func queryMenuByRestaurantIdAndMenuId(id int, menuid int) common.Menu {
+	var menu common.Menu
+	categoryId := 0
+	err := pool.QueryRow(
+		context.Background(),
+		"SELECT id, name, price, description, photo_url, category_id " +
+		"FROM menus WHERE restaurant_id = $1 AND id = $2;",
+		id,
+		menuid,
+	).Scan(&menu.Id, &menu.Name, &menu.Price, &menu.Description, &menu.PhotoUrl, &categoryId)
+
+	categoryName := queryCategoryName(categoryId, "menu_categories")
+	menu.Category = categoryName
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to query menus \n%s\n", err)
+		return menu
+	}
+
+	return menu
+}
+
 func responseAllRestaurants(ctx *gin.Context) {
 	restaurants := queryAllRestaurants()
 	ctx.JSON(200, restaurants)
@@ -131,4 +195,26 @@ func responseSpecificRestaurants(ctx *gin.Context) {
 	fmt.Println("id: ", id)
 	restaurants := queryRestaurantById(id)
 	ctx.JSON(200, restaurants)
+}
+
+func responseRestaurantAllMenu(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	lower := 0
+	higher := 0
+	lower, _ = strconv.Atoi(ctx.Query("lower"))
+	higher, _ = strconv.Atoi(ctx.Query("higher"))
+	keyword := ctx.Query("keyword")
+	fmt.Printf("lower: %d, higher: %d\n", lower, higher)
+	fmt.Println("id: ", id)
+	menus := queryMenusByRestaurantId(id, lower, higher, keyword)
+	ctx.JSON(200, menus)
+}
+
+func responseRestaurantSpecificMenu(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	menuid, _ := strconv.Atoi(ctx.Param("menuid"))
+	fmt.Println("id: ", id)
+	fmt.Println("menuid: ", menuid)
+	menu := queryMenuByRestaurantIdAndMenuId(id, menuid)
+	ctx.JSON(200, menu)
 }

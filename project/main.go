@@ -44,6 +44,7 @@ func main() {
 	router.GET("/restaurants/:id/menus", responseRestaurantAllMenu)
 	router.GET("/restaurants/:id/menus/:menuid", responseRestaurantSpecificMenu)
 	router.GET("/restaurants/:id/menus/yosan", responseMenuSetByPrice)
+	router.GET("/menus/categories", responseMenuCategories)
 	router.POST("/restaurants/login", loginFunc)
 	router.POST("/restaurants/signup", signupFunc)
 
@@ -258,6 +259,26 @@ func queryMenuSetByPrice(price int, restaurant_id int) []common.Menu {
 	return menus
 }
 
+func queryAllMenuCategories() []common.Category {
+	rows, err := pool.Query(
+		context.Background(),
+		"SELECT id, name FROM menu_categories;",
+	)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to query menu categories \n%s\n", err)
+	}
+	categories := []common.Category{}
+	for rows.Next() {
+		var c common.Category
+		err := rows.Scan(&c.Id, &c.Name)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to scan data \n%s\n", err)
+		}
+		categories = append(categories, c)
+	}
+	return categories
+}
+
 func responseAllRestaurants(ctx *gin.Context) {
 	restaurants := queryAllRestaurants()
 	ctx.JSON(200, restaurants)
@@ -322,5 +343,13 @@ func responseMenuSetByPrice(ctx *gin.Context) {
 	}
 	res.Status = "ok"
 	res.MenuSet = queryMenuSetByPrice(price, restaurant_id)
+	ctx.JSON(200, res)
+}
+
+func responseMenuCategories(ctx *gin.Context) {
+	var res common.CategoryResponse
+	menuCategories := queryAllMenuCategories()
+	res.CategoryName = "menu_categories"
+	res.Categories = menuCategories
 	ctx.JSON(200, res)
 }

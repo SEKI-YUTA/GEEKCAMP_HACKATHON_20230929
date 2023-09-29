@@ -5,6 +5,11 @@
 ```
 docker compose run --rm frontend-react-app npm i
 docker compose up --build
+
+docker exec -it api bash
+# コンテナの中に入って
+go mod tidy
+go run main.go
 ```
 
 # Reactのディレクトリ構成

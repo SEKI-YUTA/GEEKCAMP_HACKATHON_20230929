@@ -33,6 +33,7 @@ type CategoryResponse struct {
 
 type MenuSetResponse struct {
 	Status string `json:"status"`
+	Yosan int `json:"yosan"`
 	MenuSet []Menu `json:"menu_set"`
 }
 

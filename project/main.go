@@ -342,6 +342,7 @@ func responseMenuSetByPrice(ctx *gin.Context) {
 		return
 	}
 	res.Status = "ok"
+	res.Yosan = price
 	res.MenuSet = queryMenuSetByPrice(price, restaurant_id)
 	ctx.JSON(200, res)
 }

@@ -33,3 +33,6 @@ services:
     networks: [restaurant-network]
     depends_on:
       - db
+networks:
+  restaurant-network:
+    driver: bridge

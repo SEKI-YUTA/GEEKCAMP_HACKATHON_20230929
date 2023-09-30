@@ -233,13 +233,13 @@ func queryMenusByRestaurantId(id int, lower int, higher int, keyword string) []c
 	var category_id int
 	sql := ""
 	if(lower != 0 && higher != 0) {
-		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price BETWEEN " + strconv.Itoa(higher) + " AND " + strconv.Itoa(lower)
+		sql = "SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out FROM menus WHERE restaurant_id = $1 AND price BETWEEN " + strconv.Itoa(higher) + " AND " + strconv.Itoa(lower)
 	} else if(lower != 0) {
-		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price <= " + strconv.Itoa(lower)
+		sql = "SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out FROM menus WHERE restaurant_id = $1 AND price <= " + strconv.Itoa(lower)
 	} else if(higher != 0) {
-		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price >= " + strconv.Itoa(higher)
+		sql = "SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out FROM menus WHERE restaurant_id = $1 AND price >= " + strconv.Itoa(higher)
 	} else {
-		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1"
+		sql = "SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out FROM menus WHERE restaurant_id = $1"
 	}
 	fmt.Printf("sql: %s\n", sql)
 	rows, err := pool.Query(
@@ -255,7 +255,7 @@ func queryMenusByRestaurantId(id int, lower int, higher int, keyword string) []c
 	for rows.Next() {
 		var m common.Menu
 		err := rows.Scan(
-			&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id,
+			&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id, &m.RestaurantId, &m.LikeCount, &m.IsSoldOut,
 		)
 		categoryName := queryCategoryName(category_id, "menu_categories")
 		m.Category = categoryName
@@ -273,11 +273,11 @@ func queryMenuByRestaurantIdAndMenuId(id int, menuid int) common.Menu {
 	categoryId := 0
 	err := pool.QueryRow(
 		context.Background(),
-		"SELECT id, name, price, description, photo_url, category_id " +
+		"SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out " +
 		"FROM menus WHERE restaurant_id = $1 AND id = $2;",
 		id,
 		menuid,
-	).Scan(&menu.Id, &menu.Name, &menu.Price, &menu.Description, &menu.PhotoUrl, &categoryId)
+	).Scan(&menu.Id, &menu.Name, &menu.Price, &menu.Description, &menu.PhotoUrl, &categoryId, &menu.RestaurantId, &menu.LikeCount, &menu.IsSoldOut)
 
 	categoryName := queryCategoryName(categoryId, "menu_categories")
 	menu.Category = categoryName
@@ -295,7 +295,7 @@ func queryMenuSetByPrice(price int, restaurant_id int) []common.Menu {
 	var category_id int
 	rows, err := pool.Query(
 		context.Background(),
-		"SELECT id, name, price, description, photo_url, category_id " +
+		"SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out " +
 		"FROM menus WHERE restaurant_id = $1 ORDER BY price ASC;",
 		restaurant_id,
 	)
@@ -306,7 +306,7 @@ func queryMenuSetByPrice(price int, restaurant_id int) []common.Menu {
 	priceSum := 0
 	for rows.Next() {
 		var m common.Menu
-		err := rows.Scan(&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id)
+		err := rows.Scan(&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id, &m.RestaurantId, &m.LikeCount, &m.IsSoldOut)
 		categoryName := queryCategoryName(category_id, "menu_categories")
 		m.Category = categoryName
 		if err != nil {

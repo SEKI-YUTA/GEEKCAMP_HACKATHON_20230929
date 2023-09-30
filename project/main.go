@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/gin-contrib/cors"
 )
 
 var pool *pgxpool.Pool
@@ -38,6 +39,24 @@ func main() {
 	defer pool.Close()
 
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		// アクセスを許可したいアクセス元
+		AllowOrigins: []string{
+			"http://localhost:3000",
+		},
+		// アクセス許可するHTTPメソッド
+		AllowMethods: []string{
+			"POST",
+			"GET",
+			"PUT",
+			"DELETE",
+			"OPTIONS",
+		},
+		// 許可するHTTPリクエストヘッダ
+		AllowHeaders: []string{
+			"Content-Type",
+		},
+	},))
 	router.GET("/restaurants", responseAllRestaurants)
 	router.GET("/restaurants/categories", responseRestaurantCategories)
 	router.GET("/restaurants/:id", responseSpecificRestaurants)

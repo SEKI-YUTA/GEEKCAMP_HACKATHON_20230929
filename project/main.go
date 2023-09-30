@@ -109,11 +109,12 @@ func queryCategoryName(categoryId int, tableName string) string {
 	return name
 }
 
-func queryAllRestaurants() []common.Restaurant {
+func queryAllRestaurants(keyword string) []common.Restaurant {
+	fmt.Println("keyword: ", keyword)
 	var category_id int
 	rows, err := pool.Query(
 		context.Background(),
-		"SELECT id, email, name, address, description, category_id FROM restaurants;",
+		"SELECT id, email, name, address, description, category_id FROM restaurants WHERE name LIKE '%" + keyword + "%';",
 	)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to query restaurants \n%s\n", err)
@@ -280,7 +281,8 @@ func queryAllMenuCategories() []common.Category {
 }
 
 func responseAllRestaurants(ctx *gin.Context) {
-	restaurants := queryAllRestaurants()
+	keyword := ctx.Query("keyword")
+	restaurants := queryAllRestaurants(keyword)
 	ctx.JSON(200, restaurants)
 }
 

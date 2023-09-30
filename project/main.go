@@ -45,10 +45,61 @@ func main() {
 	router.GET("/restaurants/:id/menus/:menuid", responseRestaurantSpecificMenu)
 	router.GET("/restaurants/:id/menus/yosan", responseMenuSetByPrice)
 	router.GET("/menus/categories", responseMenuCategories)
+	router.POST("/restaurants/:id/menus/add", addMenuFunc)
+	router.POST("/restaurants/:id/menus/edit", editMenuFunc)
 	router.POST("/restaurants/login", loginFunc)
 	router.POST("/restaurants/signup", signupFunc)
 
 	router.Run()
+}
+
+func addMenuFunc(ctx *gin.Context) {
+	var newMenu common.Menu
+	ctx.BindJSON(&newMenu)
+	category_id := queryCategoryIdByName(newMenu.Category, "menu_categories")
+	fmt.Println("newMenu: ", newMenu)
+	fmt.Println("category_id: ", category_id)
+	pool.QueryRow(
+		context.Background(),
+		"INSERT INTO menus (name, price, description, photo_url, category_id, restaurant_id) " +
+		"VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;",
+		&newMenu.Name, &newMenu.Price, &newMenu.Description, &newMenu.PhotoUrl, &category_id, &newMenu.RestaurantId,
+	).Scan(&newMenu.Id)
+	if(newMenu.Id == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to create menu",
+		})
+	} else {
+		ctx.JSON(200, gin.H{
+			"message": "ok",
+			"menu": newMenu,
+		})
+	}
+}
+
+func editMenuFunc(ctx *gin.Context) {
+	var editMenu common.Menu
+	ctx.BindJSON(&editMenu)
+	editedId := 0
+	category_id := queryCategoryIdByName(editMenu.Category, "menu_categories")
+	fmt.Println("editMenu: ", editMenu)
+	fmt.Println("category_id: ", category_id)
+	pool.QueryRow(
+		context.Background(),
+		"UPDATE menus SET name = $1, price = $2, description = $3, photo_url = $4, is_sold_out=$5, like_count=$6, category_id = $7, restaurant_id = $8 " +
+		"WHERE id = $9 RETURNING id;",
+		&editMenu.Name, &editMenu.Price, &editMenu.Description, &editMenu.PhotoUrl, &editMenu.IsSoldOut, &editMenu.LikeCount, &category_id, &editMenu.RestaurantId, &editMenu.Id,
+	).Scan(&editedId)
+	if(editedId == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to update menu",
+		})
+	} else {
+		ctx.JSON(200, gin.H{
+			"message": "ok",
+			"menu": editMenu,
+		})
+	}
 }
 
 
@@ -107,6 +158,16 @@ func queryCategoryName(categoryId int, tableName string) string {
 	).Scan(&name)
 	fmt.Println("category name: ", name)
 	return name
+}
+
+func queryCategoryIdByName(categoryName string, tableName string) int {
+	id := 0
+	pool.QueryRow(
+		context.Background(),
+		"SELECT id FROM " + tableName + " WHERE name = $1;",
+		categoryName,
+	).Scan(&id)
+	return id
 }
 
 func queryAllRestaurants(keyword string) []common.Restaurant {

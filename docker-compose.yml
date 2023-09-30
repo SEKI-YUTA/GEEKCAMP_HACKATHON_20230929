@@ -24,6 +24,13 @@ services:
         - 8080:8080
     # ホットリロード
     command: /bin/bash -c "go get -u github.com/cosmtrek/air && go build -o /go/bin/air github.com/cosmtrek/air && air -c .air.toml"
+    # これでもいい
+    # command: /bin/bash -c "go mod tidy && go run main.go"
+    # command: >
+    #   /bin/bash -c "
+    #     go mod tidy &&
+    #     go run main.go
+    #   "
     tty: true
     networks: [restaurant-network]
     depends_on:

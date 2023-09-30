@@ -57,6 +57,7 @@ func main() {
 			"Content-Type",
 		},
 	},))
+	router.GET("/test", test)
 	router.GET("/restaurants", responseAllRestaurants)
 	router.GET("/restaurants/categories", responseRestaurantCategories)
 	router.GET("/restaurants/:id", responseSpecificRestaurants)
@@ -360,6 +361,10 @@ func queryAllMenuCategories() []common.Category {
 	return categories
 }
 
+// ホットリロードテスト用
+func test(ctx *gin.Context) {
+	ctx.JSON(200, "OK")
+}
 func responseAllRestaurants(ctx *gin.Context) {
 	keyword := ctx.Query("keyword")
 	restaurants := queryAllRestaurants(keyword)

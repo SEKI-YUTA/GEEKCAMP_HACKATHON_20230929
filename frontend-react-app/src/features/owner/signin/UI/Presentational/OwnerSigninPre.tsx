@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Input, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, Input, Link, Text, VStack } from '@chakra-ui/react';
 import type { FC } from 'react';
 
 interface OwnerSigninPreProps {
@@ -19,6 +19,9 @@ export const OwnerSigninPre: FC<OwnerSigninPreProps> = () => {
           <Box py={2}>
             <Text as="label" htmlFor="ownerPassword">パスワード</Text>
             <Input type="password" id="ownerPassword" placeholder="パスワードを入力" />
+          </Box>
+          <Box py={2}>
+                <Link href="/signup">新規登録はこちらから</Link>
           </Box>
           <Box py={2} textAlign="center">
             <Button>ログイン</Button>

@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { StateContext, useStateContext } from '../lib/state/AuthContext';
 import { OwnerHomeCon } from '../../features/owner/home/UI/Container/OwnerHomeCon';
+import { OwnerSigninCon } from '../../features/owner/signin/UI/Container/OwnerSigninCon';
 
 /**
  * プロバイダーやルーターをラップしてるやつ
@@ -21,10 +22,7 @@ export const AppProviders: FC = () => {
           <Route path="/owner" element={ctx.restaurantId ? <OwnerHomeCon/> : <Navigate to='/signin' />} />
           {/* restaurant（↓後で書き換え） */}
           <Route path="/restaurant" element={<>客側画面</>} />
-          <Route path="/signin" element={ctx.restaurantId ? <Navigate to='/owner' /> : <>
-          ログイン画面
-          <Button onClick={() => ctx.onLogin(1)}>ログイン</Button>
-          </>} />
+          <Route path="/signin" element={ctx.restaurantId ? <Navigate to='/owner' /> : <OwnerSigninCon/>} />
           <Route path="/signup" element={ctx.restaurantId ? <Navigate to='/owner' /> : <>サインアップ画面</>} />
           <Route
             path="*"

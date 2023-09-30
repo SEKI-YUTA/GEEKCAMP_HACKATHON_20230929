@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { FC } from 'react';
 import { AppProviders } from './application/AppProviders';
 
 const App: FC = () => {

@@ -1,44 +1,23 @@
 import { Box, Button, Heading, Input, Link, Text, VStack } from '@chakra-ui/react';
-import type { ChangeEvent, FormEvent } from 'react';
-import { useState, type FC } from 'react';
+import { ChangeEvent, FC, FormEvent } from 'react';
 
 interface OwnerSigninPreProps {
-
+    ownerEmail: string
+    ownerPassword: string
+    handleOwnerEmailChange:(e: ChangeEvent<HTMLInputElement>) => void
+    handleFormSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+    handleOwnerPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 
-export const OwnerSigninPre: FC<OwnerSigninPreProps> = () => {
-  const [ownerEmail,setOwnerEmail]=useState<string>('');
-  const [ownerPassword,setOwnerPassword]=useState<string>('');
-  const handleOwnerEmailChange=(e:ChangeEvent<HTMLInputElement>)=>{
-    setOwnerEmail(e.target.value);
-  };
-  const handleOwnerPasswordChange=(e:ChangeEvent<HTMLInputElement>)=>{
-    setOwnerPassword(e.target.value);
-  };
-  const handleFormSubmit=async(e:FormEvent<HTMLFormElement>)=>{
-    e.preventDefault();
-    try {
-      if(ownerEmail === '' || ownerPassword === '' )return;
-      console.log(ownerEmail);
-      const response = await fetch('http://localhost:8080/restaurants/login',{
-        method:'POST',
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify({
-          'email':ownerEmail,
-          'password':ownerPassword
-        })
-      });
-      console.log(response);
-      const json = await response.json();
-      console.log(json);
-            
-    } catch (error) {
-      console.log(error);
-    }
-  };
+export const OwnerSigninPre: FC<OwnerSigninPreProps> = ({
+    ownerEmail,
+    ownerPassword,
+    handleOwnerEmailChange,
+    handleFormSubmit,
+    handleOwnerPasswordChange
+}) => {
+
   return (
     <>
       <VStack justifyContent="center" alignItems="center" width="100vw" height="100svh">

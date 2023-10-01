@@ -53,7 +53,7 @@ export const OwnerSigninCon: FC = () => {
         setErrorMsg(2);
       }
     } catch (error) {
-      //　送信に失敗
+      // 送信に失敗
       console.log(error);
       setErrorMsg(3);
     }

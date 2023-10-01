@@ -3,7 +3,7 @@ import { Layout } from '../../../../../application/UI/Components/layout';
 import type { MenuItemProps } from '../Components/MenuItem'
 import { MenuItem } from '../Components/MenuItem'
 import { Category } from '../Components/Category'
-import { Button } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 interface OwnerHomePreProps {
   // 表示するメニューのリスト
   menu_item_list: MenuItemProps[]
@@ -47,42 +47,48 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
         {/* ヘッダー分の余白 */}
         <div className="yohaku" style={styles.yohaku}></div>
 
-        <div className='category_and_addmenu' style={styles.category_and_addmenu}>
+        <Box
+          display={"flex"} justifyContent={"space-around"}
+          className='category_and_addmenu'
+          height={"70px"}>
           {/* カテゴリーのリスト */}
-          <div className="category" style={styles.category}>
+          <Box className='category-list' >
             {props.category_list.map((category) => {
               const selected = category === props.selected_category
               return (
-                <Category name={category} onPress={() => props.onPressCategory(category)}
+                <Category
+                  name={category} onPress={() => props.onPressCategory(category)}
                   selected={selected} key={category}
                 />
               )
             })}
-          </div>
+          </Box>
           {/* 新規登録ボタン */}
-          <Button onClick={props.onPressAddMenuButton}
-            style={styles.add_menu_button}>新規登録</Button>
-        </div>
+          <Button onClick={props.onPressAddMenuButton} style={styles.add_menu_button}>
+            新規登録
+          </Button>
+        </Box>
 
         {/* 商品のリスト 行列で表示*/}
-        <div className='menu_item_list'>
+        <Box className='menu_item_list' >
           {menu_item_split.map((menu_item_row) => {
             return (
-              <div className='menu_item_row' style={styles.menu_item_row}
-                key={menu_item_row[0].id} >
+              <Box display={"flex"} className='menu_item_row' key={menu_item_row[0].id} >
                 {menu_item_row.map((menu_item) => {
                   return (
-                    <div className='menu_item' key={menu_item.id}>
-                      <MenuItem id={menu_item.id} name={menu_item.name}
+                    <Box className='menu_item' key={menu_item.id}>
+                      <MenuItem
+                        id={menu_item.id} name={menu_item.name}
                         img={tmp_img_url} price={menu_item.price}
-                        onPress={menu_item.onPress} />
-                    </div>
+                        onPress={menu_item.onPress}
+                      />
+                    </Box>
                   )
                 })}
-              </div>
+              </Box>
             )
           })}
-        </div>
+        </Box>
       </Layout>
     </>
   );
@@ -92,24 +98,10 @@ const styles = {
   yohaku: {
     height: '65px',
   },
-  category_and_addmenu: {
-    display: 'flex',
-    justifyContent: 'space-around',
-  // 高さを指定
-    height: '60px',
-  },
   category: {
     display: 'flex',
     justifyContent: 'space-around',
     // スクロールできるようにする
-  },
-  menu_item_list: {
-    display: 'flex',
-    justifyContent: 'space-around',
-  },
-  menu_item_row: {
-    display: 'flex',
-    justifyContent: 'space-around',
   },
   add_menu_button: {
     // 外縁

@@ -1,3 +1,4 @@
+import { Box, Image } from "@chakra-ui/react"
 import { FC } from "react";
 
 export interface MenuItemProps {
@@ -8,29 +9,21 @@ export interface MenuItemProps {
   onPress: () => void
 }
 
+// export interface MenuItemProps {
+//   MenuItemType: info
+//   onPress: () => void
+// }
+
 export const MenuItem: FC<MenuItemProps> = (props) => {
   return (
-    <div className="menu_item" style={styles.menu_item} key={props.id} onClick={props.onPress}>
-      <div className="img_area">
-        <img src={props.img} alt="" />
-      </div>
-      <div className="name_and_price" style={styles.name_and_price}>
-        <div>{props.name}</div>
-        <div>{props.price}円</div>
-      </div>
-    </div>
+    <Box className='menu_item' onClick={props.onPress} border={"solid 1px black"}>
+      <Box className='img_area' >
+        <Image src={props.img} alt="" />
+      </Box>
+      <Box className='name_and_price' display={"flex"} justifyContent={"space-around"} >
+        <Box className='name' >{props.name}</Box>
+        <Box className='price' >{props.price}円</Box>
+      </Box>
+    </Box>
   )
 }
-
-const styles = {
-  menu_item: {
-    // 外縁を黒にする
-    border: 'solid 1px black',
-    // 外縁を丸くする
-    borderRadius: '10px',
-  },
-  name_and_price: {
-    display: 'flex',
-    justifyContent: 'space-around',
-  }
-};

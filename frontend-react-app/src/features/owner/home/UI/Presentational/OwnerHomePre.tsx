@@ -7,29 +7,29 @@ import { Box, Button } from '@chakra-ui/react';
 
 interface OwnerHomePreProps {
   // 表示するメニューのリスト
-  menu_item_list: MenuItemType[]
+  menuItemList: MenuItemType[]
   // カテゴリーのリスト
-  category_list: string[]
+  categoryList: string[]
   // 選択されているカテゴリー
-  selected_category: string
+  selectedCategory: string
   //新規登録ボタンを押したときの処理
-  onPressAddMenuButton: () => void
+  onClickAddMenuButton: () => void
   // カテゴリーを押したときの処理
-  onPressCategory: (category: string) => void
+  onClickCategory: (category: string) => void
 }
 
-// メニューを split_num 個ずつに分ける関数
-const split_num = 4;
-const SplitMenuItem = (menu_item_list: MenuItemType[]) => {
-  if (menu_item_list.length === 0) {
-    console.error('menu_item_list is empty');
+// メニューを splitNum 個ずつに分ける関数
+const splitNum = 4;
+const SplitMenuItem = (menuItemList: MenuItemType[]) => {
+  if (menuItemList.length === 0) {
+    console.error('menuItemList is empty');
     return [];
   }
-  const menu_item_list_split = [];
-  for (let i = 0; i < menu_item_list.length; i += split_num) {
-    menu_item_list_split.push(menu_item_list.slice(i, i + split_num));
+  const menuItemListSplit = [];
+  for (let i = 0; i < menuItemList.length; i += splitNum) {
+    menuItemListSplit.push(menuItemList.slice(i, i + splitNum));
   }
-  return menu_item_list_split;
+  return menuItemListSplit;
 };
 
 /**
@@ -37,9 +37,8 @@ const SplitMenuItem = (menu_item_list: MenuItemType[]) => {
  * ここにUIを書く
  * @returns 
  */
-
 export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
-  const menu_item_split = SplitMenuItem(props.menu_item_list);
+  const menuItemSplit = SplitMenuItem(props.menuItemList);
   return (
     <>
       <Layout title='MaaS'>
@@ -50,25 +49,25 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
 
           <Box className='yohaku' h="65px"></Box>
 
-          <Box className='category_and_addmenu'
+          <Box className='categoryAndAddmenu'
             display="flex"
             justifyContent="space-between"
             height="50px"
           >
             {/* カテゴリーのリスト */}
             <Box
-              className='category-list'
+              className='categoryList'
               maxW="80%"
               overflowX="scroll"
               whiteSpace="nowrap"
               ml="15px"
             >
-              {props.category_list.map((category) => {
-                const selected = category === props.selected_category;
+              {props.categoryList.map((category) => {
+                const selected = category === props.selectedCategory;
                 return (
                   <Category
                     key={category} name={category}
-                    selected={selected} onPress={() => props.onPressCategory(category)}
+                    selected={selected} onPress={() => props.onClickCategory(category)}
                   />
                 );
               })}
@@ -81,25 +80,25 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
               backgroundColor="#FBFBFB"
               size="lg"
               fontSize="2xl"
-              onClick={props.onPressAddMenuButton}
+              onClick={props.onClickAddMenuButton}
             >
             新規登録
             </Button>
           </Box>
 
           {/* 商品のリスト 行列で表示*/}
-          <Box className='menu_item_list'
+          <Box className='menuItemList'
           >
-            {menu_item_split.map((menu_item_row) => {
+            {menuItemSplit.map((menuItemRow) => {
               return (
-                <Box key={menu_item_row[0].id} display="flex" className='menu_item_row' >
-                  {menu_item_row.map((menu_item) => {
+                <Box key={menuItemRow[0].id} display="flex" className='menuItemRow' >
+                  {menuItemRow.map((menuItem) => {
                     return (
-                      <Box key={menu_item.id} className='menu_item'
+                      <Box key={menuItem.id} className='menuItem'
                         ml="15px" mr="15px" mt="10px" mb="10px">
                         <MenuItem
-                          item={menu_item}
-                          onPress={() => { console.log('アイテム' + menu_item.id); }}
+                          item={menuItem}
+                          onPress={() => { console.log('アイテム' + menuItem.id); }}
                         />
                       </Box>
                     );

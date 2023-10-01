@@ -8,7 +8,7 @@ import type { MenuItemType } from '../Components/MenuItem';
  * @returns 
  */
 
-const temp_menu_item_list: MenuItemType[] = [
+const tempMenuItemList: MenuItemType[] = [
   {
     id: 1,
     name: 'a',
@@ -110,28 +110,27 @@ const temp_menu_item_list: MenuItemType[] = [
   },
 ];
 
-const temp_category_list = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];
-// const temp_category_list = ["おすすめ", "焼き鳥", "アルコール"]
+const tempCategoryList = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];
 
 export const OwnerHomeCon: FC = () => {
-  const [menu_item_list] = useState<MenuItemType[]>(temp_menu_item_list);
+  const [menuItemList, ] = useState<MenuItemType[]>(tempMenuItemList);
 
-  const [selected_category, setSelected_category] = useState<string>(temp_category_list[0]);
+  const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
 
-  const onPressAddMenuButton = () => {
+  const onClickAddMenuButton = () => {
     console.log('新規登録');
   };
 
-  const onPressCategory = (category: string) => {
+  const onClickCategory = (category: string) => {
     console.log(category);
-    setSelected_category(category);
+    setSelectedCategory(category);
   };
 
   return <OwnerHomePre
-    menu_item_list={menu_item_list}
-    category_list={temp_category_list}
-    selected_category={selected_category}
-    onPressAddMenuButton={onPressAddMenuButton}
-    onPressCategory={onPressCategory}
+    menuItemList={menuItemList}
+    categoryList={tempCategoryList}
+    selectedCategory={selectedCategory}
+    onClickAddMenuButton={onClickAddMenuButton}
+    onClickCategory={onClickCategory}
   />;
 };

@@ -3,7 +3,7 @@ import { Layout } from '../../../../../application/UI/Components/layout';
 import type { MenuItemType } from '../Components/MenuItem';
 import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 
 interface OwnerHomePreProps {
   // 表示するメニューのリスト
@@ -18,94 +18,51 @@ interface OwnerHomePreProps {
   onClickCategory: (category: string) => void
 }
 
-// メニューを splitNum 個ずつに分ける関数
-const splitNum = 4;
-const SplitMenuItem = (menuItemList: MenuItemType[]) => {
-  if (menuItemList.length === 0) {
-    console.error('menuItemList is empty');
-    return [];
-  }
-  const menuItemListSplit = [];
-  for (let i = 0; i < menuItemList.length; i += splitNum) {
-    menuItemListSplit.push(menuItemList.slice(i, i + splitNum));
-  }
-  return menuItemListSplit;
-};
-
 /**
  * ホーム画面のコンポーネント（Presentational）
  * ここにUIを書く
  * @returns 
  */
-export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
-  const menuItemSplit = SplitMenuItem(props.menuItemList);
+export const OwnerHomePre: FC<OwnerHomePreProps> = ({categoryList, menuItemList, onClickAddMenuButton, onClickCategory, selectedCategory}) => {
   return (
     <>
       <Layout title='MaaS'>
-        {/* ヘッダー分の余白 */}
-        <Box className='wrapper'
-          ml="30px" mr="30px"
-        >
-
-          <Box className='yohaku' h="65px"></Box>
-
-          <Box className='categoryAndAddmenu'
-            display="flex"
-            justifyContent="space-between"
-            height="50px"
-          >
-            {/* カテゴリーのリスト */}
+        <Box px={12}>
+          <HStack py={5}>
+            <HStack overflowX='auto' flex={4} spacing={1}>
+              {categoryList.map((category, index) => (
+                <Category key={index} name={category} selectedCategory={selectedCategory} onClick={() => onClickCategory(category)} />
+              ))}
+            </HStack>
             <Box
-              className='categoryList'
-              maxW="80%"
-              overflowX="scroll"
-              whiteSpace="nowrap"
-              ml="15px"
+              flex={2}
+              textAlign="right"
             >
-              {props.categoryList.map((category) => {
-                const selected = category === props.selectedCategory;
-                return (
-                  <Category
-                    key={category} name={category}
-                    selected={selected} onPress={() => props.onClickCategory(category)}
-                  />
-                );
-              })}
+              <Button
+                border="solid 1px #833F29"
+                borderRadius="10px"
+                color="#B14B4B"
+                backgroundColor="#FBFBFB"
+                size="lg"
+                fontSize="3xl"
+                px={10}
+                py={7}
+                onClick={onClickAddMenuButton}
+              >
+              新規登録
+              </Button>
             </Box>
-            {/* 新規登録ボタン */}
-            <Button
-              border="solid 1px #833F29"
-              borderRadius="10px"
-              color="#B14B4B"
-              backgroundColor="#FBFBFB"
-              size="lg"
-              fontSize="2xl"
-              onClick={props.onClickAddMenuButton}
-            >
-            新規登録
-            </Button>
-          </Box>
-
-          {/* 商品のリスト 行列で表示*/}
-          <Box className='menuItemList'
-          >
-            {menuItemSplit.map((menuItemRow) => {
-              return (
-                <Box key={menuItemRow[0].id} display="flex" className='menuItemRow' >
-                  {menuItemRow.map((menuItem) => {
-                    return (
-                      <Box key={menuItem.id} className='menuItem'
-                        ml="15px" mr="15px" mt="10px" mb="10px">
-                        <MenuItem
-                          item={menuItem}
-                          onPress={() => { console.log('アイテム' + menuItem.id); }}
-                        />
-                      </Box>
-                    );
-                  })}
-                </Box>
-              );
-            })}
+          </HStack>
+          <Box>
+            <Grid gridTemplateColumns='repeat(4, 1fr)' rowGap={5} columnGap={10}>
+              {menuItemList.map((menuItem, index) => (
+                <MenuItem
+                  key={index}
+                  item={menuItem}
+                  onPress={() => { console.log('アイテム' + menuItem.id); }}
+                />
+              ))}
+            </Grid>
           </Box>
         </Box>
       </Layout>

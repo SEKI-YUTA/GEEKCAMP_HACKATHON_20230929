@@ -1,22 +1,24 @@
-import { Button } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import type { FC } from 'react';
 
 interface CategoryProps {
   name: string
-  selected: boolean
-  onPress: () => void
+  selectedCategory: string
+  onClick: () => void
 }
 
-export const Category: FC<CategoryProps> = ({name, selected, onPress}) => {
+export const Category: FC<CategoryProps> = ({name, selectedCategory, onClick}) => {
   return (
-    <Button
-      fontSize={25}
-      backgroundColor='white'
-      fontWeight='normal'
-      borderRadius='10px'
-      // 選択されていたら赤くする
-      color={selected ? 'red' : 'black'}
-      onClick={onPress}
-    >{name}</Button>
+    <Box>
+      <Button
+        fontSize={30}
+        backgroundColor='white'
+        fontWeight='normal'
+        borderRadius='10px'
+        // 選択されていたら赤くする
+        color={name === selectedCategory ? 'red' : 'black'}
+        onClick={onClick}
+      >{name}</Button>
+    </Box>
   );
 };

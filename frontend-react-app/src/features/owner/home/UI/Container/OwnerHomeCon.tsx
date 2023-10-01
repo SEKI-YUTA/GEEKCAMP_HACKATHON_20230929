@@ -7,7 +7,6 @@ import type { MenuItemType } from '../Components/MenuItem';
  * ここにコンポーネントのロジックを書いて、OwnerHomePreに渡す
  * @returns 
  */
-
 const tempMenuItemList: MenuItemType[] = [
   {
     id: 1,
@@ -114,8 +113,10 @@ const tempCategoryList = ['おすすめ', '焼き鳥', 'アルコール', 'お�
 
 export const OwnerHomeCon: FC = () => {
   const [menuItemList, ] = useState<MenuItemType[]>(tempMenuItemList);
+  // const [menuItemList, ] = useState<MenuItemType[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
+  // const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const onClickAddMenuButton = () => {
     console.log('新規登録');

@@ -97,6 +97,17 @@ const temp_menu_item_list: MenuItemType[] = [
     is_sold_out: false,
     like_count: 1,
   },
+  {
+    id: 9,
+    name: '焼き鳥',
+    photo_url: 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
+    price: 100,
+    description: '',
+    restaurant_id: 1,
+    category_id: 1,
+    is_sold_out: false,
+    like_count: 1,
+  },
 ];
 
 const temp_category_list = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];

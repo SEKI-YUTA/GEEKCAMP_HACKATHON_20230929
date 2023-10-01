@@ -19,7 +19,12 @@ interface MenuItemProps {
 
 export const MenuItem: FC<MenuItemProps> = (props) => {
   return (
-    <Box className='menu_item' border="solid 1px black" onClick={props.onPress}>
+    <Box className='menu_item'
+      border="solid 1px black"
+      onClick={props.onPress}
+      width="260px"
+      height="200px"
+    >
       <Box className='img_area' >
         <Image src={props.item.photo_url} />
       </Box>

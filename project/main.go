@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/gin-contrib/cors"
 )
 
 var pool *pgxpool.Pool
@@ -38,6 +39,25 @@ func main() {
 	defer pool.Close()
 
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		// アクセスを許可したいアクセス元
+		AllowOrigins: []string{
+			"http://localhost:3000",
+		},
+		// アクセス許可するHTTPメソッド
+		AllowMethods: []string{
+			"POST",
+			"GET",
+			"PUT",
+			"DELETE",
+			"OPTIONS",
+		},
+		// 許可するHTTPリクエストヘッダ
+		AllowHeaders: []string{
+			"Content-Type",
+		},
+	},))
+	router.GET("/test", test)
 	router.GET("/restaurants", responseAllRestaurants)
 	router.GET("/restaurants/categories", responseRestaurantCategories)
 	router.GET("/restaurants/:id", responseSpecificRestaurants)
@@ -45,10 +65,91 @@ func main() {
 	router.GET("/restaurants/:id/menus/:menuid", responseRestaurantSpecificMenu)
 	router.GET("/restaurants/:id/menus/yosan", responseMenuSetByPrice)
 	router.GET("/menus/categories", responseMenuCategories)
+	router.POST("/restaurants/:id/menus/add", addMenuFunc)
+	router.POST("/restaurants/:id/menus/edit", editMenuFunc)
 	router.POST("/restaurants/login", loginFunc)
 	router.POST("/restaurants/signup", signupFunc)
+	router.POST("/restaurants/edit", editRestaurantFunc)
 
 	router.Run()
+}
+
+func editRestaurantFunc(ctx *gin.Context) {
+	var editRestaurant common.SignupPost
+	ctx.BindJSON(&editRestaurant)
+	if(editRestaurant.Id == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to update restaurant",
+		})
+		return
+	}
+	editedId := 0
+	pool.QueryRow(
+		context.Background(),
+		"UPDATE restaurants SET email = $1, password = $2, name = $3, phone_number = $4, address = $5, description = $6, category_id = $7 " +
+		"WHERE id = $8 RETURNING id;",
+		editRestaurant.Email, editRestaurant.Password, editRestaurant.Name, editRestaurant.PhoneNumber, editRestaurant.Address, editRestaurant.Description, editRestaurant.CategoryId, editRestaurant.Id,
+	).Scan(&editedId)
+
+	if(editedId == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to update restaurant",
+		})
+	} else {
+		ctx.JSON(200, gin.H{
+			"message": "ok",
+			"restaurant": editRestaurant,
+		})
+	}
+}
+
+func addMenuFunc(ctx *gin.Context) {
+	var newMenu common.Menu
+	ctx.BindJSON(&newMenu)
+	category_id := queryCategoryIdByName(newMenu.Category, "menu_categories")
+	fmt.Println("newMenu: ", newMenu)
+	fmt.Println("category_id: ", category_id)
+	pool.QueryRow(
+		context.Background(),
+		"INSERT INTO menus (name, price, description, photo_url, category_id, restaurant_id) " +
+		"VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;",
+		&newMenu.Name, &newMenu.Price, &newMenu.Description, &newMenu.PhotoUrl, &category_id, &newMenu.RestaurantId,
+	).Scan(&newMenu.Id)
+	if(newMenu.Id == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to create menu",
+		})
+	} else {
+		ctx.JSON(200, gin.H{
+			"message": "ok",
+			"menu": newMenu,
+		})
+	}
+}
+
+func editMenuFunc(ctx *gin.Context) {
+	var editMenu common.Menu
+	ctx.BindJSON(&editMenu)
+	editedId := 0
+	category_id := queryCategoryIdByName(editMenu.Category, "menu_categories")
+	fmt.Println("editMenu: ", editMenu)
+	fmt.Println("category_id: ", category_id)
+	pool.QueryRow(
+		context.Background(),
+		"UPDATE menus SET name = $1, price = $2, description = $3, photo_url = $4, is_sold_out=$5, like_count=$6, category_id = $7, restaurant_id = $8 " +
+		"WHERE id = $9 RETURNING id;",
+		&editMenu.Name, &editMenu.Price, &editMenu.Description, &editMenu.PhotoUrl, &editMenu.IsSoldOut, &editMenu.LikeCount, &category_id, &editMenu.RestaurantId, &editMenu.Id,
+	).Scan(&editedId)
+	if(editedId == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to update menu",
+		})
+	} else {
+		ctx.JSON(200, gin.H{
+			"message": "ok",
+			"menu": editMenu,
+		})
+	}
 }
 
 
@@ -109,11 +210,22 @@ func queryCategoryName(categoryId int, tableName string) string {
 	return name
 }
 
-func queryAllRestaurants() []common.Restaurant {
+func queryCategoryIdByName(categoryName string, tableName string) int {
+	id := 0
+	pool.QueryRow(
+		context.Background(),
+		"SELECT id FROM " + tableName + " WHERE name = $1;",
+		categoryName,
+	).Scan(&id)
+	return id
+}
+
+func queryAllRestaurants(keyword string) []common.Restaurant {
+	fmt.Println("keyword: ", keyword)
 	var category_id int
 	rows, err := pool.Query(
 		context.Background(),
-		"SELECT id, email, name, address, description, category_id FROM restaurants;",
+		"SELECT id, email, name, address, description, category_id FROM restaurants WHERE name LIKE '%" + keyword + "%';",
 	)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to query restaurants \n%s\n", err)
@@ -171,13 +283,13 @@ func queryMenusByRestaurantId(id int, lower int, higher int, keyword string) []c
 	var category_id int
 	sql := ""
 	if(lower != 0 && higher != 0) {
-		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price BETWEEN " + strconv.Itoa(higher) + " AND " + strconv.Itoa(lower)
+		sql = "SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out FROM menus WHERE restaurant_id = $1 AND price BETWEEN " + strconv.Itoa(higher) + " AND " + strconv.Itoa(lower)
 	} else if(lower != 0) {
-		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price <= " + strconv.Itoa(lower)
+		sql = "SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out FROM menus WHERE restaurant_id = $1 AND price <= " + strconv.Itoa(lower)
 	} else if(higher != 0) {
-		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1 AND price >= " + strconv.Itoa(higher)
+		sql = "SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out FROM menus WHERE restaurant_id = $1 AND price >= " + strconv.Itoa(higher)
 	} else {
-		sql = "SELECT id, name, price, description, photo_url, category_id FROM menus WHERE restaurant_id = $1"
+		sql = "SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out FROM menus WHERE restaurant_id = $1"
 	}
 	fmt.Printf("sql: %s\n", sql)
 	rows, err := pool.Query(
@@ -193,7 +305,7 @@ func queryMenusByRestaurantId(id int, lower int, higher int, keyword string) []c
 	for rows.Next() {
 		var m common.Menu
 		err := rows.Scan(
-			&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id,
+			&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id, &m.RestaurantId, &m.LikeCount, &m.IsSoldOut,
 		)
 		categoryName := queryCategoryName(category_id, "menu_categories")
 		m.Category = categoryName
@@ -211,11 +323,11 @@ func queryMenuByRestaurantIdAndMenuId(id int, menuid int) common.Menu {
 	categoryId := 0
 	err := pool.QueryRow(
 		context.Background(),
-		"SELECT id, name, price, description, photo_url, category_id " +
+		"SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out " +
 		"FROM menus WHERE restaurant_id = $1 AND id = $2;",
 		id,
 		menuid,
-	).Scan(&menu.Id, &menu.Name, &menu.Price, &menu.Description, &menu.PhotoUrl, &categoryId)
+	).Scan(&menu.Id, &menu.Name, &menu.Price, &menu.Description, &menu.PhotoUrl, &categoryId, &menu.RestaurantId, &menu.LikeCount, &menu.IsSoldOut)
 
 	categoryName := queryCategoryName(categoryId, "menu_categories")
 	menu.Category = categoryName
@@ -233,7 +345,7 @@ func queryMenuSetByPrice(price int, restaurant_id int) []common.Menu {
 	var category_id int
 	rows, err := pool.Query(
 		context.Background(),
-		"SELECT id, name, price, description, photo_url, category_id " +
+		"SELECT id, name, price, description, photo_url, category_id, restaurant_id, like_count, is_sold_out " +
 		"FROM menus WHERE restaurant_id = $1 ORDER BY price ASC;",
 		restaurant_id,
 	)
@@ -244,7 +356,7 @@ func queryMenuSetByPrice(price int, restaurant_id int) []common.Menu {
 	priceSum := 0
 	for rows.Next() {
 		var m common.Menu
-		err := rows.Scan(&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id)
+		err := rows.Scan(&m.Id, &m.Name, &m.Price, &m.Description, &m.PhotoUrl, &category_id, &m.RestaurantId, &m.LikeCount, &m.IsSoldOut)
 		categoryName := queryCategoryName(category_id, "menu_categories")
 		m.Category = categoryName
 		if err != nil {
@@ -279,8 +391,13 @@ func queryAllMenuCategories() []common.Category {
 	return categories
 }
 
+// ホットリロードテスト用
+func test(ctx *gin.Context) {
+	ctx.JSON(200, "OK")
+}
 func responseAllRestaurants(ctx *gin.Context) {
-	restaurants := queryAllRestaurants()
+	keyword := ctx.Query("keyword")
+	restaurants := queryAllRestaurants(keyword)
 	ctx.JSON(200, restaurants)
 }
 

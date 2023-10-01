@@ -1,12 +1,12 @@
 import type { FC } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
-import type { MenuItemProps } from '../Components/MenuItem'
+import type { MenuItemType } from '../Components/MenuItem';
 import { MenuItem } from '../Components/MenuItem'
 import { Category } from '../Components/Category'
 import { Box, Button } from '@chakra-ui/react';
 interface OwnerHomePreProps {
   // 表示するメニューのリスト
-  menu_item_list: MenuItemProps[]
+  menu_item_list: MenuItemType[]
   // カテゴリーのリスト
   category_list: string[]
   // 選択されているカテゴリー
@@ -19,7 +19,7 @@ interface OwnerHomePreProps {
 
 // メニューを split_num 個ずつに分ける関数
 const split_num = 4
-const SplitMenuItem = (menu_item_list: MenuItemProps[]) => {
+const SplitMenuItem = (menu_item_list: MenuItemType[]) => {
   if (menu_item_list.length === 0) {
     console.error('menu_item_list is empty')
     return []
@@ -30,8 +30,6 @@ const SplitMenuItem = (menu_item_list: MenuItemProps[]) => {
   }
   return menu_item_list_split
 }
-
-const tmp_img_url = "https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg"
 
 /**
  * ホーム画面のコンポーネント（Presentational）
@@ -73,14 +71,14 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
         <Box className='menu_item_list' >
           {menu_item_split.map((menu_item_row) => {
             return (
-              <Box display={"flex"} className='menu_item_row' key={menu_item_row[0].id} >
+              <Box display={"flex"} className='menu_item_row' key={menu_item_row[0].id} pl={"50px"} pr={"50px"} >
                 {menu_item_row.map((menu_item) => {
                   return (
-                    <Box className='menu_item' key={menu_item.id}>
+                    <Box className='menu_item' key={menu_item.id}
+                      pl={"15px"} pr={"15px"} pt={"10px"} pb={"10px"}>
                       <MenuItem
-                        id={menu_item.id} name={menu_item.name}
-                        img={tmp_img_url} price={menu_item.price}
-                        onPress={menu_item.onPress}
+                        item={menu_item}
+                        onPress={() => { console.log("アイテム" + menu_item.id) }}
                       />
                     </Box>
                   )

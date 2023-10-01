@@ -30,9 +30,10 @@ POST /restaurants/:id/menus/add・・・メニューを追加する
 POST /restaurants/:id/menus/edit・・・メニューを編集する
 POST /restaurants/login・・・ログインする（店）
 POST /restaurants/signup・・・新規登録する（店）
+POST /restaurants/edit・・・店舗情報を編集する
 ```
 
-## 新規登録をする方法
+## 店を新規登録をする方法
 method: POST
 
 bodyに以下のようなjsonを入れることで新規登録ができます。
@@ -86,6 +87,23 @@ bodyに以下のようなjsonを入れてください。
 }
 ```
 
+## 店の情報を編集する方法
+method POST
+
+/restaurants/editに次のようなjsonをbodyに入れてPOSTしてください。
+``` json
+{
+    "id": 3,
+    "email": "fugafuga@gmail.com",
+    "password": "hogehoge",
+    "name": "hogehogeラーメン",
+    "phone_number": "1234556",
+    "address": "地球",
+    "description": "lorem ipsum",
+    "category_id": 1
+}
+```
+
 ## メニューを検索する方法
 /restaurants/{id}/menusに次のURLパラメーターを付与する事で検索ができます。
 - lower・・・X円以下のメニューを検索する
@@ -97,7 +115,7 @@ bodyに以下のようなjsonを入れてください。
 - keyword・・・店名で検索する
 
 ## メニューを編集する方法
-bodyに以下のようなjsonを入れてください。
+/restaurants/:id/menus/editのbodyに以下のようなjsonを入れてPOSTしてください。
 ``` json
 {
     "id": 17,
@@ -113,7 +131,9 @@ bodyに以下のようなjsonを入れてください。
 ```
 
 ## メニューを追加する方法
-bodyに以下のようなjsonを入れてください。
+method POST
+
+/restaurants/:id/menus/addのbodyに以下のようなjsonを入れてPOSTしてください。
 ``` json
 {
     "name": "鯖",

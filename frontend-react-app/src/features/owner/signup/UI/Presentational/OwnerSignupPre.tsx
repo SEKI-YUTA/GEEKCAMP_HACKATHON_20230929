@@ -1,19 +1,14 @@
-import { FC, ChangeEvent } from 'react';
+import type { FC, ChangeEvent } from 'react';
 
 import {
-  Flex,
   Box,
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Button,
-  Heading,
-  Text,
   useColorModeValue,
-  VStack,
-  CheckboxGroup
+  VStack
 } from '@chakra-ui/react';
 
 interface OwnerSignupProps {
@@ -51,18 +46,18 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
 }) => {
 
   return (
-    // <Flex
-    //   minH={'100vh'}
-    //   align={'center'}
-    //   justify={'center'}
-    //   bg={useColorModeValue('gray.50', 'gray.800')}>
+  // <Flex
+  //   minH={'100vh'}
+  //   align={'center'}
+  //   justify={'center'}
+  //   bg={useColorModeValue('gray.50', 'gray.800')}>
 
     // <Box maxWidth={'1000px'} >
-    <VStack spacing={8} mx={'auto'} maxW={'2xl'} py={12} px={6} align={'stretch'}>
+    <VStack spacing={8} mx="auto" maxW="2xl" py={12} px={6} align="stretch">
       <Box
-        rounded={'lg'}
+        rounded="lg"
         bg={useColorModeValue('white', 'gray.700')}
-        boxShadow={'lg'}
+        boxShadow="lg"
         p={8}>
         <Stack spacing={4}>
           <FormControl id="email">
@@ -119,8 +114,8 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
             </CheckboxGroup>
           </FormControl> */}
           <Button
-            bg={'blue.400'}
-            color={'white'}
+            bg="blue.400"
+            color="white"
             _hover={{
               bg: 'blue.500',
             }}>
@@ -131,5 +126,5 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
     </VStack>
     // </Box>
     // </Flex>
-  )
+  );
 };

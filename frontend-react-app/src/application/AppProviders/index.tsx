@@ -25,7 +25,7 @@ export const AppProviders: FC = () => {
           <Route path="/restaurant" element={<>客側画面</>} />
           <Route path="/signin" element={ctx.restaurantId ? <Navigate to='/owner' /> : <>
           ログイン画面
-          <Button onClick={() => ctx.onLogin(1)}>ログイン</Button>
+            <Button onClick={() => ctx.onLogin(1)}>ログイン</Button>
           </>} />
           <Route path="/signup" element={ctx.restaurantId ? <Navigate to='/owner' /> : <OwnerSignupCon />} />
           <Route

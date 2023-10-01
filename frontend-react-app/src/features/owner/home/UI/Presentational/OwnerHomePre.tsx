@@ -48,7 +48,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
           ml="30px" mr="30px"
         >
 
-          <Box className='yohaku' style={styles.yohaku}></Box>
+          <Box className='yohaku' h="65px"></Box>
 
           <Box className='category_and_addmenu'
             display="flex"
@@ -75,7 +75,10 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
             </Box>
             {/* 新規登録ボタン */}
             <Button
-              style={styles.add_menu_button}
+              border="solid 1px #833F29"
+              borderRadius="10px"
+              color="#B14B4B"
+              backgroundColor="#FBFBFB"
               size="lg"
               fontSize="2xl"
               onClick={props.onPressAddMenuButton}
@@ -109,20 +112,4 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
       </Layout>
     </>
   );
-};
-
-const styles = {
-  yohaku: {
-    height: '65px',
-  },
-  add_menu_button: {
-    // 外縁
-    border: 'solid 1px #833F29',
-    // 外縁を丸くする
-    borderRadius: '10px',
-    // 文字の色
-    color: '#B14B4B',
-    // 背景色
-    backgroundColor: '#FBFBFB',
-  },
 };

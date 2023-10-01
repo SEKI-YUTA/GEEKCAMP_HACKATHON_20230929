@@ -7,15 +7,15 @@ interface CategoryProps {
   onPress: () => void
 }
 
-export const Category: FC<CategoryProps> = (props) => {
+export const Category: FC<CategoryProps> = ({name, selected, onPress}) => {
   return (
     <Button
       fontSize={25}
-      onClick={props.onPress}
       style={styles.button}
       // 選択されていたら赤くする
-      color={props.selected ? 'red' : 'black'}
-    >{props.name}</Button>
+      color={selected ? 'red' : 'black'}
+      onClick={onPress}
+    >{name}</Button>
   );
 };
 

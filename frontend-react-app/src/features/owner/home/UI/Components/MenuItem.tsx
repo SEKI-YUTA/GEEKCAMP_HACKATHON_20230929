@@ -5,15 +5,16 @@ export interface MenuItemProps {
   name: string
   img: string
   price: number
+  onPress: () => void
 }
 
 export const MenuItem: FC<MenuItemProps> = (props) => {
   return (
-    <div className="menu_item" style={styles.menu_item} key={props.id}>
-      <div>
+    <div className="menu_item" style={styles.menu_item} key={props.id} onClick={props.onPress}>
+      <div className="img_area">
         <img src={props.img} alt="" />
       </div>
-      <div className="name and price" style={{ display: 'flex', justifyContent: 'space-around' }}>
+      <div className="name_and_price" style={styles.name_and_price}>
         <div>{props.name}</div>
         <div>{props.price}円</div>
       </div>
@@ -27,8 +28,9 @@ const styles = {
     border: 'solid 1px black',
     // 外縁を丸くする
     borderRadius: '10px',
-    // 大きさを指定する
-    width: '200px',
-    height: '200px',
+  },
+  name_and_price: {
+    display: 'flex',
+    justifyContent: 'space-around',
   }
 };

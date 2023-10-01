@@ -12,7 +12,7 @@ export const OwnerSigninCon: FC = () => {
   const [ownerEmail,setOwnerEmail]=useState<string>('');
   const [ownerPassword,setOwnerPassword]=useState<string>('');
   const [errorMsg,setErrorMsg]=useState<number>(0);
-  const {onLogin}=useContext(StateContext)
+  const {onLogin}=useContext(StateContext);
   const handleOwnerEmailChange=(e:ChangeEvent<HTMLInputElement>)=>{
     setOwnerEmail(e.target.value);
   };
@@ -25,7 +25,7 @@ export const OwnerSigninCon: FC = () => {
     try {
       if(ownerEmail === '' || ownerPassword === '' ){
         // 空だった場合
-        setErrorMsg(1)
+        setErrorMsg(1);
         return;
       }
       console.log(ownerEmail);
@@ -42,20 +42,20 @@ export const OwnerSigninCon: FC = () => {
       console.log(response);
       const json = await response.json();
       console.log(json);
-      if(json.message==="ok"){
-        setOwnerEmail("");
-        setOwnerPassword("");
-        onLogin(json.restaurant_id)
+      if(json.message==='ok'){
+        setOwnerEmail('');
+        setOwnerPassword('');
+        onLogin(json.restaurant_id);
       }
       else{
-        console.log("failed to sign in")
-        setErrorMsg(2)
         // サインインに失敗
+        console.log('failed to sign in');
+        setErrorMsg(2);
       }
     } catch (error) {
-      console.log(error);
-      setErrorMsg(3)
       //　送信に失敗
+      console.log(error);
+      setErrorMsg(3);
     }
   };
 

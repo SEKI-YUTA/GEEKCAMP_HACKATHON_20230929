@@ -1,5 +1,5 @@
 import { Box, Button, Heading, Input, Link, Text, VStack } from '@chakra-ui/react';
-import { ChangeEvent, FC, FormEvent } from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
 
 interface OwnerSigninPreProps {
     ownerEmail: string
@@ -12,12 +12,12 @@ interface OwnerSigninPreProps {
 
 
 export const OwnerSigninPre: FC<OwnerSigninPreProps> = ({
-    ownerEmail,
-    ownerPassword,
-    handleOwnerEmailChange,
-    handleFormSubmit,
-    handleOwnerPasswordChange,
-    errorMsg,
+  ownerEmail,
+  ownerPassword,
+  handleOwnerEmailChange,
+  handleFormSubmit,
+  handleOwnerPasswordChange,
+  errorMsg,
 }) => {
 
   return (
@@ -40,22 +40,22 @@ export const OwnerSigninPre: FC<OwnerSigninPreProps> = ({
             <Box py={2} textAlign="center">
               <Button type='submit'>ログイン</Button>
             </Box>
-            <Box background={'pink'} color={'red'}>
-            {
-              (()=>{
-                switch (errorMsg) {
-                  case 1:
-                    return "メールアドレスかパスワードが空になっています"
-                  case 2:
-                    return "メールアドレスかパスワードが間違っています"
-                  case 3:
-                    return "送信に失敗しました、もう一度やり直してください"
-                  default:
-                    return <></>
-                }
-              })()
+            <Box background="pink" color="red">
+              {
+                (()=>{
+                  switch (errorMsg) {
+                    case 1:
+                      return 'メールアドレスかパスワードが空になっています';
+                    case 2:
+                      return 'メールアドレスかパスワードが間違っています';
+                    case 3:
+                      return '送信に失敗しました、もう一度やり直してください';
+                    default:
+                      return <></>;
+                  }
+                })()
 
-            }
+              }
             </Box>
           </form>
         </Box>

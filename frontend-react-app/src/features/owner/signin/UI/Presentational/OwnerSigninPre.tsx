@@ -7,7 +7,7 @@ interface OwnerSigninPreProps {
     handleOwnerEmailChange:(e: ChangeEvent<HTMLInputElement>) => void
     handleFormSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
     handleOwnerPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void
-    errorMsg: string
+    errorMsg: number
 }
 
 
@@ -17,7 +17,7 @@ export const OwnerSigninPre: FC<OwnerSigninPreProps> = ({
     handleOwnerEmailChange,
     handleFormSubmit,
     handleOwnerPasswordChange,
-    errorMsg
+    errorMsg,
 }) => {
 
   return (
@@ -40,8 +40,22 @@ export const OwnerSigninPre: FC<OwnerSigninPreProps> = ({
             <Box py={2} textAlign="center">
               <Button type='submit'>ログイン</Button>
             </Box>
-            <Box>
-              {errorMsg!==""&&errorMsg}
+            <Box background={'pink'} color={'red'}>
+            {
+              (()=>{
+                switch (errorMsg) {
+                  case 1:
+                    return "メールアドレスかパスワードが空になっています"
+                  case 2:
+                    return "メールアドレスかパスワードが間違っています"
+                  case 3:
+                    return "送信に失敗しました、もう一度やり直してください"
+                  default:
+                    return <></>
+                }
+              })()
+
+            }
             </Box>
           </form>
         </Box>

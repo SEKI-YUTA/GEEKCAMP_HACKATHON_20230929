@@ -11,7 +11,7 @@ import { StateContext } from '../../../../../application/lib/state/AuthContext';
 export const OwnerSigninCon: FC = () => {
   const [ownerEmail,setOwnerEmail]=useState<string>('');
   const [ownerPassword,setOwnerPassword]=useState<string>('');
-  const [errorMsg,setErrorMsg]=useState<string>('');
+  const [errorMsg,setErrorMsg]=useState<number>(0);
   const {onLogin}=useContext(StateContext)
   const handleOwnerEmailChange=(e:ChangeEvent<HTMLInputElement>)=>{
     setOwnerEmail(e.target.value);
@@ -22,7 +22,6 @@ export const OwnerSigninCon: FC = () => {
   
 {/*
     const msgStyle = {
-      fontSize: "18px",
       fontWeight: "bold",
       padding: "10px",
       color: "red",
@@ -35,7 +34,7 @@ export const OwnerSigninCon: FC = () => {
     try {
       if(ownerEmail === '' || ownerPassword === '' ){
         // 空だった場合
-        setErrorMsg("メールアドレスかパスワードが空になっています。")
+        setErrorMsg(1)
         return;
       }
       console.log(ownerEmail);
@@ -59,12 +58,12 @@ export const OwnerSigninCon: FC = () => {
       }
       else{
         console.log("failed to sign in")
-        setErrorMsg("メールアドレスかパスワードが間違っています")
+        setErrorMsg(2)
         // サインインに失敗
       }
     } catch (error) {
       console.log(error);
-      setErrorMsg("送信に失敗し増した、もう一度やり直してください。")
+      setErrorMsg(3)
       //　送信に失敗
     }
   };

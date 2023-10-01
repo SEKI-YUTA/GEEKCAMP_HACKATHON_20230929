@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
-import type { MenuItemType } from '../Components/MenuItem';
 import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
+import type { MenuItemType } from '../../../../../application/@types/Menu';
 
 interface OwnerHomePreProps {
   // 表示するメニューのリスト

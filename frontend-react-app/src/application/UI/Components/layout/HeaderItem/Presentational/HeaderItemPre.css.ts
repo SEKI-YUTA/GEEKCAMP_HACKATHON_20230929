@@ -9,6 +9,7 @@ export const headerStyle = css`
   align-items: center;
   position: sticky;
   top: 0px;
+  z-index: 999;
 `;
 
 export const headerIconText = css`

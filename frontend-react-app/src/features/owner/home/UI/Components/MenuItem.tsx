@@ -1,34 +1,28 @@
-import { Box, GridItem, Image } from '@chakra-ui/react';
+import { Box, GridItem, Image, Text } from '@chakra-ui/react';
 import type { FC } from 'react';
-export interface MenuItemType {
-  id: number
-  name: string
-  price: number
-  description: string
-  photo_url: string
-  restaurant_id: number
-  category_id: number
-  is_sold_out: boolean
-  like_count: number
-}
+import type { MenuItemType } from '../../../../../application/@types/Menu';
 
 interface MenuItemProps {
   item: MenuItemType
   onPress: () => void
 }
 
-export const MenuItem: FC<MenuItemProps> = (props) => {
+export const MenuItem: FC<MenuItemProps> = ({ item, onPress }) => {
   return (
     <GridItem className='menuItem'
       border="solid 1px black"
-      onClick={props.onPress}
+      onClick={onPress}
     >
-      <Box className='imgArea' >
-        <Image src={props.item.photo_url} />
+      <Box className='imgArea' p={3}>
+        <Image src={item.photo_url} />
       </Box>
-      <Box className='nameAndPrice' display="flex" justifyContent="space-around" >
-        <Box className='name' >{props.item.name}</Box>
-        <Box className='price' >{props.item.price}円</Box>
+      <Box className='nameAndPrice' display="flex" py={3}>
+        <Box className='name' textAlign='center' flex={1} >
+          <Text fontSize='2xl'>{item.name}</Text>
+        </Box>
+        <Box className='price' textAlign='center' flex={1} >
+          <Text fontSize='2xl'>{item.price}円</Text>
+        </Box>
       </Box>
     </GridItem>
   );

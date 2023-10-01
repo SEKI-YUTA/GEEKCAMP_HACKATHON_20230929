@@ -19,16 +19,7 @@ export const OwnerSigninCon: FC = () => {
   const handleOwnerPasswordChange=(e:ChangeEvent<HTMLInputElement>)=>{
     setOwnerPassword(e.target.value);
   };
-  
-{/*
-    const msgStyle = {
-      fontWeight: "bold",
-      padding: "10px",
-      color: "red",
-      backgroundColor: "pink"
-    };
-  };
-*/}
+
   const handleFormSubmit=async(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try {

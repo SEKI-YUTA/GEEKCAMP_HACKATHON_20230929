@@ -55,7 +55,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
           {/* カテゴリーのリスト */}
           <Box
             className='category-list'
-            maxW="900px"
+            maxW="80%"
             overflowX="scroll"
             whiteSpace="nowrap"
           >

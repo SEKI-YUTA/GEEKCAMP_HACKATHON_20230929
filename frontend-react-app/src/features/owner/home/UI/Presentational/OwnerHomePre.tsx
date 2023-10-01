@@ -46,12 +46,19 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
         {/* ヘッダー分の余白 */}
         <div className="yohaku" style={styles.yohaku}></div>
 
-        <Box
-          display={"flex"} justifyContent={"space-around"}
-          className='category_and_addmenu'
-          height={"40px"}>
+        <Box className='category_and_addmenu'
+          display={"flex"}
+          justifyContent={"space-around"}
+          height={"40px"}
+          margin={"10px"}
+        >
           {/* カテゴリーのリスト */}
-          <Box className='category-list' >
+          <Box
+            className='category-list'
+            maxW="900px"
+            overflowX="scroll"
+            whiteSpace="nowrap"
+          >
             {props.category_list.map((category) => {
               const selected = category === props.selected_category
               return (
@@ -63,7 +70,12 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
             })}
           </Box>
           {/* 新規登録ボタン */}
-          <Button onClick={props.onPressAddMenuButton} style={styles.add_menu_button}>
+          <Button
+            onClick={props.onPressAddMenuButton}
+            style={styles.add_menu_button}
+            size="lg"
+            fontSize="2xl"
+          >
             新規登録
           </Button>
         </Box>
@@ -96,10 +108,6 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
 const styles = {
   yohaku: {
     height: '65px',
-  },
-  category: {
-    display: 'flex',
-    justifyContent: 'space-around',
   },
   add_menu_button: {
     // 外縁

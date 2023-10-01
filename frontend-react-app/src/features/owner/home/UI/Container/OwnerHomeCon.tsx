@@ -99,8 +99,8 @@ const temp_menu_item_list: MenuItemType[] = [
   },
 ]
 
-// const temp_category_list = ["おすすめ", "焼き鳥", "アルコール", "おすすめ2", "焼き鳥2", "アルコール2", "おすすめ3", "焼き鳥3", "アルコール3", "おすすめ4", "焼き鳥4", "アルコール5"]
-const temp_category_list = ["おすすめ", "焼き鳥", "アルコール"]
+const temp_category_list = ["おすすめ", "焼き鳥", "アルコール", "おすすめ2", "焼き鳥2", "アルコール2", "おすすめ3", "焼き鳥3", "アルコール3", "おすすめ4", "焼き鳥4"]
+// const temp_category_list = ["おすすめ", "焼き鳥", "アルコール"]
 
 export const OwnerHomeCon: FC = () => {
   const [menu_item_list, setMenu_item_list] = useState<MenuItemType[]>(temp_menu_item_list)

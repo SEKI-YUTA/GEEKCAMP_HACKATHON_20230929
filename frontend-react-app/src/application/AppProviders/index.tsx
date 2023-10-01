@@ -4,6 +4,8 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { StateContext, useStateContext } from '../lib/state/AuthContext';
 import { OwnerHomeCon } from '../../features/owner/home/UI/Container/OwnerHomeCon';
 
+import { OwnerSignupCon } from '../../features/owner/signup/UI/Container/OwnerSignupCon';
+
 /**
  * プロバイダーやルーターをラップしてるやつ
  * @returns 
@@ -25,7 +27,7 @@ export const AppProviders: FC = () => {
           ログイン画面
           <Button onClick={() => ctx.onLogin(1)}>ログイン</Button>
           </>} />
-          <Route path="/signup" element={ctx.restaurantId ? <Navigate to='/owner' /> : <>サインアップ画面</>} />
+          <Route path="/signup" element={ctx.restaurantId ? <Navigate to='/owner' /> : <OwnerSignupCon />} />
           <Route
             path="*"
             element={<>404 Not Found</>}

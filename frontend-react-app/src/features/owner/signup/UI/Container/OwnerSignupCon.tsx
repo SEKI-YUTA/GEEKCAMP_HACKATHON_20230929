@@ -1,5 +1,5 @@
 import type { FC, ChangeEvent } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { OwnerSignupPre } from '../Presentational/OwnerSignupPre';
 
@@ -35,6 +35,16 @@ export const OwnerSignupCon: FC = () => {
   const handleDescription = (e: ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
   };
+
+  const fetchRestaurantCategorys = async () => {
+    const response = await fetch('http://localhost:8080/restaurants/categories');
+    const data = await response.json();
+    console.log(data)
+  };
+
+  useEffect(() => {
+    fetchRestaurantCategorys()
+  }, [])
 
   return <OwnerSignupPre
     ownerEmail={ownerEmail}

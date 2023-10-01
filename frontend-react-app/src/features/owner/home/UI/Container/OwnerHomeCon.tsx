@@ -20,20 +20,33 @@ export const OwnerHomeCon: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
   // const [selectedCategory, setSelectedCategory] = useState<string>("");
 
+  /**
+   * メニュー新規登録ボタンをクリック時イベント
+   */
   const onClickAddMenuButton = () => {
     console.log('新規登録');
   };
 
+  /**
+   * カテゴリータブをクリック時のイベント
+   * @param category カテゴリー
+   */
   const onClickCategory = (category: string) => {
     console.log(category);
     setSelectedCategory(category);
   };
 
+  /**
+   * メニュー一覧取得関数
+   */
   const fetchMenu = async () => {
     try {
+      // fetchでAPIにリクエスト
       const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus`);
+      // レスポンスからJSONを取り出し
       const json:MenuItemType[] = await responce.json();
       console.log(json);
+      // photo_urlがないので、追加
       const data:MenuItemType[] = json.map((item:MenuItemType) => ({
         id: item.id,
         category: item.category,
@@ -43,13 +56,17 @@ export const OwnerHomeCon: FC = () => {
         price: item.price,
         restaurant_id: item.restaurant_id
       }));
+      // menuItemListにセット
       setMenuItemList(data);
     } catch (error) {
+      // 失敗時の処理
+      // boolで管理して画面に失敗のメッセージを表示しても良い
       console.log('取得失敗', error);
     }
   };
 
   useEffect(()=>{
+    // 初回のみ実行
     fetchMenu();
   },[]);
 

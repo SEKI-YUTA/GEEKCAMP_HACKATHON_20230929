@@ -97,30 +97,30 @@ const temp_menu_item_list: MenuItemType[] = [
     is_sold_out: false,
     like_count: 1,
   },
-]
+];
 
-const temp_category_list = ["おすすめ", "焼き鳥", "アルコール", "おすすめ2", "焼き鳥2", "アルコール2", "おすすめ3", "焼き鳥3", "アルコール3", "おすすめ4", "焼き鳥4"]
+const temp_category_list = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];
 // const temp_category_list = ["おすすめ", "焼き鳥", "アルコール"]
 
 export const OwnerHomeCon: FC = () => {
-  const [menu_item_list, setMenu_item_list] = useState<MenuItemType[]>(temp_menu_item_list)
+  const [menu_item_list] = useState<MenuItemType[]>(temp_menu_item_list);
 
-  const [selected_category, setSelected_category] = useState<string>(temp_category_list[0])
+  const [selected_category, setSelected_category] = useState<string>(temp_category_list[0]);
 
   const onPressAddMenuButton = () => {
-    console.log("新規登録")
-  }
+    console.log('新規登録');
+  };
 
   const onPressCategory = (category: string) => {
-    console.log(category)
-    setSelected_category(category)
-  }
+    console.log(category);
+    setSelected_category(category);
+  };
 
   return <OwnerHomePre
     menu_item_list={menu_item_list}
     category_list={temp_category_list}
-    onPressAddMenuButton={onPressAddMenuButton}
     selected_category={selected_category}
+    onPressAddMenuButton={onPressAddMenuButton}
     onPressCategory={onPressCategory}
   />;
 };

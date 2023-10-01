@@ -1,5 +1,5 @@
-import { Button } from "@chakra-ui/react";
-import { FC } from "react";
+import { Button } from '@chakra-ui/react';
+import type { FC } from 'react';
 
 interface CategoryProps {
   name: string
@@ -10,14 +10,14 @@ interface CategoryProps {
 export const Category: FC<CategoryProps> = (props) => {
   return (
     <Button
+      fontSize={25}
       onClick={props.onPress}
       style={styles.button}
       // 選択されていたら赤くする
       color={props.selected ? 'red' : 'black'}
-      fontSize={25}
     >{props.name}</Button>
-  )
-}
+  );
+};
 
 const styles = {
   button: {
@@ -25,4 +25,4 @@ const styles = {
     fontWeight: 'normal',
     borderRadius: '10px',
   }
-}
+};

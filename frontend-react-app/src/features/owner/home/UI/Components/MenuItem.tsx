@@ -1,5 +1,5 @@
-import { Box, Image } from "@chakra-ui/react"
-import { FC } from "react";
+import { Box, Image } from '@chakra-ui/react';
+import type { FC } from 'react';
 export interface MenuItemType {
   id: number
   name: string
@@ -19,14 +19,14 @@ interface MenuItemProps {
 
 export const MenuItem: FC<MenuItemProps> = (props) => {
   return (
-    <Box className='menu_item' onClick={props.onPress} border={"solid 1px black"}>
+    <Box className='menu_item' border="solid 1px black" onClick={props.onPress}>
       <Box className='img_area' >
         <Image src={props.item.photo_url} />
       </Box>
-      <Box className='name_and_price' display={"flex"} justifyContent={"space-around"} >
+      <Box className='name_and_price' display="flex" justifyContent="space-around" >
         <Box className='name' >{props.item.name}</Box>
         <Box className='price' >{props.item.price}円</Box>
       </Box>
     </Box>
-  )
-}
+  );
+};

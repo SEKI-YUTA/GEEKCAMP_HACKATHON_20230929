@@ -9,20 +9,19 @@ interface CategoryProps {
 
 export const Category: FC<CategoryProps> = (props) => {
   return (
-    // 選択されていたら赤くする
-    <Button onClick={props.onPress}
-      style={props.selected ? { ...styles.button, ...styles.selected } : styles.button}
+    <Button
+      onClick={props.onPress}
+      style={styles.button}
+      // 選択されていたら赤くする
+      color={props.selected ? 'red' : 'black'}
+      fontSize={25}
     >{props.name}</Button>
   )
 }
 
 const styles = {
-  selected: {
-    color: 'red'
-  },
   button: {
     backgroundColor: 'white',
-    color: 'black',
     fontWeight: 'normal',
     borderRadius: '10px',
   }

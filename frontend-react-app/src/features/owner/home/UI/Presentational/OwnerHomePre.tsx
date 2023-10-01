@@ -4,6 +4,7 @@ import type { MenuItemType } from '../Components/MenuItem';
 import { MenuItem } from '../Components/MenuItem'
 import { Category } from '../Components/Category'
 import { Box, Button } from '@chakra-ui/react';
+
 interface OwnerHomePreProps {
   // 表示するメニューのリスト
   menu_item_list: MenuItemType[]
@@ -48,7 +49,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = (props) => {
         <Box
           display={"flex"} justifyContent={"space-around"}
           className='category_and_addmenu'
-          height={"70px"}>
+          height={"40px"}>
           {/* カテゴリーのリスト */}
           <Box className='category-list' >
             {props.category_list.map((category) => {
@@ -99,7 +100,6 @@ const styles = {
   category: {
     display: 'flex',
     justifyContent: 'space-around',
-    // スクロールできるようにする
   },
   add_menu_button: {
     // 外縁

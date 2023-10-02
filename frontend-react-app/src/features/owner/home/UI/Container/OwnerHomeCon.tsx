@@ -40,7 +40,7 @@ export const OwnerHomeCon: FC = () => {
   const fetchCategory = async () => {
     try {
       // fetchでAPIにリクエスト
-      const responce = await fetch(`http://localhost:8080/menus/categories`);
+      const responce = await fetch('http://localhost:8080/menus/categories');
       // レスポンスからJSONを取り出し
       interface CategoryResponce {
         categories: CategoryType[]
@@ -64,7 +64,7 @@ export const OwnerHomeCon: FC = () => {
   const fetchMenu = async () => {
     try {
       // fetchでAPIにリクエスト
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus`);
+      const responce = await fetch('http://localhost:8080/restaurants/${restaurantId}/menus');
       // レスポンスからJSONを取り出し
       const json:MenuItemType[] = await responce.json();
       console.log(json);

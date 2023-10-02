@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryType } from '../../../../../application/@types/Category';
+import { useMediaQuery } from '@chakra-ui/react';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -17,6 +18,9 @@ export const OwnerHomeCon: FC = () => {
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({} as CategoryType)
+
+  const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
 
   /**
    * メニュー新規登録ボタンをクリック時イベント
@@ -97,6 +101,8 @@ export const OwnerHomeCon: FC = () => {
     menuItemList={menuItemList}
     categoryList={categoryList}
     selectedCategory={selectedCategory}
+    isLargerThan800={isLargerThan800}
+    isLargerThan1200={isLargerThan1200}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
   />;

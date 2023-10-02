@@ -4,18 +4,19 @@ import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
+import type { CategoryType } from '../../../../../application/@types/Category';
 
 interface OwnerHomePreProps {
   // 表示するメニューのリスト
   menuItemList: MenuItemType[]
   // カテゴリーのリスト
-  categoryList: string[]
+  categoryList: CategoryType[]
   // 選択されているカテゴリー
-  selectedCategory: string
+  selectedCategory: CategoryType
   //新規登録ボタンを押したときの処理
   onClickAddMenuButton: () => void
   // カテゴリーを押したときの処理
-  onClickCategory: (category: string) => void
+  onClickCategory: (category: CategoryType) => void
 }
 
 /**
@@ -31,7 +32,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({categoryList, menuItemList,
           <HStack py={5}>
             <HStack overflowX='auto' flex={4} spacing={1}>
               {categoryList.map((category, index) => (
-                <Category key={index} name={category} selectedCategory={selectedCategory} onClick={() => onClickCategory(category)} />
+                <Category key={index} category={category} isSelected={category.id === selectedCategory.id} onClick={() => onClickCategory(category)} />
               ))}
             </HStack>
             <Box

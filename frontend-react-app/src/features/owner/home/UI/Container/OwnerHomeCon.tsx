@@ -5,8 +5,6 @@ import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryType } from '../../../../../application/@types/Category';
 
-// const tempCategoryList = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];
-
 /**
  * ホーム画面のコンポーネント（Container）
  * ここにコンポーネントのロジックを書いて、OwnerHomePreに渡す
@@ -17,9 +15,8 @@ export const OwnerHomeCon: FC = () => {
   const {restaurantId} = useContext(StateContext);
   
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
-  const [categoryList, setCategoryList] = useState<string[]>([]);
-
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType>({} as CategoryType)
 
   /**
    * メニュー新規登録ボタンをクリック時イベント
@@ -32,7 +29,7 @@ export const OwnerHomeCon: FC = () => {
    * カテゴリータブをクリック時のイベント
    * @param category カテゴリー
    */
-  const onClickCategory = (category: string) => {
+  const onClickCategory = (category: CategoryType) => {
     console.log(category);
     setSelectedCategory(category);
   };
@@ -51,11 +48,9 @@ export const OwnerHomeCon: FC = () => {
       }
       const json: CategoryResponce = await responce.json();
       console.log(json);
-      // nameだけ取り出し
-      const data = json.categories.map((item: CategoryType) => item.name);
       // categoryListにセット
-      setCategoryList(data);
-      setSelectedCategory(data[0]);
+      setCategoryList(json.categories);
+      setSelectedCategory(json.categories[0]);
     } catch (error) {
       // 失敗時の処理
       // boolで管理して画面に失敗のメッセージを表示しても良い

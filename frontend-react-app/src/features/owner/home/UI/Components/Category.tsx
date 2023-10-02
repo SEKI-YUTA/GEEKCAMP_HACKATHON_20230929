@@ -1,13 +1,14 @@
 import { Box, Button } from '@chakra-ui/react';
 import type { FC } from 'react';
+import type { CategoryType } from '../../../../../application/@types/Category';
 
 interface CategoryProps {
-  name: string
-  selectedCategory: string
+  category: CategoryType
+  isSelected: boolean
   onClick: () => void
 }
 
-export const Category: FC<CategoryProps> = ({name, selectedCategory, onClick}) => {
+export const Category: FC<CategoryProps> = ({ category, isSelected, onClick }) => {
   return (
     <Box>
       <Button
@@ -16,9 +17,9 @@ export const Category: FC<CategoryProps> = ({name, selectedCategory, onClick}) =
         fontWeight='normal'
         borderRadius='10px'
         // 選択されていたら赤くする
-        color={name === selectedCategory ? 'red' : 'black'}
+        color={isSelected ? 'red' : 'black'}
         onClick={onClick}
-      >{name}</Button>
+      >{category.name}</Button>
     </Box>
   );
 };

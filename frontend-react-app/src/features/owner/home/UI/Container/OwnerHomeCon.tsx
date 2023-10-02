@@ -3,9 +3,8 @@ import { OwnerHomePre } from '../Presentational/OwnerHomePre';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
+import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery } from '@chakra-ui/react';
-
-const tempCategoryList = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -17,9 +16,10 @@ export const OwnerHomeCon: FC = () => {
   const {restaurantId} = useContext(StateContext);
   
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
+  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType>({id:-1, name: ''});
 
-  const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
-
+  // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
 
@@ -34,9 +34,29 @@ export const OwnerHomeCon: FC = () => {
    * カテゴリータブをクリック時のイベント
    * @param category カテゴリー
    */
-  const onClickCategory = (category: string) => {
+  const onClickCategory = (category: CategoryType) => {
     console.log(category);
     setSelectedCategory(category);
+  };
+
+  /**
+   * カテゴリー一覧取得関数
+   */
+  const fetchCategory = async () => {
+    try {
+      // fetchでAPIにリクエスト
+      const responce = await fetch('http://localhost:8080/menus/categories');
+      // レスポンスからJSONを取り出し
+      const json: CategoryResponce = await responce.json();
+      console.log(json);
+      // categoryListにセット
+      setCategoryList(json.categories);
+      setSelectedCategory(json.categories[0]);
+    } catch (error) {
+      // 失敗時の処理
+      // boolで管理して画面に失敗のメッセージを表示しても良い
+      console.log('カテゴリー一覧取得失敗', error);
+    }
   };
 
   /**
@@ -71,11 +91,12 @@ export const OwnerHomeCon: FC = () => {
   useEffect(()=>{
     // 初回のみ実行
     fetchMenu();
+    fetchCategory();
   },[]);
 
   return <OwnerHomePre
     menuItemList={menuItemList}
-    categoryList={tempCategoryList}
+    categoryList={categoryList}
     selectedCategory={selectedCategory}
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}

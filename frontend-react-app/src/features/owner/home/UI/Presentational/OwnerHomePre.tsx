@@ -4,6 +4,7 @@ import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
+import type { CategoryType } from '../../../../../application/@types/Category';
 
 interface OwnerHomePreProps {
   /**
@@ -13,11 +14,11 @@ interface OwnerHomePreProps {
   /**
    * カテゴリーのリスト
    */
-  categoryList: string[]
+  categoryList: CategoryType[]
   /**
    * 選択されているカテゴリー
    */
-  selectedCategory: string
+  selectedCategory: CategoryType
   /**
    * 800px以上かどうか
    */
@@ -35,7 +36,7 @@ interface OwnerHomePreProps {
    * @param category 
    * @returns 
    */
-  onClickCategory: (category: string) => void
+  onClickCategory: (category: CategoryType) => void
 }
 
 /**
@@ -60,7 +61,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
           <HStack py={5}>
             <HStack overflowX='auto' flex={4} spacing={1}>
               {categoryList.map((category, index) => (
-                <Category key={index} name={category} selectedCategory={selectedCategory} isLargerThan1200={isLargerThan1200} onClick={() => onClickCategory(category)} />
+                <Category key={index} category={category} isSelected={category.id === selectedCategory.id} isLargerThan1200={isLargerThan1200} onClick={() => onClickCategory(category)} />
               ))}
             </HStack>
             <Box

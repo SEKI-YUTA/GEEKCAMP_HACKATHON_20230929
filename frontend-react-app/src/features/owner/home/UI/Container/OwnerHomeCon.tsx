@@ -19,7 +19,7 @@ export const OwnerHomeCon: FC = () => {
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   const [categoryList, setCategoryList] = useState<string[]>([]);
 
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
 
   /**
    * メニュー新規登録ボタンをクリック時イベント
@@ -55,6 +55,7 @@ export const OwnerHomeCon: FC = () => {
       const data = json.categories.map((item: CategoryType) => item.name);
       // categoryListにセット
       setCategoryList(data);
+      setSelectedCategory(data[0]);
     } catch (error) {
       // 失敗時の処理
       // boolで管理して画面に失敗のメッセージを表示しても良い

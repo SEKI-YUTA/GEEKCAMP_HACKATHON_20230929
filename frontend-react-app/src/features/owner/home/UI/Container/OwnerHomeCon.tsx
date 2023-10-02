@@ -3,6 +3,7 @@ import { OwnerHomePre } from '../Presentational/OwnerHomePre';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
+import { useDisclosure } from '@chakra-ui/react';
 
 const tempCategoryList = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];
 
@@ -19,12 +20,14 @@ export const OwnerHomeCon: FC = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
   // const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   /**
    * メニュー新規登録ボタンをクリック時イベント
    */
   const onClickAddMenuButton = () => {
     console.log('新規登録');
+    onOpen()
   };
 
   /**
@@ -76,5 +79,8 @@ export const OwnerHomeCon: FC = () => {
     selectedCategory={selectedCategory}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
+    isOpen={isOpen}
+    onClose={onClose}
+
   />;
 };

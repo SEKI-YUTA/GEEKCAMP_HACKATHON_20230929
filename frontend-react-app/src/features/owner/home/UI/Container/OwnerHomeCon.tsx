@@ -13,8 +13,11 @@ import { useMediaQuery } from '@chakra-ui/react';
  */
 export const OwnerHomeCon: FC = () => {
   
-  const {restaurantId} = useContext(StateContext);
-  
+  const { restaurantId } = useContext(StateContext);
+
+  // 全メニュー, 毎回フェッチするのは無駄なので、一度取得したら保持しておく
+  const [allMenus, setAllMenus] = useState<MenuItemType[]>([]);
+
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({id:-1, name: ''});
@@ -36,7 +39,15 @@ export const OwnerHomeCon: FC = () => {
    */
   const onClickCategory = (category: CategoryType) => {
     console.log(category);
-    setSelectedCategory(category);
+    // 選択されたカテゴリーのみ表示
+    if (category.id === 0) {
+      // 全てのカテゴリーを表示
+      setMenuItemList(allMenus);
+    }
+    else {
+      const filteredMenu = allMenus.filter((item: MenuItemType) => item.name === category.name);
+      setMenuItemList(filteredMenu);
+    }
   };
 
   /**
@@ -49,9 +60,11 @@ export const OwnerHomeCon: FC = () => {
       // レスポンスからJSONを取り出し
       const json: CategoryResponce = await responce.json();
       console.log(json);
+      // すべてのカテゴリーを追加
+      const data: CategoryType[] = [{ id: 0, name: '全て' }, ...json.categories];
       // categoryListにセット
-      setCategoryList(json.categories);
-      setSelectedCategory(json.categories[0]);
+      setCategoryList(data);
+      setSelectedCategory(data[0]);
     } catch (error) {
       // 失敗時の処理
       // boolで管理して画面に失敗のメッセージを表示しても良い
@@ -79,6 +92,8 @@ export const OwnerHomeCon: FC = () => {
         price: item.price,
         restaurant_id: item.restaurant_id
       }));
+      // allMenusにセット
+      setAllMenus(data);
       // menuItemListにセット
       setMenuItemList(data);
     } catch (error) {

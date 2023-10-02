@@ -3,6 +3,7 @@ import { OwnerHomePre } from '../Presentational/OwnerHomePre';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
+import { useMediaQuery } from '@chakra-ui/react';
 
 const tempCategoryList = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];
 
@@ -18,7 +19,9 @@ export const OwnerHomeCon: FC = () => {
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
-  // const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
 
   /**
    * メニュー新規登録ボタンをクリック時イベント
@@ -74,6 +77,8 @@ export const OwnerHomeCon: FC = () => {
     menuItemList={menuItemList}
     categoryList={tempCategoryList}
     selectedCategory={selectedCategory}
+    isLargerThan800={isLargerThan800}
+    isLargerThan1200={isLargerThan1200}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
   />;

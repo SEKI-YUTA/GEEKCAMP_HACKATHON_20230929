@@ -4,14 +4,17 @@ import type { FC } from 'react';
 interface CategoryProps {
   name: string
   selectedCategory: string
+  isLargerThan1200: boolean
   onClick: () => void
 }
 
-export const Category: FC<CategoryProps> = ({name, selectedCategory, onClick}) => {
+export const Category: FC<CategoryProps> = ({name, selectedCategory, isLargerThan1200, onClick}) => {
   return (
     <Box>
       <Button
-        fontSize={30}
+        {...(isLargerThan1200 && {
+          fontSize:30
+        })}
         backgroundColor='white'
         fontWeight='normal'
         borderRadius='10px'

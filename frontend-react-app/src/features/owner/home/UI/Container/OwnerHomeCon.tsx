@@ -3,7 +3,7 @@ import { OwnerHomePre } from '../Presentational/OwnerHomePre';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
-import type { CategoryType } from '../../../../../application/@types/Category';
+import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery } from '@chakra-ui/react';
 
 /**
@@ -17,8 +17,9 @@ export const OwnerHomeCon: FC = () => {
   
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>({} as CategoryType)
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType>({id:-1, name: ''});
 
+  // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
 
@@ -46,10 +47,6 @@ export const OwnerHomeCon: FC = () => {
       // fetchでAPIにリクエスト
       const responce = await fetch('http://localhost:8080/menus/categories');
       // レスポンスからJSONを取り出し
-      interface CategoryResponce {
-        categories: CategoryType[]
-        categoryName: string
-      }
       const json: CategoryResponce = await responce.json();
       console.log(json);
       // categoryListにセット

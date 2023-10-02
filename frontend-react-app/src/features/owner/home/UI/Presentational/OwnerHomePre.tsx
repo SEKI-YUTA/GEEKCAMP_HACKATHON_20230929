@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
 import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
@@ -20,6 +20,14 @@ interface OwnerHomePreProps {
   // モーダル呼び出し
   isOpen: boolean
   onClose: () => void
+  menuName: string
+  handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
+  menuPrice: number
+  handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
+  menuDetail: string
+  handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  imgLink: string
+  handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 /**
@@ -27,10 +35,37 @@ interface OwnerHomePreProps {
  * ここにUIを書く
  * @returns 
  */
-export const OwnerHomePre: FC<OwnerHomePreProps> = ({categoryList, menuItemList, onClickAddMenuButton, onClickCategory, selectedCategory, isOpen, onClose}) => {
+export const OwnerHomePre: FC<OwnerHomePreProps> = ({
+  categoryList,
+  menuItemList,
+  onClickAddMenuButton,
+  onClickCategory,
+  selectedCategory,
+  isOpen,
+  onClose,
+  menuName,
+  handleSetMenuName,
+  menuPrice,
+  handleSetMenuPrice,
+  menuDetail,
+  handleSetMenuDetail,
+  imgLink,
+  handleSetImgLink
+}) => {
   return (
     <>
-      <AddMenuModal isOpen={isOpen} onClose={onClose}/>
+      <AddMenuModal
+        isOpen={isOpen}
+        onClose={onClose}
+        menuName={menuName}
+        handleSetMenuName={handleSetMenuName}
+        menuPrice={menuPrice}
+        handleSetMenuPrice={handleSetMenuPrice}
+        menuDetail={menuDetail}
+        handleSetMenuDetail={handleSetMenuDetail}
+        imgLink={imgLink}
+        handleSetImgLink={handleSetImgLink}
+      />
       <Layout title='MaaS'>
         <Box px={12}>
           <HStack py={5}>

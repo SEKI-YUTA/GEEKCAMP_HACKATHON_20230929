@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
 import { OwnerHomePre } from '../Presentational/OwnerHomePre';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from '../../../../../application/lib/state/AuthContext';
@@ -22,6 +22,30 @@ export const OwnerHomeCon: FC = () => {
   // const [selectedCategory, setSelectedCategory] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [menuName, setMenuName] = useState<string>('');
+  const handleSetMenuName = (e:ChangeEvent<HTMLInputElement>)=>{
+    setMenuName(e.target.value)
+  }
+
+  const [menuPrice, setMenuPrice] = useState<number>(0);
+  const handleSetMenuPrice = (e:ChangeEvent<HTMLInputElement>)=>{
+    setMenuPrice(parseInt(e.target.value))
+  }
+
+  const [menuDetail, setMenuDetail] = useState<string>('');
+  const handleSetMenuDetail = (e:ChangeEvent<HTMLTextAreaElement>)=>{
+    setMenuDetail(e.target.value)
+  }
+
+  const [imgLink, setImgLink] = useState<string>('');
+  const handleSetImgLink = (e:ChangeEvent<HTMLInputElement>)=>{
+    setImgLink(e.target.value)
+  }
+
+  //const handleMenuSubmit=async(e:FormEvent<HTMLFormElement>)=>{
+  //  e.preventDefault();
+  //  if(menuDetail){}
+  //}
   /**
    * メニュー新規登録ボタンをクリック時イベント
    */
@@ -81,6 +105,13 @@ export const OwnerHomeCon: FC = () => {
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClose={onClose}
-
+    menuName={menuName}
+    handleSetMenuName={handleSetMenuName}
+    menuPrice={menuPrice}
+    handleSetMenuPrice={handleSetMenuPrice}
+    menuDetail={menuDetail}
+    handleSetMenuDetail={handleSetMenuDetail}
+    imgLink={imgLink}
+    handleSetImgLink={handleSetImgLink}
   />;
 };

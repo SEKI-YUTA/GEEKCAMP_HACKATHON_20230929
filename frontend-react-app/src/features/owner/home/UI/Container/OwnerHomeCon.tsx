@@ -20,14 +20,14 @@ export const OwnerHomeCon: FC = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
   // const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   /**
    * メニュー新規登録ボタンをクリック時イベント
    */
   const onClickAddMenuButton = () => {
     console.log('新規登録');
-    onOpen()
+    onOpen();
   };
 
   /**
@@ -77,9 +77,9 @@ export const OwnerHomeCon: FC = () => {
     menuItemList={menuItemList}
     categoryList={tempCategoryList}
     selectedCategory={selectedCategory}
+    isOpen={isOpen}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
-    isOpen={isOpen}
     onClose={onClose}
 
   />;

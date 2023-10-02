@@ -4,7 +4,7 @@ import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
-import { MenuModal } from '../Components/MenuModal';
+import { AddMenuModal } from '../Components/AddMenuModal';
 
 interface OwnerHomePreProps {
   // 表示するメニューのリスト
@@ -30,7 +30,7 @@ interface OwnerHomePreProps {
 export const OwnerHomePre: FC<OwnerHomePreProps> = ({categoryList, menuItemList, onClickAddMenuButton, onClickCategory, selectedCategory, isOpen, onClose}) => {
   return (
     <>
-      <MenuModal isOpen={isOpen} onClose={onClose}/>
+      <AddMenuModal isOpen={isOpen} onClose={onClose}/>
       <Layout title='MaaS'>
         <Box px={12}>
           <HStack py={5}>

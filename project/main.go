@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/gin-contrib/cors"
 )
 
 var pool *pgxpool.Pool
@@ -38,6 +39,25 @@ func main() {
 	defer pool.Close()
 
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		// アクセスを許可したいアクセス元
+		AllowOrigins: []string{
+			"http://localhost:3000",
+		},
+		// アクセス許可するHTTPメソッド
+		AllowMethods: []string{
+			"POST",
+			"GET",
+			"PUT",
+			"DELETE",
+			"OPTIONS",
+		},
+		// 許可するHTTPリクエストヘッダ
+		AllowHeaders: []string{
+			"Content-Type",
+		},
+	},))
+	router.GET("/test", test)
 	router.GET("/restaurants", responseAllRestaurants)
 	router.GET("/restaurants/categories", responseRestaurantCategories)
 	router.GET("/restaurants/:id", responseSpecificRestaurants)
@@ -49,8 +69,38 @@ func main() {
 	router.POST("/restaurants/:id/menus/edit", editMenuFunc)
 	router.POST("/restaurants/login", loginFunc)
 	router.POST("/restaurants/signup", signupFunc)
+	router.POST("/restaurants/edit", editRestaurantFunc)
 
 	router.Run()
+}
+
+func editRestaurantFunc(ctx *gin.Context) {
+	var editRestaurant common.SignupPost
+	ctx.BindJSON(&editRestaurant)
+	if(editRestaurant.Id == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to update restaurant",
+		})
+		return
+	}
+	editedId := 0
+	pool.QueryRow(
+		context.Background(),
+		"UPDATE restaurants SET email = $1, password = $2, name = $3, phone_number = $4, address = $5, description = $6, category_id = $7 " +
+		"WHERE id = $8 RETURNING id;",
+		editRestaurant.Email, editRestaurant.Password, editRestaurant.Name, editRestaurant.PhoneNumber, editRestaurant.Address, editRestaurant.Description, editRestaurant.CategoryId, editRestaurant.Id,
+	).Scan(&editedId)
+
+	if(editedId == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to update restaurant",
+		})
+	} else {
+		ctx.JSON(200, gin.H{
+			"message": "ok",
+			"restaurant": editRestaurant,
+		})
+	}
 }
 
 func addMenuFunc(ctx *gin.Context) {
@@ -341,6 +391,10 @@ func queryAllMenuCategories() []common.Category {
 	return categories
 }
 
+// ホットリロードテスト用
+func test(ctx *gin.Context) {
+	ctx.JSON(200, "OK")
+}
 func responseAllRestaurants(ctx *gin.Context) {
 	keyword := ctx.Query("keyword")
 	restaurants := queryAllRestaurants(keyword)

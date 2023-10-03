@@ -22,6 +22,14 @@ export const OwnerHomeCon: FC = () => {
   // const [selectedCategory, setSelectedCategory] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [categoryValue, setCategoryValue] = useState<string>('1');
+  const handleSetCategoryValue = (categoryId:string)=>{
+    setCategoryValue(categoryId)
+  }
+
+  const [categoryInfo, setCategoryInfo] = useState<string>('');
+  //const
+
   const [menuName, setMenuName] = useState<string>('');
   const handleSetMenuName = (e:ChangeEvent<HTMLInputElement>)=>{
     setMenuName(e.target.value)
@@ -44,17 +52,43 @@ export const OwnerHomeCon: FC = () => {
 
   const handleMenuSubmit=async(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
-    if(menuName === '' || menuPrice == 0 || Number.isNaN(menuPrice) === true || menuDetail === ''){
-      alert("記入漏れあり")
+    try{
+        if(categoryValue === '' || menuName === '' || menuPrice == 0 || Number.isNaN(menuPrice) === true || menuDetail === ''){
+          // 空欄がある場合
+          console.log("記入漏れあり")
+        }
+        else{
+          // 記入されている場合
+          const menuObjStr=JSON.stringify({
+            name:menuName,
+            price:menuPrice,
+            description:menuDetail,
+            category:categoryValue
+          });
+          console.log("記入済み",menuObjStr)
+        }
+
+        // const getInfo = await fetch('http://localhost:8080/menus/categories')
+        // console.log(getInfo);
+        // const response = await fetch('http://localhost:8080/restaurants/:id/menus/add',{
+        //   method:'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify({
+        //     name:menuName,
+        //     price:menuPrice,
+        //     description:menuDetail,
+        //     category:categoryValue,
+        //   })
+        // })
+        // console.log(response);
+        // const json = await response.json();
+        // console.log(json);
+        
     }
-    else{
-      alert("記入済み")
-      const menuObjStr=JSON.stringify({
-        name:menuName,
-        price:menuPrice,
-        description:menuDetail
-      });
-      console.log(menuObjStr)
+    catch(error){
+      console.log(error);
     }
   }
   /**
@@ -116,6 +150,7 @@ export const OwnerHomeCon: FC = () => {
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClose={onClose}
+    handleSetCategoryValue={handleSetCategoryValue}
     menuName={menuName}
     handleSetMenuName={handleSetMenuName}
     menuPrice={menuPrice}

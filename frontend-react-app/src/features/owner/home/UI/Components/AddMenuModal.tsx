@@ -1,10 +1,11 @@
-import { Box, ModalContent, ModalOverlay, Modal, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, Button, FormLabel, Input, Textarea, Flex } from '@chakra-ui/react';
+import { Box, ModalContent, ModalOverlay, Modal, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, Button, FormLabel, Input, Textarea, Flex, FormControl, CheckboxGroup, Stack, Radio, RadioGroup } from '@chakra-ui/react';
 import type { ChangeEvent, FC, FormEvent } from 'react';
 
 interface AddMenuModalProps {
     isOpen: boolean
     onClose: () => void
     menuName: string
+    handleSetCategoryValue: (categoryId: string) => void
     handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
     menuPrice: number
     handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
@@ -19,6 +20,7 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
   isOpen,
   onClose,
   menuName,
+  handleSetCategoryValue,
   handleSetMenuName,
   menuPrice,
   handleSetMenuPrice,
@@ -39,6 +41,21 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
           <ModalHeader>メニュー登録</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+
+          <FormControl id="category_id">
+            <FormLabel htmlFor="category_id">料理のカテゴリー</FormLabel>
+            <RadioGroup colorScheme='orange' onChange={handleSetCategoryValue}>
+
+                <Radio pr={2} borderColor={'gray'} value='1'>洋食</Radio>
+                <Radio pr={2} borderColor={'gray'} value='2'>和食</Radio>
+                <Radio pr={2} borderColor={'gray'} value='3'>中華</Radio>
+                <Radio pr={2} borderColor={'gray'} value='4'>イタリアン</Radio>
+                <Radio pr={2} borderColor={'gray'} value='5'>韓国料理</Radio>
+                <Radio pr={2} borderColor={'gray'} value='6'>その他</Radio>
+
+            </RadioGroup>
+          </FormControl>
+
             <Box py={2}>
               <FormLabel htmlFor='menuName'>メニュー名</FormLabel>
               <Input id='menuName' type='text' value={menuName} onChange={handleSetMenuName}/>

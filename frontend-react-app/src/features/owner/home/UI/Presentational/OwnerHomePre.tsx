@@ -20,6 +20,7 @@ interface OwnerHomePreProps {
   // モーダル呼び出し
   isOpen: boolean
   onClose: () => void
+  handleSetCategoryValue: (categoryId: string) => void
   menuName: string
   handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
   menuPrice: number
@@ -34,7 +35,7 @@ interface OwnerHomePreProps {
 /**
  * ホーム画面のコンポーネント（Presentational）
  * ここにUIを書く
- * @returns 
+ * @returns
  */
 export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   categoryList,
@@ -44,6 +45,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   selectedCategory,
   isOpen,
   onClose,
+  handleSetCategoryValue,
   menuName,
   handleSetMenuName,
   menuPrice,
@@ -59,6 +61,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
       <AddMenuModal
         isOpen={isOpen}
         onClose={onClose}
+        handleSetCategoryValue={handleSetCategoryValue}
         menuName={menuName}
         handleSetMenuName={handleSetMenuName}
         menuPrice={menuPrice}

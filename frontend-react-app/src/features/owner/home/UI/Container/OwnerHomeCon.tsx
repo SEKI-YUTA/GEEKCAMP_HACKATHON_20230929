@@ -22,9 +22,6 @@ export const OwnerHomeCon: FC = () => {
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({id:-1, name: ''});
-
-
-  const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
   // const [selectedCategory, setSelectedCategory] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   // メデイアクエリ

@@ -70,4 +70,4 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
       </Layout>
     </>
   );
-}
+};

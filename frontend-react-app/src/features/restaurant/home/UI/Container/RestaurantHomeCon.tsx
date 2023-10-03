@@ -1,8 +1,8 @@
 import { useEffect, type FC, useState } from 'react';
 import { RestaurantHomePre } from '../Presentational/RestaurantHomePre';
-import { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
+import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery } from '@chakra-ui/react';
-import { MenuItemType } from '../../../../../application/@types/Menu';
+import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
 
 /**
@@ -109,4 +109,4 @@ export const RestaurantHomeCon: FC = () => {
     isLargerThan1200={isLargerThan1200}
     onClickCategory={onClickCategory}
   />;
-}
+};

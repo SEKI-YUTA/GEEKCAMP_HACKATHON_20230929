@@ -28,8 +28,8 @@ export const OwnerHomeCon: FC = () => {
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
 
   const [categoryValue, setCategoryValue] = useState<string>('1');
-  const handleSetCategoryValue = (categoryId: string) => {
-    setCategoryValue(categoryId)
+  const handleSetCategoryValue = (category: string) => {
+    setCategoryValue(category)
   }
 
   const [menuName, setMenuName] = useState<string>('');

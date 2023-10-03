@@ -1,5 +1,5 @@
 import { Box, ModalContent, ModalOverlay, Modal, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, Button, FormLabel, Input, Textarea, Flex } from '@chakra-ui/react';
-import type { ChangeEvent, FC } from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
 
 interface AddMenuModalProps {
     isOpen: boolean
@@ -12,6 +12,7 @@ interface AddMenuModalProps {
     handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
     imgLink: string
     handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
+    handleMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
 }
 
 export const AddMenuModal: FC<AddMenuModalProps> = ({
@@ -24,7 +25,8 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
   menuDetail,
   handleSetMenuDetail,
   imgLink,
-  handleSetImgLink
+  handleSetImgLink,
+  handleMenuSubmit
 }) => {
 
 
@@ -33,6 +35,7 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
+        <form onSubmit={handleMenuSubmit}>
           <ModalHeader>メニュー登録</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -56,8 +59,9 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
             </Box>
           </ModalBody>
           <ModalFooter justifyContent='center'>
-            <Button>登録</Button>
+            <Button type='submit'>登録</Button>
           </ModalFooter>
+        </form>
         </ModalContent>
       </Modal>
     </>

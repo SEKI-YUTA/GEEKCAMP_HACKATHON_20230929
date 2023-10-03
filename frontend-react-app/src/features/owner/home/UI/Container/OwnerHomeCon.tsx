@@ -42,10 +42,21 @@ export const OwnerHomeCon: FC = () => {
     setImgLink(e.target.value)
   }
 
-  //const handleMenuSubmit=async(e:FormEvent<HTMLFormElement>)=>{
-  //  e.preventDefault();
-  //  if(menuDetail){}
-  //}
+  const handleMenuSubmit=async(e:FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+    if(menuName === '' || menuPrice == 0 || Number.isNaN(menuPrice) === true || menuDetail === ''){
+      alert("記入漏れあり")
+    }
+    else{
+      alert("記入済み")
+      const menuObjStr=JSON.stringify({
+        name:menuName,
+        price:menuPrice,
+        description:menuDetail
+      });
+      console.log(menuObjStr)
+    }
+  }
   /**
    * メニュー新規登録ボタンをクリック時イベント
    */
@@ -113,5 +124,6 @@ export const OwnerHomeCon: FC = () => {
     handleSetMenuDetail={handleSetMenuDetail}
     imgLink={imgLink}
     handleSetImgLink={handleSetImgLink}
+    handleMenuSubmit={handleMenuSubmit}
   />;
 };

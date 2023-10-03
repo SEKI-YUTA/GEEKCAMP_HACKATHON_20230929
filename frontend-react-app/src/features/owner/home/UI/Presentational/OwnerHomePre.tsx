@@ -1,4 +1,4 @@
-import type { ChangeEvent, FC } from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
 import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
@@ -28,6 +28,7 @@ interface OwnerHomePreProps {
   handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
   imgLink: string
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
+  handleMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
 }
 
 /**
@@ -50,7 +51,8 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   menuDetail,
   handleSetMenuDetail,
   imgLink,
-  handleSetImgLink
+  handleSetImgLink,
+  handleMenuSubmit
 }) => {
   return (
     <>
@@ -65,6 +67,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
         handleSetMenuDetail={handleSetMenuDetail}
         imgLink={imgLink}
         handleSetImgLink={handleSetImgLink}
+        handleMenuSubmit={handleMenuSubmit}
       />
       <Layout title='MaaS'>
         <Box px={12}>

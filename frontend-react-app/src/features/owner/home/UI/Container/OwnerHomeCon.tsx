@@ -43,7 +43,10 @@ export const OwnerHomeCon: FC = () => {
 
   const [menuPrice, setMenuPrice] = useState<number>(0);
   const handleSetMenuPrice = (e:ChangeEvent<HTMLInputElement>)=>{
-    setMenuPrice(parseInt(e.target.value))
+    if(e.target.value !== "" && parseInt(e.target.value) >=0 ){
+      setMenuPrice(parseInt(e.target.value))
+    }
+
   }
 
   const [menuDetail, setMenuDetail] = useState<string>('');
@@ -59,7 +62,7 @@ export const OwnerHomeCon: FC = () => {
   const handleMenuSubmit=async(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-        if(categoryValue === '' || menuName === '' || menuPrice == 0 || Number.isNaN(menuPrice) === true || menuDetail === ''){
+        if(categoryValue === '' || menuName === '' || menuPrice == 0 || isNaN(menuPrice) === true || menuDetail === ''){
           // 空欄がある場合
           console.log("記入漏れあり")
         }

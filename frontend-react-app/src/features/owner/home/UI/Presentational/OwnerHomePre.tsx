@@ -45,6 +45,7 @@ interface OwnerHomePreProps {
   imgLink: string
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
   handleMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  categoryValue: string
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -78,12 +79,12 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   handleMenuSubmit,
   isLargerThan800,
   isLargerThan1200,
+  categoryValue,
 }) => {
   return (
     <>
       <AddMenuModal
         isOpen={isOpen}
-        onClose={onClose}
         handleSetCategoryValue={handleSetCategoryValue}
         menuName={menuName}
         handleSetMenuName={handleSetMenuName}
@@ -94,6 +95,9 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
         imgLink={imgLink}
         handleSetImgLink={handleSetImgLink}
         handleMenuSubmit={handleMenuSubmit}
+        categoryList={categoryList}
+        categoryValue={categoryValue}
+        onClose={onClose}
       />
       <Layout title='MaaS'>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>

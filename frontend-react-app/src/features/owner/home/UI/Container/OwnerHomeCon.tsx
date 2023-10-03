@@ -29,37 +29,37 @@ export const OwnerHomeCon: FC = () => {
 
   const [categoryValue, setCategoryValue] = useState<string>('1');
   const handleSetCategoryValue = (category: string) => {
-    setCategoryValue(category)
-  }
+    setCategoryValue(category);
+  };
 
   const [menuName, setMenuName] = useState<string>('');
   const handleSetMenuName = (e: ChangeEvent<HTMLInputElement>) => {
-    setMenuName(e.target.value)
-  }
+    setMenuName(e.target.value);
+  };
 
   const [menuPrice, setMenuPrice] = useState<number>(0);
   const handleSetMenuPrice = (e:ChangeEvent<HTMLInputElement>)=>{
-    if(e.target.value !== "" && parseInt(e.target.value) >=0 ){
-      setMenuPrice(parseInt(e.target.value))
+    if(e.target.value !== '' && parseInt(e.target.value) >=0 ){
+      setMenuPrice(parseInt(e.target.value));
     }
-  }
+  };
 
   const [menuDetail, setMenuDetail] = useState<string>('');
   const handleSetMenuDetail = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setMenuDetail(e.target.value)
-  }
+    setMenuDetail(e.target.value);
+  };
 
   const [imgLink, setImgLink] = useState<string>('');
   const handleSetImgLink = (e: ChangeEvent<HTMLInputElement>) => {
-    setImgLink(e.target.value)
-  }
+    setImgLink(e.target.value);
+  };
 
   const handleMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       if (categoryValue === '' || menuName === '' || menuPrice == 0 || isNaN(menuPrice) === true || menuDetail === '') {
         // 空欄がある場合
-        console.log("記入漏れあり")
+        console.log('記入漏れあり');
       } else {
         // 記入されている場合
         const menuObjStr = JSON.stringify({
@@ -68,13 +68,13 @@ export const OwnerHomeCon: FC = () => {
           description: menuDetail,
           category: categoryValue
         });
-        console.log("記入済み", menuObjStr)
+        console.log('記入済み', menuObjStr);
       }
 
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   /**
    * メニュー新規登録ボタンをクリック時イベント
    */
@@ -166,9 +166,6 @@ export const OwnerHomeCon: FC = () => {
     isOpen={isAddMenuModalOpen}
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
-    onClickAddMenuButton={onClickAddMenuButton}
-    onClickCategory={onClickCategory}
-    onClose={addMenuModalOnClose}
     handleSetCategoryValue={handleSetCategoryValue}
     menuName={menuName}
     handleSetMenuName={handleSetMenuName}
@@ -179,5 +176,9 @@ export const OwnerHomeCon: FC = () => {
     imgLink={imgLink}
     handleSetImgLink={handleSetImgLink}
     handleMenuSubmit={handleMenuSubmit}
+    categoryValue={categoryValue}
+    onClickAddMenuButton={onClickAddMenuButton}
+    onClickCategory={onClickCategory}
+    onClose={addMenuModalOnClose}
   />;
 };

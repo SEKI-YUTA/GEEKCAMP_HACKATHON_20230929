@@ -3,9 +3,9 @@ import { OwnerHomePre } from '../Presentational/OwnerHomePre';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
-import { useDisclosure } from '@chakra-ui/react';
+import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
+import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
 
-const tempCategoryList = ['おすすめ', '焼き鳥', 'アルコール', 'おすすめ2', '焼き鳥2', 'アルコール2', 'おすすめ3', '焼き鳥3', 'アルコール3', 'おすすめ4', '焼き鳥4'];
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -14,13 +14,22 @@ const tempCategoryList = ['おすすめ', '焼き鳥', 'アルコール', 'お�
  */
 export const OwnerHomeCon: FC = () => {
   
-  const {restaurantId} = useContext(StateContext);
-  
+  const { restaurantId } = useContext(StateContext);
+
+  // 全メニュー, 毎回フェッチするのは無駄なので、一度取得したら保持しておく
+  const [allMenus, setAllMenus] = useState<MenuItemType[]>([]);
+
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
+  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType>({id:-1, name: ''});
+
 
   const [selectedCategory, setSelectedCategory] = useState<string>(tempCategoryList[0]);
   // const [selectedCategory, setSelectedCategory] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // メデイアクエリ
+  const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
 
   const [categoryValue, setCategoryValue] = useState<string>('1');
   const handleSetCategoryValue = (categoryId:string)=>{
@@ -103,9 +112,39 @@ export const OwnerHomeCon: FC = () => {
    * カテゴリータブをクリック時のイベント
    * @param category カテゴリー
    */
-  const onClickCategory = (category: string) => {
+  const onClickCategory = (category: CategoryType) => {
     console.log(category);
-    setSelectedCategory(category);
+    // 選択されたカテゴリーのみ表示
+    if (category.id === 0) {
+      // 全てのカテゴリーを表示
+      setMenuItemList(allMenus);
+    }
+    else {
+      const filteredMenu = allMenus.filter((item: MenuItemType) => item.name === category.name);
+      setMenuItemList(filteredMenu);
+    }
+  };
+
+  /**
+   * カテゴリー一覧取得関数
+   */
+  const fetchCategory = async () => {
+    try {
+      // fetchでAPIにリクエスト
+      const responce = await fetch('http://localhost:8080/menus/categories');
+      // レスポンスからJSONを取り出し
+      const json: CategoryResponce = await responce.json();
+      console.log(json);
+      // すべてのカテゴリーを追加
+      const data: CategoryType[] = [{ id: 0, name: '全て' }, ...json.categories];
+      // categoryListにセット
+      setCategoryList(data);
+      setSelectedCategory(data[0]);
+    } catch (error) {
+      // 失敗時の処理
+      // boolで管理して画面に失敗のメッセージを表示しても良い
+      console.log('カテゴリー一覧取得失敗', error);
+    }
   };
 
   /**
@@ -128,6 +167,8 @@ export const OwnerHomeCon: FC = () => {
         price: item.price,
         restaurant_id: item.restaurant_id
       }));
+      // allMenusにセット
+      setAllMenus(data);
       // menuItemListにセット
       setMenuItemList(data);
     } catch (error) {
@@ -140,13 +181,16 @@ export const OwnerHomeCon: FC = () => {
   useEffect(()=>{
     // 初回のみ実行
     fetchMenu();
+    fetchCategory();
   },[]);
 
   return <OwnerHomePre
     menuItemList={menuItemList}
-    categoryList={tempCategoryList}
+    categoryList={categoryList}
     selectedCategory={selectedCategory}
     isOpen={isOpen}
+    isLargerThan800={isLargerThan800}
+    isLargerThan1200={isLargerThan1200}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClose={onClose}

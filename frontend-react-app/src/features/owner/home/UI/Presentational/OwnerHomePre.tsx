@@ -56,7 +56,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
 
   return (
     <>
-      <Layout title='MaaS'>
+      <Layout title='MaaS' isOwner={true}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>
           <HStack py={5}>
             <HStack overflowX='auto' flex={4} spacing={1}>

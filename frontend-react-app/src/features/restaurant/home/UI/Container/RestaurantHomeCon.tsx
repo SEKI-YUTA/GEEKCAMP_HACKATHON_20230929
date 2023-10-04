@@ -31,6 +31,7 @@ export const RestaurantHomeCon: FC = () => {
    */
   const onClickCategory = (category: CategoryType) => {
     console.log(category);
+    setSelectedCategory(category);
     // 選択されたカテゴリーのみ表示
     if (category.id === 0) {
       // 全てのカテゴリーを表示

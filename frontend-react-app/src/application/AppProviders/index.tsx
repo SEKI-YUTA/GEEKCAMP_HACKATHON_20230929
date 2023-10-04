@@ -19,10 +19,10 @@ export const AppProviders: FC = () => {
         <Routes>
           {/* `/`または`/owner`の時はrestaurantIdでログイン済みかどうかを確認して、ホームかログイン画面に遷移させるようにする */}
           <Route path="/" element={ctx.restaurantId ? <Navigate to='/owner' /> : <Navigate to='/signin' />} />
-          {/* owner（↓後で書き換え） */}
+          {/* owner */}
           <Route path="/owner" element={ctx.restaurantId ? <OwnerHomeCon/> : <Navigate to='/signin' />} />
-          {/* restaurant（↓後で書き換え） */}
-          <Route path="/restaurant" element={<>客側画面</>} />
+          {/* restaurant */}
+          <Route path="/restaurant/:id" element={<>客側画面</>} />
           <Route path="/signin" element={ctx.restaurantId ? <Navigate to='/owner' /> : <OwnerSigninCon/>} />
           <Route path="/signup" element={ctx.restaurantId ? <Navigate to='/owner' /> : <OwnerSignupCon />} />
           <Route

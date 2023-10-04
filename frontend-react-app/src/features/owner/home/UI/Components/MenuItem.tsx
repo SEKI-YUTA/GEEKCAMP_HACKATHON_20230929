@@ -1,29 +1,31 @@
-import { Box, GridItem, Image, Text } from '@chakra-ui/react';
+import { Box, GridItem, Image, Text, VStack } from '@chakra-ui/react';
 import type { FC } from 'react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 
 interface MenuItemProps {
   item: MenuItemType
+  isLargerThan1200: boolean
   onPress: () => void
 }
 
-export const MenuItem: FC<MenuItemProps> = ({ item, onPress }) => {
+export const MenuItem: FC<MenuItemProps> = ({ isLargerThan1200, item, onPress }) => {
   return (
     <GridItem className='menuItem'
       border="solid 1px black"
+      p={3}
       onClick={onPress}
     >
-      <Box className='imgArea' p={3}>
+      <Box className='imgArea'>
         <Image src={item.photo_url} />
       </Box>
-      <Box className='nameAndPrice' display="flex" py={3}>
-        <Box className='name' textAlign='center' flex={1} >
-          <Text fontSize='2xl'>{item.name}</Text>
+      <VStack className='nameAndPrice' pt={3}>
+        <Box className='name' w="full" textAlign='center' flex={1} >
+          <Text fontSize={isLargerThan1200 ? '2xl' : undefined}>{item.name}</Text>
         </Box>
-        <Box className='price' textAlign='center' flex={1} >
-          <Text fontSize='2xl'>{item.price}円</Text>
+        <Box className='price' w="full" textAlign='right' flex={1}>
+          <Text fontSize={isLargerThan1200 ? '2xl' : undefined}>{item.price}円</Text>
         </Box>
-      </Box>
+      </VStack>
     </GridItem>
   );
 };

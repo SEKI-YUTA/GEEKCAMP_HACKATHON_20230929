@@ -1,37 +1,110 @@
-import type { FC } from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
 import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
+import { AddMenuModal } from '../Components/AddMenuModal';
+import type { CategoryType } from '../../../../../application/@types/Category';
 
 interface OwnerHomePreProps {
-  // 表示するメニューのリスト
+  /**
+   * 表示するメニューのリスト
+   */
   menuItemList: MenuItemType[]
-  // カテゴリーのリスト
-  categoryList: string[]
-  // 選択されているカテゴリー
-  selectedCategory: string
-  //新規登録ボタンを押したときの処理
+  /**
+   * カテゴリーのリスト
+   */
+  categoryList: CategoryType[]
+  /**
+   * 選択されているカテゴリー
+   */
+  selectedCategory: CategoryType
+  /**
+   * 800px以上かどうか
+   */
+  isLargerThan800: boolean
+  /**
+   * 1200px以上かどうか
+   */
+  isLargerThan1200: boolean
+  /**
+   * 新規登録ボタンを押したときの処理
+   */
   onClickAddMenuButton: () => void
-  // カテゴリーを押したときの処理
-  onClickCategory: (category: string) => void
+  // モーダル呼び出し
+  isOpen: boolean
+  menuName: string
+  menuPrice: number
+  menuDetail: string
+  imgLink: string
+  categoryValue: string
+  onClose: () => void
+  handleSetCategoryValue: (categoryId: string) => void
+  handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
+  handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  /**
+   * カテゴリーを押したときの処理
+   * @param category 
+   * @returns 
+   */
+  onClickCategory: (category: CategoryType) => void
 }
 
 /**
  * ホーム画面のコンポーネント（Presentational）
  * ここにUIを書く
- * @returns 
+ * @returns
  */
-export const OwnerHomePre: FC<OwnerHomePreProps> = ({categoryList, menuItemList, onClickAddMenuButton, onClickCategory, selectedCategory}) => {
+export const OwnerHomePre: FC<OwnerHomePreProps> = ({
+  categoryList,
+  menuItemList,
+  selectedCategory,
+  isOpen,
+  menuName,
+  menuPrice,
+  menuDetail,
+  imgLink,
+  isLargerThan800,
+  isLargerThan1200,
+  categoryValue,
+  onClickAddMenuButton,
+  onClickCategory,
+  onClose,
+  handleSetCategoryValue,
+  handleSetMenuName,
+  handleSetMenuPrice,
+  handleSetMenuDetail,
+  handleSetImgLink,
+  handleAddMenuSubmit,
+}) => {
   return (
     <>
+      <AddMenuModal
+        isOpen={isOpen}
+        menuName={menuName}
+        menuPrice={menuPrice}
+        menuDetail={menuDetail}
+        imgLink={imgLink}
+        categoryList={categoryList}
+        categoryValue={categoryValue}
+        handleSetCategoryValue={handleSetCategoryValue}
+        handleSetMenuName={handleSetMenuName}
+        handleSetMenuPrice={handleSetMenuPrice}
+        handleSetMenuDetail={handleSetMenuDetail}
+        handleSetImgLink={handleSetImgLink}
+        handleAddMenuSubmit={handleAddMenuSubmit}
+        onClose={onClose}
+      />
       <Layout title='MaaS'>
-        <Box px={12}>
+        <Box px={isLargerThan800 ? 12 : 5} pb={5}>
           <HStack py={5}>
             <HStack overflowX='auto' flex={4} spacing={1}>
               {categoryList.map((category, index) => (
-                <Category key={index} name={category} selectedCategory={selectedCategory} onClick={() => onClickCategory(category)} />
+                <Category key={index} category={category} isSelected={category.id === selectedCategory.id} isLargerThan1200={isLargerThan1200} onClick={() => onClickCategory(category)} />
               ))}
             </HStack>
             <Box
@@ -43,10 +116,12 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({categoryList, menuItemList,
                 borderRadius="10px"
                 color="#B14B4B"
                 backgroundColor="#FBFBFB"
-                size="lg"
-                fontSize="3xl"
-                px={10}
-                py={7}
+                {...(isLargerThan1200 && {
+                  size:'lg',
+                  fontSize:'3xl',
+                  px:10,
+                  py:7,
+                })}
                 onClick={onClickAddMenuButton}
               >
               新規登録
@@ -54,10 +129,11 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({categoryList, menuItemList,
             </Box>
           </HStack>
           <Box>
-            <Grid gridTemplateColumns='repeat(4, 1fr)' rowGap={5} columnGap={10}>
+            <Grid gridTemplateColumns={isLargerThan800 ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'} rowGap={5} columnGap={isLargerThan800 ? 10 : 5}>
               {menuItemList.map((menuItem, index) => (
                 <MenuItem
                   key={index}
+                  isLargerThan1200={isLargerThan1200}
                   item={menuItem}
                   onPress={() => { console.log('アイテム' + menuItem.id); }}
                 />

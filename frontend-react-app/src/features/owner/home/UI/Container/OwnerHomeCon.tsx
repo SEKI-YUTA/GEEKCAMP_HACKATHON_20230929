@@ -57,6 +57,7 @@ export const OwnerHomeCon: FC = () => {
   const handleMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
       if (categoryValue === '' || menuName === '' || menuPrice == 0 || isNaN(menuPrice) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');

@@ -23,7 +23,7 @@ export const OwnerSignupCon: FC = () => {
   const [description, setDescription] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<OwnerRestaurantCategoryType[]>([])
   // const [category_id, setCategory_id] = useState<string>('');
-  const [selectedValue, setSelectedValue] = useState<string>('0');
+  const [selectedValue, setSelectedValue] = useState<string>('1');
   const [errorMsg, setErrorMsg] = useState<number>(0)
 
   const handleOwnerEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +92,7 @@ export const OwnerSignupCon: FC = () => {
           "phone_number": phone_number,
           "address": address,
           "description": description,
-          "category_id": selectedValue
+          "category_id": parseInt(selectedValue)
         })
       });
       console.log(responce);
@@ -101,6 +101,7 @@ export const OwnerSignupCon: FC = () => {
       // if(json.)
     } catch (error) {
       setErrorMsg(8);
+      console.log(error);
     }
   };
 
@@ -108,6 +109,7 @@ export const OwnerSignupCon: FC = () => {
     const response = await fetch('http://localhost:8080/restaurants/categories');
     const data: OwnerRestaurantCategoryResponse = await response.json();
     setRestaurantCategory(data.categories);
+    setSelectedValue(data.categories[0].id.toString())
     console.log(data)
   };
 

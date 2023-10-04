@@ -120,12 +120,7 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
 
                   {
                     restaurantCategory.map((item, index) => {
-                      return <>
-                        <GridItem w='100%' h='10' key={index}>
-                          <Radio borderColor={'gray'} value={index.toString()}>{item.name}</Radio>
-                        </GridItem>
-                      </>
-
+                      return <GridItem w='100%' h='10' key={index}> <Radio borderColor={'gray'} value={item.id.toString()}>{item.name}</Radio> </GridItem>
                     })
                   }
                 </Grid>

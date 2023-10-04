@@ -1,9 +1,10 @@
-import type { FC } from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
 import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
+import { AddMenuModal } from '../Components/AddMenuModal';
 import type { CategoryType } from '../../../../../application/@types/Category';
 
 interface OwnerHomePreProps {
@@ -31,6 +32,20 @@ interface OwnerHomePreProps {
    * 新規登録ボタンを押したときの処理
    */
   onClickAddMenuButton: () => void
+  // モーダル呼び出し
+  isOpen: boolean
+  menuName: string
+  menuPrice: number
+  menuDetail: string
+  imgLink: string
+  categoryValue: string
+  onClose: () => void
+  handleSetCategoryValue: (categoryId: string) => void
+  handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
+  handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -42,20 +57,48 @@ interface OwnerHomePreProps {
 /**
  * ホーム画面のコンポーネント（Presentational）
  * ここにUIを書く
- * @returns 
+ * @returns
  */
 export const OwnerHomePre: FC<OwnerHomePreProps> = ({
-  categoryList, 
-  menuItemList, 
+  categoryList,
+  menuItemList,
   selectedCategory,
+  isOpen,
+  menuName,
+  menuPrice,
+  menuDetail,
+  imgLink,
   isLargerThan800,
   isLargerThan1200,
+  categoryValue,
   onClickAddMenuButton,
   onClickCategory,
+  onClose,
+  handleSetCategoryValue,
+  handleSetMenuName,
+  handleSetMenuPrice,
+  handleSetMenuDetail,
+  handleSetImgLink,
+  handleAddMenuSubmit,
 }) => {
-
   return (
     <>
+      <AddMenuModal
+        isOpen={isOpen}
+        menuName={menuName}
+        menuPrice={menuPrice}
+        menuDetail={menuDetail}
+        imgLink={imgLink}
+        categoryList={categoryList}
+        categoryValue={categoryValue}
+        handleSetCategoryValue={handleSetCategoryValue}
+        handleSetMenuName={handleSetMenuName}
+        handleSetMenuPrice={handleSetMenuPrice}
+        handleSetMenuDetail={handleSetMenuDetail}
+        handleSetImgLink={handleSetImgLink}
+        handleAddMenuSubmit={handleAddMenuSubmit}
+        onClose={onClose}
+      />
       <Layout title='MaaS' isOwner={true}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>
           <HStack py={5}>

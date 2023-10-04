@@ -61,6 +61,15 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
+   * メニュークリック時のイベント
+   * @param id メニューのid
+   */
+  const onClickMenu = (menuItem: MenuItemType) => {
+    // メニュービューのモーダル表示
+    console.log(menuItem);
+  }
+
+  /**
    * カテゴリータブをクリック時のイベント
    * @param category カテゴリー
    */
@@ -217,6 +226,7 @@ export const OwnerHomeCon: FC = () => {
     handleAddMenuSubmit={handleAddMenuSubmit}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
+    onClickMenu={onClickMenu}
     onClose={addMenuModalOnClose}
   />;
 };

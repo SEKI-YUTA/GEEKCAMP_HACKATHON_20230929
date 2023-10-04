@@ -32,6 +32,7 @@ interface OwnerHomePreProps {
    * 新規登録ボタンを押したときの処理
    */
   onClickAddMenuButton: () => void
+  onClickMenu: (menuItem: MenuItemType) => void
   // モーダル呼び出し
   isOpen: boolean
   menuName: string
@@ -71,6 +72,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   isLargerThan800,
   isLargerThan1200,
   categoryValue,
+  onClickMenu,
   onClickAddMenuButton,
   onClickCategory,
   onClose,
@@ -135,7 +137,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
                   key={index}
                   isLargerThan1200={isLargerThan1200}
                   item={menuItem}
-                  onPress={() => { console.log('アイテム' + menuItem.id); }}
+                  onPress={() => onClickMenu(menuItem)}
                 />
               ))}
             </Grid>

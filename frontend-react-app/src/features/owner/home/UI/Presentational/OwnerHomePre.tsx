@@ -34,13 +34,13 @@ interface OwnerHomePreProps {
   onClickAddMenuButton: () => void
   onClickMenu: (menuItem: MenuItemType) => void
   // モーダル呼び出し
-  isOpen: boolean
+  isAddMenuModalOpen: boolean
   menuName: string
   menuPrice: number
   menuDetail: string
   imgLink: string
   categoryValue: string
-  onClose: () => void
+  addMenuModalOnClose: () => void
   handleSetCategoryValue: (categoryId: string) => void
   handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
   handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
@@ -64,7 +64,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   categoryList,
   menuItemList,
   selectedCategory,
-  isOpen,
+  isAddMenuModalOpen,
   menuName,
   menuPrice,
   menuDetail,
@@ -75,7 +75,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   onClickMenu,
   onClickAddMenuButton,
   onClickCategory,
-  onClose,
+  addMenuModalOnClose,
   handleSetCategoryValue,
   handleSetMenuName,
   handleSetMenuPrice,
@@ -86,7 +86,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   return (
     <>
       <AddMenuModal
-        isOpen={isOpen}
+        isOpen={isAddMenuModalOpen}
         menuName={menuName}
         menuPrice={menuPrice}
         menuDetail={menuDetail}
@@ -99,7 +99,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
         handleSetMenuDetail={handleSetMenuDetail}
         handleSetImgLink={handleSetImgLink}
         handleAddMenuSubmit={handleAddMenuSubmit}
-        onClose={onClose}
+        onClose={addMenuModalOnClose}
       />
       <Layout title='MaaS'>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>

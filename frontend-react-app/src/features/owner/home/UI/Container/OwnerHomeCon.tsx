@@ -19,9 +19,12 @@ export const OwnerHomeCon: FC = () => {
   const [allMenus, setAllMenus] = useState<MenuItemType[]>([]);
   // 画面上に表示されるメニュー
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
+  // 選択されたメニューの保持
+  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItemType | undefined>();
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({ id: -1, name: '' });
   const { isOpen: isAddMenuModalOpen, onOpen: addMenuModalOnOpen, onClose: addMenuModalOnClose } = useDisclosure();
+  const { isOpen: isMenuViewModalOpen, onOpen: menuViewModalOnOpen, onClose: menuViewModalOnClose } = useDisclosure();
   // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
@@ -66,7 +69,8 @@ export const OwnerHomeCon: FC = () => {
    */
   const onClickMenu = (menuItem: MenuItemType) => {
     // メニュービューのモーダル表示
-    console.log(menuItem);
+    menuViewModalOnOpen()
+    setSelectedMenuItem(menuItem)
   }
 
   /**
@@ -210,7 +214,7 @@ export const OwnerHomeCon: FC = () => {
     menuItemList={menuItemList}
     categoryList={categoryList}
     selectedCategory={selectedCategory}
-    isOpen={isAddMenuModalOpen}
+    isAddMenuModalOpen={isAddMenuModalOpen}
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
     menuName={menuName}
@@ -227,6 +231,6 @@ export const OwnerHomeCon: FC = () => {
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClickMenu={onClickMenu}
-    onClose={addMenuModalOnClose}
+    addMenuModalOnClose={addMenuModalOnClose}
   />;
 };

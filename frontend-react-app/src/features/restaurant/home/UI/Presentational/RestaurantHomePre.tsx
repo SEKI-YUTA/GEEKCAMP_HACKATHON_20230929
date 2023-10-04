@@ -8,6 +8,10 @@ import type { CategoryType } from '../../../../../application/@types/Category';
 
 interface RestaurantHomePreProps {
   /**
+   * レストラン名
+   */
+  restaurantName: string
+  /**
    * 表示するメニューのリスト
    */
   menuItemList: MenuItemType[]
@@ -36,6 +40,7 @@ interface RestaurantHomePreProps {
 }
 
 export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
+  restaurantName,
   categoryList,
   menuItemList,
   selectedCategory,
@@ -45,7 +50,7 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
 }) => {
   return (
     <>
-      <Layout title='MaaS'>
+      <Layout title={`${restaurantName}`}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>
           <HStack py={5}>
             <HStack overflowX='auto' flex={4} spacing={1}>

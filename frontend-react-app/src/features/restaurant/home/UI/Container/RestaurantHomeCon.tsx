@@ -103,6 +103,7 @@ export const RestaurantHomeCon: FC = () => {
   }, []);
 
   return <RestaurantHomePre
+    restaurantName='レストラン名'
     categoryList={categoryList}
     menuItemList={menuItemList}
     selectedCategory={selectedCategory}

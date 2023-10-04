@@ -17,7 +17,7 @@ export const OwnerHomeCon: FC = () => {
 
   // 全メニュー, 毎回フェッチするのは無駄なので、一度取得したら保持しておく
   const [allMenus, setAllMenus] = useState<MenuItemType[]>([]);
-
+  // 画面上に表示されるメニュー
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({ id: -1, name: '' });

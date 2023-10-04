@@ -53,6 +53,31 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
+   * メニュー新規登録ボタンをクリック時イベント
+   */
+  const onClickAddMenuButton = () => {
+    console.log('新規登録');
+    addMenuModalOnOpen();
+  };
+
+  /**
+   * カテゴリータブをクリック時のイベント
+   * @param category カテゴリー
+   */
+  const onClickCategory = (category: CategoryType) => {
+    console.log(category);
+    // 選択されたカテゴリーのみ表示
+    if (category.id === 0) {
+      // 全てのカテゴリーを表示
+      setMenuItemList(allMenus);
+    }
+    else {
+      const filteredMenu = allMenus.filter((item: MenuItemType) => item.category === category.name);
+      setMenuItemList(filteredMenu);
+    }
+  };
+
+  /**
    * メニュー追加
    * @param e 
    * @returns 
@@ -110,30 +135,6 @@ export const OwnerHomeCon: FC = () => {
 
     } catch (error) {
       console.log('送信失敗', error);
-    }
-  };
-  /**
-   * メニュー新規登録ボタンをクリック時イベント
-   */
-  const onClickAddMenuButton = () => {
-    console.log('新規登録');
-    addMenuModalOnOpen();
-  };
-
-  /**
-   * カテゴリータブをクリック時のイベント
-   * @param category カテゴリー
-   */
-  const onClickCategory = (category: CategoryType) => {
-    console.log(category);
-    // 選択されたカテゴリーのみ表示
-    if (category.id === 0) {
-      // 全てのカテゴリーを表示
-      setMenuItemList(allMenus);
-    }
-    else {
-      const filteredMenu = allMenus.filter((item: MenuItemType) => item.category === category.name);
-      setMenuItemList(filteredMenu);
     }
   };
 

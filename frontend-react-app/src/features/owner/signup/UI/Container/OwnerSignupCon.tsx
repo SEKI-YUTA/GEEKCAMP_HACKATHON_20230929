@@ -21,10 +21,10 @@ export const OwnerSignupCon: FC = () => {
   const [phone_number, setPhone_number] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [restaurantCategory, setRestaurantCategory] = useState<OwnerRestaurantCategoryType[]>([])
+  const [restaurantCategory, setRestaurantCategory] = useState<OwnerRestaurantCategoryType[]>([]);
   // const [category_id, setCategory_id] = useState<string>('');
   const [selectedValue, setSelectedValue] = useState<string>('1');
-  const [errorMsg, setErrorMsg] = useState<number>(0)
+  const [errorMsg, setErrorMsg] = useState<number>(0);
 
   const handleOwnerEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setOwnerEmail(e.target.value);
@@ -51,7 +51,7 @@ export const OwnerSignupCon: FC = () => {
   };
 
   const handleRadioGroupChange = (value: string) => {
-    setSelectedValue(value)
+    setSelectedValue(value);
   };
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -86,13 +86,13 @@ export const OwnerSignupCon: FC = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          "email": ownerEmail,
-          "password": ownerPassword,
-          "name": name,
-          "phone_number": phone_number,
-          "address": address,
-          "description": description,
-          "category_id": parseInt(selectedValue)
+          'email': ownerEmail,
+          'password': ownerPassword,
+          'name': name,
+          'phone_number': phone_number,
+          'address': address,
+          'description': description,
+          'category_id': parseInt(selectedValue)
         })
       });
       console.log(responce);
@@ -109,13 +109,13 @@ export const OwnerSignupCon: FC = () => {
     const response = await fetch('http://localhost:8080/restaurants/categories');
     const data: OwnerRestaurantCategoryResponse = await response.json();
     setRestaurantCategory(data.categories);
-    setSelectedValue(data.categories[0].id.toString())
-    console.log(data)
+    setSelectedValue(data.categories[0].id.toString());
+    console.log(data);
   };
 
   useEffect(() => {
-    fetchRestaurantCategorys()
-  }, [])
+    fetchRestaurantCategorys();
+  }, []);
 
   return <OwnerSignupPre
     ownerEmail={ownerEmail}

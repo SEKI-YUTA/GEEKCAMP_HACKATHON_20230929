@@ -9,15 +9,13 @@ import {
   Button,
   useColorModeValue,
   VStack,
-  CheckboxGroup,
-  Checkbox,
   Radio,
   RadioGroup,
   Grid,
   GridItem
 } from '@chakra-ui/react';
 
-import { OwnerRestaurantCategoryType } from '../Container/OwnerSignupCon';
+import type { OwnerRestaurantCategoryType } from '../Container/OwnerSignupCon';
 
 interface OwnerSignupProps {
   ownerEmail: string
@@ -62,11 +60,11 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
 }) => {
 
   return (
-    // <Flex
-    //   minH={'100vh'}
-    //   align={'center'}
-    //   justify={'center'}
-    //   bg={useColorModeValue('gray.50', 'gray.800')}>
+  // <Flex
+  //   minH={'100vh'}
+  //   align={'center'}
+  //   justify={'center'}
+  //   bg={useColorModeValue('gray.50', 'gray.800')}>
 
     // <Box maxWidth={'1000px'} >
     <VStack spacing={8} mx="auto" maxW="2xl" py={12} px={6} align="stretch">
@@ -120,7 +118,7 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
 
                   {
                     restaurantCategory.map((item, index) => {
-                      return <GridItem w='100%' h='10' key={index}> <Radio borderColor={'gray'} value={item.id.toString()}>{item.name}</Radio> </GridItem>
+                      return <GridItem key={index} w='100%' h='10'> <Radio borderColor="gray" value={item.id.toString()}>{item.name}</Radio> </GridItem>;
                     })
                   }
                 </Grid>

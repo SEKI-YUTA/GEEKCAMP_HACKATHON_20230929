@@ -39,7 +39,7 @@ export const RestaurantHomeCon: FC = () => {
       // boolで管理して画面に失敗のメッセージを表示しても良い
       console.log('取得失敗', error);
     }
-  }
+  };
 
   /**
    * カテゴリータブをクリック時のイベント

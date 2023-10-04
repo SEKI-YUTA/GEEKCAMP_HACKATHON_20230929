@@ -45,7 +45,7 @@ interface OwnerHomePreProps {
   handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
   handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
-  handleMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -79,7 +79,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   handleSetMenuPrice,
   handleSetMenuDetail,
   handleSetImgLink,
-  handleMenuSubmit,
+  handleAddMenuSubmit,
 }) => {
   return (
     <>
@@ -96,7 +96,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
         handleSetMenuPrice={handleSetMenuPrice}
         handleSetMenuDetail={handleSetMenuDetail}
         handleSetImgLink={handleSetImgLink}
-        handleMenuSubmit={handleMenuSubmit}
+        handleAddMenuSubmit={handleAddMenuSubmit}
         onClose={onClose}
       />
       <Layout title='MaaS'>

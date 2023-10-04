@@ -16,7 +16,7 @@ interface AddMenuModalProps {
   handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
   handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
-  handleMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
 }
 
 export const AddMenuModal: FC<AddMenuModalProps> = ({
@@ -33,7 +33,7 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
   handleSetMenuPrice,
   handleSetMenuDetail,
   handleSetImgLink,
-  handleMenuSubmit,
+  handleAddMenuSubmit,
 }) => {
 
 
@@ -42,7 +42,7 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
       <Modal isCentered isOpen={isOpen} size='2xl' onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <form onSubmit={handleMenuSubmit}>
+          <form onSubmit={handleAddMenuSubmit}>
             <ModalHeader>メニュー登録</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

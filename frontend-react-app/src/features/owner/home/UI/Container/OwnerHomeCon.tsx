@@ -6,7 +6,6 @@ import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
 
-
 /**
  * ホーム画面のコンポーネント（Container）
  * ここにコンポーネントのロジックを書いて、OwnerHomePreに渡す
@@ -27,53 +26,90 @@ export const OwnerHomeCon: FC = () => {
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
 
+  // メニュー追加の入力値管理
   const [categoryValue, setCategoryValue] = useState<string>('1');
   const handleSetCategoryValue = (category: string) => {
     setCategoryValue(category);
   };
-
   const [menuName, setMenuName] = useState<string>('');
   const handleSetMenuName = (e: ChangeEvent<HTMLInputElement>) => {
     setMenuName(e.target.value);
   };
-
   const [menuPrice, setMenuPrice] = useState<number>(0);
-  const handleSetMenuPrice = (e:ChangeEvent<HTMLInputElement>)=>{
-    if(e.target.value !== '' && parseInt(e.target.value) >=0 ){
+  const handleSetMenuPrice = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
       setMenuPrice(parseInt(e.target.value));
+    } else {
+      setMenuPrice(0);
     }
   };
-
   const [menuDetail, setMenuDetail] = useState<string>('');
   const handleSetMenuDetail = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMenuDetail(e.target.value);
   };
-
   const [imgLink, setImgLink] = useState<string>('');
   const handleSetImgLink = (e: ChangeEvent<HTMLInputElement>) => {
     setImgLink(e.target.value);
   };
 
-  const handleMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  /**
+   * メニュー追加
+   * @param e 
+   * @returns 
+   */
+  const handleAddMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
       if (categoryValue === '' || menuName === '' || menuPrice == 0 || isNaN(menuPrice) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
-      } else {
-        // 記入されている場合
-        const menuObjStr = JSON.stringify({
+        return;
+      }
+      console.log('記入済み', {
+        name: menuName,
+        price: menuPrice,
+        description: menuDetail,
+        category: categoryValue
+      });
+
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
           name: menuName,
           price: menuPrice,
           description: menuDetail,
-          category: categoryValue
-        });
-        console.log('記入済み', menuObjStr);
+          restaurant_id: restaurantId,
+          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name,
+          photo_url: imgLink,
+          is_sold_out: false,
+          like_count: 0
+        })
+      });
+      console.log(responce);
+      
+      const data = await responce.json();
+
+      console.log(data);
+      
+      if (responce.status === 200) {
+        // 入力値のリセット
+        setCategoryValue('1');
+        setMenuName('');
+        setMenuPrice(0);
+        setMenuDetail('');
+        setImgLink('');
+        // モーダル閉じる
+        addMenuModalOnClose();
+        // データの再同期
+        fetchMenu();
       }
 
     } catch (error) {
-      console.log(error);
+      console.log('送信失敗', error);
     }
   };
   /**
@@ -96,7 +132,7 @@ export const OwnerHomeCon: FC = () => {
       setMenuItemList(allMenus);
     }
     else {
-      const filteredMenu = allMenus.filter((item: MenuItemType) => item.name === category.name);
+      const filteredMenu = allMenus.filter((item: MenuItemType) => item.category === category.name);
       setMenuItemList(filteredMenu);
     }
   };
@@ -138,7 +174,7 @@ export const OwnerHomeCon: FC = () => {
         id: item.id,
         category: item.category,
         description: item.description,
-        name: item.category,
+        name: item.name,
         photo_url: 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
         price: item.price,
         restaurant_id: item.restaurant_id
@@ -177,7 +213,7 @@ export const OwnerHomeCon: FC = () => {
     handleSetMenuPrice={handleSetMenuPrice}
     handleSetMenuDetail={handleSetMenuDetail}
     handleSetImgLink={handleSetImgLink}
-    handleMenuSubmit={handleMenuSubmit}
+    handleAddMenuSubmit={handleAddMenuSubmit}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClose={addMenuModalOnClose}

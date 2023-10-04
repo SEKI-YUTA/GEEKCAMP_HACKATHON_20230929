@@ -4,36 +4,36 @@ import type { CategoryType } from '../../../../../application/@types/Category';
 
 interface AddMenuModalProps {
   isOpen: boolean
-  onClose: () => void
   menuName: string
-  handleSetCategoryValue: (categoryId: string) => void
-  handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
   menuPrice: number
-  handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
   menuDetail: string
-  handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
   imgLink: string
-  handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
-  handleMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
   categoryList: CategoryType[]
   categoryValue: string
+  onClose: () => void
+  handleSetCategoryValue: (categoryId: string) => void
+  handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
+  handleMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
 }
 
 export const AddMenuModal: FC<AddMenuModalProps> = ({
   isOpen,
-  onClose,
   menuName,
-  handleSetCategoryValue,
-  handleSetMenuName,
   menuPrice,
-  handleSetMenuPrice,
   menuDetail,
-  handleSetMenuDetail,
   imgLink,
+  categoryList,
+  categoryValue,
+  handleSetMenuName,
+  onClose,
+  handleSetCategoryValue,
+  handleSetMenuPrice,
+  handleSetMenuDetail,
   handleSetImgLink,
   handleMenuSubmit,
-  categoryList,
-  categoryValue
 }) => {
 
 

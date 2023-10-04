@@ -34,18 +34,18 @@ interface OwnerHomePreProps {
   onClickAddMenuButton: () => void
   // モーダル呼び出し
   isOpen: boolean
+  menuName: string
+  menuPrice: number
+  menuDetail: string
+  imgLink: string
+  categoryValue: string
   onClose: () => void
   handleSetCategoryValue: (categoryId: string) => void
-  menuName: string
   handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
-  menuPrice: number
   handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
-  menuDetail: string
   handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
-  imgLink: string
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
   handleMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
-  categoryValue: string
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -62,41 +62,41 @@ interface OwnerHomePreProps {
 export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   categoryList,
   menuItemList,
-  onClickAddMenuButton,
-  onClickCategory,
   selectedCategory,
   isOpen,
-  onClose,
-  handleSetCategoryValue,
   menuName,
-  handleSetMenuName,
   menuPrice,
-  handleSetMenuPrice,
   menuDetail,
-  handleSetMenuDetail,
   imgLink,
-  handleSetImgLink,
-  handleMenuSubmit,
   isLargerThan800,
   isLargerThan1200,
   categoryValue,
+  onClickAddMenuButton,
+  onClickCategory,
+  onClose,
+  handleSetCategoryValue,
+  handleSetMenuName,
+  handleSetMenuPrice,
+  handleSetMenuDetail,
+  handleSetImgLink,
+  handleMenuSubmit,
 }) => {
   return (
     <>
       <AddMenuModal
         isOpen={isOpen}
-        handleSetCategoryValue={handleSetCategoryValue}
         menuName={menuName}
-        handleSetMenuName={handleSetMenuName}
         menuPrice={menuPrice}
-        handleSetMenuPrice={handleSetMenuPrice}
         menuDetail={menuDetail}
-        handleSetMenuDetail={handleSetMenuDetail}
         imgLink={imgLink}
-        handleSetImgLink={handleSetImgLink}
-        handleMenuSubmit={handleMenuSubmit}
         categoryList={categoryList}
         categoryValue={categoryValue}
+        handleSetCategoryValue={handleSetCategoryValue}
+        handleSetMenuName={handleSetMenuName}
+        handleSetMenuPrice={handleSetMenuPrice}
+        handleSetMenuDetail={handleSetMenuDetail}
+        handleSetImgLink={handleSetImgLink}
+        handleMenuSubmit={handleMenuSubmit}
         onClose={onClose}
       />
       <Layout title='MaaS'>

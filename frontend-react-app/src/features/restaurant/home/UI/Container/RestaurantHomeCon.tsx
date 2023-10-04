@@ -4,7 +4,7 @@ import type { CategoryResponce, CategoryType } from '../../../../../application/
 import { useMediaQuery } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
-
+import type { RestaurantType } from '../../../../../application/@types/Restaurant';
 /**
  * レストラン, ホーム画面のコンポーネント（Container）
  * ここにコンポーネントのロジックを書いて、RestaurantHomePreに渡す
@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 export const RestaurantHomeCon: FC = () => {
   // URLからrestaurantIdを取得
   const restaurantId = useParams().id;
+  const [restaurantName, setRestaurantName] = useState<string>('');
 
   // 全メニュー, 毎回フェッチするのは無駄なので、一度取得したら保持しておく
   const [allMenus, setAllMenus] = useState<MenuItemType[]>([]);
@@ -24,6 +25,21 @@ export const RestaurantHomeCon: FC = () => {
   // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
+
+  const fetchRestaurantInfo = async () => {
+    try {
+      // fetchでAPIにリクエスト
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
+      // レスポンスからJSONを取り出し
+      const data = await responce.json() as RestaurantType;
+      // レストラン名をセット
+      setRestaurantName(data.name);
+    } catch (error) {
+      // 失敗時の処理
+      // boolで管理して画面に失敗のメッセージを表示しても良い
+      console.log('取得失敗', error);
+    }
+  }
 
   /**
    * カテゴリータブをクリック時のイベント
@@ -100,10 +116,11 @@ export const RestaurantHomeCon: FC = () => {
     // 初回のみ実行
     fetchMenu();
     fetchCategory();
+    fetchRestaurantInfo();
   }, []);
 
   return <RestaurantHomePre
-    restaurantName='レストラン名'
+    restaurantName={restaurantName}
     categoryList={categoryList}
     menuItemList={menuItemList}
     selectedCategory={selectedCategory}

@@ -36,7 +36,6 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
   handleAddMenuSubmit,
 }) => {
 
-
   return (
     <>
       <Modal isCentered isOpen={isOpen} size='2xl' onClose={onClose}>

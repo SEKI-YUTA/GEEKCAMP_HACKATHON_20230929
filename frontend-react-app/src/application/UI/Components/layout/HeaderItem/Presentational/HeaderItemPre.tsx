@@ -5,7 +5,7 @@ import { Flex, Heading, Link, } from '@chakra-ui/react';
 interface HeaderItemPreProps {
   title: string
   handleLogout: (e: MouseEvent) => void
-  isOwner: boolean
+  isOwner?: boolean
 }
 export const HeaderItemPre: FC<HeaderItemPreProps> = ({ title, handleLogout, isOwner }) => {
   return (

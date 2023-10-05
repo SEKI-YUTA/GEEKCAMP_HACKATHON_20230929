@@ -5,7 +5,7 @@ import { StateContext } from '../../../../../lib/state/AuthContext';
 
 interface HeaderItemConProps {
   title: string
-  isOwner: boolean
+  isOwner?: boolean
 }
 export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const { onLogout } = useContext(StateContext);

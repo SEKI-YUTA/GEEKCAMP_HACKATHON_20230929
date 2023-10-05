@@ -4,7 +4,7 @@ import { HeaderItemCon } from './HeaderItem/Container/HeaderItemCon';
 interface Props {
   title: string
   children: ReactNode
-  isOwner: boolean
+  isOwner?: boolean
 }
 
 export const Layout: FC<Props> = ({ children, title, isOwner }) => {

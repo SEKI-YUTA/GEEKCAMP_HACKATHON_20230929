@@ -5,7 +5,7 @@ import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
-import { AddMenuModalProps } from '../Components/AddMenuModal';
+import { MenuEditModalProps } from '../Components/MenuEditModal';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -24,8 +24,8 @@ export const OwnerHomeCon: FC = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItemType | undefined>();
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({ id: -1, name: '' });
-  const [menuModalMode, setModalMode] = useState<AddMenuModalProps["mode"]>("add")
-  const { isOpen: isAddMenuModalOpen, onOpen: addMenuModalOnOpen, onClose: addMenuModalOnClose } = useDisclosure();
+  const [menuModalMode, setModalMode] = useState<MenuEditModalProps["mode"]>("add")
+  const { isOpen: isMenuEditModalOpen, onOpen: MenuEditModalOnOpen, onClose: MenuEditModalOnClose } = useDisclosure();
   const { isOpen: isMenuViewModalOpen, onOpen: menuViewModalOnOpen, onClose: menuViewModalOnClose } = useDisclosure();
   // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
@@ -63,7 +63,7 @@ export const OwnerHomeCon: FC = () => {
   const onClickAddMenuButton = () => {
     console.log('新規登録');
     setModalMode('add')
-    addMenuModalOnOpen();
+    MenuEditModalOnOpen();
   };
 
   /**
@@ -105,7 +105,7 @@ export const OwnerHomeCon: FC = () => {
     setMenuDetail(item.description)
     setImgLink(item.photo_url)
 
-    addMenuModalOnOpen()
+    MenuEditModalOnOpen()
   }
 
   /**
@@ -166,7 +166,7 @@ export const OwnerHomeCon: FC = () => {
         // 入力値のリセット
         resetMenuValues()
         // モーダル閉じる
-        addMenuModalOnClose();
+        MenuEditModalOnClose();
         // データの再同期
         fetchMenu();
       }
@@ -233,7 +233,7 @@ export const OwnerHomeCon: FC = () => {
           restaurant_id: restaurantId ?? 0
         })
         // モーダル閉じる
-        addMenuModalOnClose();
+        MenuEditModalOnClose();
         // データの再同期
         fetchMenu();
       }
@@ -308,7 +308,7 @@ export const OwnerHomeCon: FC = () => {
     menuItemList={menuItemList}
     categoryList={categoryList}
     selectedCategory={selectedCategory}
-    isAddMenuModalOpen={isAddMenuModalOpen}
+    isMenuEditModalOpen={isMenuEditModalOpen}
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
     menuName={menuName}
@@ -329,7 +329,7 @@ export const OwnerHomeCon: FC = () => {
     onClickMenuEdit={onClickMenuEdit}
     onClickMenu={onClickMenu}
     menuViewModalOnClose={() => {resetMenuValues();menuViewModalOnClose()}}
-    addMenuModalOnClose={() => {resetMenuValues();addMenuModalOnClose()}}
+    MenuEditModalOnClose={() => {resetMenuValues();MenuEditModalOnClose()}}
     handleAddMenuSubmit={handleAddMenuSubmit}
     handleUpdateMenuSubmit={handleUpdateMenuSubmit}
   />;

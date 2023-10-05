@@ -2,7 +2,7 @@ import { Box, ModalContent, ModalOverlay, Modal, ModalBody, ModalHeader, ModalCl
 import type { ChangeEvent, FC, FormEvent } from 'react';
 import type { CategoryType } from '../../../../../application/@types/Category';
 
-export interface AddMenuModalProps {
+export interface MenuEditModalProps {
   isOpen: boolean
   menuName: string
   menuPrice: number
@@ -21,7 +21,7 @@ export interface AddMenuModalProps {
   handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
 }
 
-export const AddMenuModal: FC<AddMenuModalProps> = ({
+export const MenuEditModal: FC<MenuEditModalProps> = ({
   isOpen,
   menuName,
   menuPrice,

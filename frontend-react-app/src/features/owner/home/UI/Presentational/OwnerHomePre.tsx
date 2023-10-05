@@ -4,7 +4,7 @@ import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
-import { AddMenuModal, AddMenuModalProps } from '../Components/AddMenuModal';
+import { MenuEditModal, MenuEditModalProps } from '../Components/MenuEditModal';
 import type { CategoryType } from '../../../../../application/@types/Category';
 import { MenuViewModal } from '../Components/MenuVIewModal';
 
@@ -30,7 +30,7 @@ interface OwnerHomePreProps {
    */
   isLargerThan1200: boolean
   // モーダル呼び出し
-  isAddMenuModalOpen: boolean
+  isMenuEditModalOpen: boolean
   menuName: string
   menuPrice: number
   menuDetail: string
@@ -38,14 +38,14 @@ interface OwnerHomePreProps {
   categoryValue: string
   selectedMenuItem: MenuItemType | undefined
   isMenuViewModalOpen: boolean
-  menuModalMode: AddMenuModalProps["mode"]
+  menuModalMode: MenuEditModalProps["mode"]
   /**
    * 新規登録ボタンを押したときの処理
    */
   onClickAddMenuButton: () => void
   onClickMenu: (menuItem: MenuItemType) => void
   menuViewModalOnClose: () => void
-  addMenuModalOnClose: () => void
+  MenuEditModalOnClose: () => void
   onClickMenuEdit: (item: MenuItemType) => void
   handleSetCategoryValue: (categoryId: string) => void
   handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
@@ -71,7 +71,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   categoryList,
   menuItemList,
   selectedCategory,
-  isAddMenuModalOpen,
+  isMenuEditModalOpen,
   menuName,
   menuPrice,
   menuDetail,
@@ -87,7 +87,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   onClickMenu,
   onClickAddMenuButton,
   onClickCategory,
-  addMenuModalOnClose,
+  MenuEditModalOnClose,
   handleSetCategoryValue,
   handleSetMenuName,
   handleSetMenuPrice,
@@ -101,8 +101,8 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
       <MenuViewModal 
         isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose} onClickMenuEdit={onClickMenuEdit}
       />
-      <AddMenuModal
-        isOpen={isAddMenuModalOpen}
+      <MenuEditModal
+        isOpen={isMenuEditModalOpen}
         menuName={menuName}
         menuPrice={menuPrice}
         menuDetail={menuDetail}
@@ -117,7 +117,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
         handleSetImgLink={handleSetImgLink}
         handleAddMenuSubmit={handleAddMenuSubmit}
         handleUpdateMenuSubmit={handleUpdateMenuSubmit}
-        onClose={addMenuModalOnClose}
+        onClose={MenuEditModalOnClose}
       />
       <Layout title='MaaS'>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>

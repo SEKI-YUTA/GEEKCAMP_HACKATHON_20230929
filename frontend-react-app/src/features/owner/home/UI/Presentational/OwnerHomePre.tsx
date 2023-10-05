@@ -4,7 +4,8 @@ import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
-import { MenuEditModal, MenuEditModalProps } from '../Components/MenuEditModal';
+import type { MenuEditModalProps } from '../Components/MenuEditModal';
+import { MenuEditModal } from '../Components/MenuEditModal';
 import type { CategoryType } from '../../../../../application/@types/Category';
 import { MenuViewModal } from '../Components/MenuVIewModal';
 
@@ -38,7 +39,7 @@ interface OwnerHomePreProps {
   categoryValue: string
   selectedMenuItem: MenuItemType | undefined
   isMenuViewModalOpen: boolean
-  menuModalMode: MenuEditModalProps["mode"]
+  menuModalMode: MenuEditModalProps['mode']
   /**
    * 新規登録ボタンを押したときの処理
    */

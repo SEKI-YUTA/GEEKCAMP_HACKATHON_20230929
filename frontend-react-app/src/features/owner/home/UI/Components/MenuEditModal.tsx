@@ -10,7 +10,7 @@ export interface MenuEditModalProps {
   imgLink: string
   categoryList: CategoryType[]
   categoryValue: string
-  mode: "add" | "edit"
+  mode: 'add' | 'edit'
   onClose: () => void
   handleSetCategoryValue: (categoryId: string) => void
   handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
@@ -45,8 +45,8 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
       <Modal isCentered isOpen={isOpen} size='2xl' onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <form onSubmit={mode === "add" ? handleAddMenuSubmit : handleUpdateMenuSubmit}>
-            <ModalHeader>{mode === "add"  ? "メニュー登録" : "メニュー編集"}</ModalHeader>
+          <form onSubmit={mode === 'add' ? handleAddMenuSubmit : handleUpdateMenuSubmit}>
+            <ModalHeader>{mode === 'add'  ? 'メニュー登録' : 'メニュー編集'}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Box py={2}>
@@ -77,7 +77,7 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
               </FormControl>
             </ModalBody>
             <ModalFooter justifyContent='center'>
-              <Button type='submit'>{mode === "add" ? "登録" : "編集"}</Button>
+              <Button type='submit'>{mode === 'add' ? '登録' : '編集'}</Button>
             </ModalFooter>
           </form>
         </ModalContent>

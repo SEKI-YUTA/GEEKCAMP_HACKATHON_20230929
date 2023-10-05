@@ -5,7 +5,7 @@ import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
-import { MenuEditModalProps } from '../Components/MenuEditModal';
+import type { MenuEditModalProps } from '../Components/MenuEditModal';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -24,7 +24,7 @@ export const OwnerHomeCon: FC = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItemType | undefined>();
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({ id: -1, name: '' });
-  const [menuModalMode, setModalMode] = useState<MenuEditModalProps["mode"]>("add")
+  const [menuModalMode, setModalMode] = useState<MenuEditModalProps['mode']>('add');
   const { isOpen: isMenuEditModalOpen, onOpen: MenuEditModalOnOpen, onClose: MenuEditModalOnClose } = useDisclosure();
   const { isOpen: isMenuViewModalOpen, onOpen: menuViewModalOnOpen, onClose: menuViewModalOnClose } = useDisclosure();
   // メデイアクエリ
@@ -62,7 +62,7 @@ export const OwnerHomeCon: FC = () => {
    */
   const onClickAddMenuButton = () => {
     console.log('新規登録');
-    setModalMode('add')
+    setModalMode('add');
     MenuEditModalOnOpen();
   };
 
@@ -72,9 +72,9 @@ export const OwnerHomeCon: FC = () => {
    */
   const onClickMenu = (menuItem: MenuItemType) => {
     // メニュービューのモーダル表示
-    menuViewModalOnOpen()
-    setSelectedMenuItem(menuItem)
-  }
+    menuViewModalOnOpen();
+    setSelectedMenuItem(menuItem);
+  };
 
   /**
    * カテゴリータブをクリック時のイベント
@@ -98,15 +98,15 @@ export const OwnerHomeCon: FC = () => {
    * @param item 
    */
   const onClickMenuEdit = (item: MenuItemType) => {
-    setModalMode('edit')
-    setCategoryValue(categoryList.find(category => category.name === item.category)?.id.toString() ?? "1")
-    setMenuName(item.name)
-    setMenuPrice(item.price)
-    setMenuDetail(item.description)
-    setImgLink(item.photo_url)
+    setModalMode('edit');
+    setCategoryValue(categoryList.find(category => category.name === item.category)?.id.toString() ?? '1');
+    setMenuName(item.name);
+    setMenuPrice(item.price);
+    setMenuDetail(item.description);
+    setImgLink(item.photo_url);
 
-    MenuEditModalOnOpen()
-  }
+    MenuEditModalOnOpen();
+  };
 
   /**
    * メニューモーダルの入力値のリセット
@@ -117,7 +117,7 @@ export const OwnerHomeCon: FC = () => {
     setMenuPrice(0);
     setMenuDetail('');
     setImgLink('');
-  }
+  };
 
   /**
    * メニュー追加
@@ -164,7 +164,7 @@ export const OwnerHomeCon: FC = () => {
       
       if (responce.status === 200) {
         // 入力値のリセット
-        resetMenuValues()
+        resetMenuValues();
         // モーダル閉じる
         MenuEditModalOnClose();
         // データの再同期
@@ -222,7 +222,7 @@ export const OwnerHomeCon: FC = () => {
       
       if (responce.status === 200) {
         // 入力値のリセット
-        resetMenuValues()
+        resetMenuValues();
         setSelectedMenuItem({
           id: selectedMenuItem?.id ?? 0,
           category: categoryList.find(category => category.id === parseInt(categoryValue))?.name ?? '',
@@ -231,7 +231,7 @@ export const OwnerHomeCon: FC = () => {
           photo_url: imgLink,
           price: menuPrice,
           restaurant_id: restaurantId ?? 0
-        })
+        });
         // モーダル閉じる
         MenuEditModalOnClose();
         // データの再同期
@@ -325,13 +325,13 @@ export const OwnerHomeCon: FC = () => {
     handleSetMenuPrice={handleSetMenuPrice}
     handleSetMenuDetail={handleSetMenuDetail}
     handleSetImgLink={handleSetImgLink}
+    menuViewModalOnClose={() => {resetMenuValues();menuViewModalOnClose();}}
+    MenuEditModalOnClose={() => {resetMenuValues();MenuEditModalOnClose();}}
+    handleAddMenuSubmit={handleAddMenuSubmit}
+    handleUpdateMenuSubmit={handleUpdateMenuSubmit}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClickMenuEdit={onClickMenuEdit}
     onClickMenu={onClickMenu}
-    menuViewModalOnClose={() => {resetMenuValues();menuViewModalOnClose()}}
-    MenuEditModalOnClose={() => {resetMenuValues();MenuEditModalOnClose()}}
-    handleAddMenuSubmit={handleAddMenuSubmit}
-    handleUpdateMenuSubmit={handleUpdateMenuSubmit}
   />;
 };

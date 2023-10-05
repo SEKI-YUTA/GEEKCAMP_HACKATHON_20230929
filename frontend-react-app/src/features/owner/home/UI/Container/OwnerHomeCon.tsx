@@ -15,7 +15,7 @@ import type { MenuEditModalProps } from '../Components/MenuEditModal';
 export const OwnerHomeCon: FC = () => {
 
   const { restaurantId } = useContext(StateContext);
-  const firstCategory = { id: 0, name: '全て' }
+  const firstCategory = { id: 0, name: '全て' };
   // 全メニュー, 毎回フェッチするのは無駄なので、一度取得したら保持しておく
   const [allMenus, setAllMenus] = useState<MenuItemType[]>([]);
   // 画面上に表示されるメニュー
@@ -168,7 +168,7 @@ export const OwnerHomeCon: FC = () => {
         MenuEditModalOnClose();
         // データの再同期
         fetchMenu();
-        onClickCategory(firstCategory)
+        onClickCategory(firstCategory);
       }
 
     } catch (error) {
@@ -234,10 +234,10 @@ export const OwnerHomeCon: FC = () => {
         });
         // モーダル閉じる
         MenuEditModalOnClose();
-        menuViewModalOnClose()
+        menuViewModalOnClose();
         // データの再同期
         fetchMenu();
-        onClickCategory(firstCategory)
+        onClickCategory(firstCategory);
       }
 
     } catch (error) {

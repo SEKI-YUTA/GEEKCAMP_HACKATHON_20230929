@@ -244,8 +244,6 @@ export const OwnerHomeCon: FC = () => {
     }
   };
 
-
-
   /**
    * カテゴリー一覧取得関数
    */

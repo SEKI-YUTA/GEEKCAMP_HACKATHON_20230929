@@ -22,7 +22,6 @@ export const OwnerSignupCon: FC = () => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<OwnerRestaurantCategoryType[]>([]);
-  // const [category_id, setCategory_id] = useState<string>('');
   const [selectedValue, setSelectedValue] = useState<string>('1');
   const [errorMsg, setErrorMsg] = useState<number>(0);
 
@@ -97,8 +96,6 @@ export const OwnerSignupCon: FC = () => {
       });
       console.log(responce);
 
-      // const json = await responce.json();
-      // if(json.)
     } catch (error) {
       setErrorMsg(8);
       console.log(error);

@@ -1,4 +1,4 @@
-import { Box, ModalContent, ModalOverlay, Modal, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, Button, FormLabel, Input, Textarea, Flex, FormControl, Radio, RadioGroup } from '@chakra-ui/react';
+import { Box, ModalContent, ModalOverlay, Modal, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, Button, FormLabel, Input, Textarea, Flex, FormControl, Radio, RadioGroup, Text } from '@chakra-ui/react';
 import type { ChangeEvent, FC, FormEvent } from 'react';
 import type { CategoryType } from '../../../../../application/@types/Category';
 
@@ -6,6 +6,7 @@ export interface MenuEditModalProps {
   isOpen: boolean
   menuName: string
   menuPrice: string
+  blurMsg: Boolean
   menuDetail: string
   imgLink: string
   categoryList: CategoryType[]
@@ -19,12 +20,14 @@ export interface MenuEditModalProps {
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
   handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
   handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  handleBlur: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export const MenuEditModal: FC<MenuEditModalProps> = ({
   isOpen,
   menuName,
   menuPrice,
+  blurMsg,
   menuDetail,
   imgLink,
   categoryList,
@@ -38,6 +41,7 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
   handleSetImgLink,
   handleAddMenuSubmit,
   handleUpdateMenuSubmit,
+  handleBlur
 }) => {
 
   return (
@@ -56,8 +60,21 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
               <Box py={2}>
                 <FormLabel htmlFor='menuPrice'>価格</FormLabel>
                 <Flex alignItems="center" gap={3}>
-                  <Input id='menuPrice' type='number' value={menuPrice} onChange={handleSetMenuPrice} />円
+                  <Input id='menuPrice' type='number' value={menuPrice} onChange={handleSetMenuPrice} onBlur={(handleBlur)} />円
                 </Flex>
+                <Box>
+                {
+                (()=>{
+                  switch (blurMsg) {
+                    case true:
+                      return <Text color="red">0円は設定できません</Text>;
+                    default:
+                      return <></>;
+                  }
+                })()
+
+                }
+                </Box>
               </Box>
               <Box py={2}>
                 <FormLabel htmlFor='menuDetail'>詳細</FormLabel>

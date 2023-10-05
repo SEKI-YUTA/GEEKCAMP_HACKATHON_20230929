@@ -46,6 +46,17 @@ export const OwnerHomeCon: FC = () => {
       setMenuPrice(e.target.value);
     }
   };
+  const [blurMsg, setBlurMsg] = useState<Boolean>(false);
+  const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
+    if (parseInt(e.target.value) === 0){
+      //入力欄が0円の状態でフォーカスが外れた場合
+      console.log("error");
+      setBlurMsg(true);
+    }
+    else{
+      setBlurMsg(false);
+    }
+  }
   const [menuDetail, setMenuDetail] = useState<string>('');
   const handleSetMenuDetail = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMenuDetail(e.target.value);
@@ -333,5 +344,7 @@ export const OwnerHomeCon: FC = () => {
     onClickCategory={onClickCategory}
     onClickMenuEdit={onClickMenuEdit}
     onClickMenu={onClickMenu}
+    handleBlur={handleBlur}
+    blurMsg={blurMsg}
   />;
 };

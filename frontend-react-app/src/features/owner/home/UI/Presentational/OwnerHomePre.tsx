@@ -55,6 +55,8 @@ interface OwnerHomePreProps {
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
   handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
   handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  handleBlur: (e: ChangeEvent<HTMLInputElement>) => void
+  blurMsg: Boolean
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -95,7 +97,9 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   handleSetMenuDetail,
   handleSetImgLink,
   handleAddMenuSubmit,
-  handleUpdateMenuSubmit
+  handleUpdateMenuSubmit,
+  handleBlur,
+  blurMsg
 }) => {
   return (
     <>
@@ -119,6 +123,8 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
         handleAddMenuSubmit={handleAddMenuSubmit}
         handleUpdateMenuSubmit={handleUpdateMenuSubmit}
         onClose={MenuEditModalOnClose}
+        handleBlur={handleBlur}
+        blurMsg={blurMsg}
       />
       <Layout title='MaaS' isOwner={true}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>

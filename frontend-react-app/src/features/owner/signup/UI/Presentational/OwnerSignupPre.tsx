@@ -23,7 +23,7 @@ interface OwnerSignupProps {
   phoneNumber: string
   address: string
   description: string
-  selectedValue: string
+  selectedCategoryValue: string
   restaurantCategory: CategoryType[]
   errorMsg: number
   handleOwnerEmailChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -44,7 +44,7 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
   phoneNumber,
   address,
   description,
-  selectedValue,
+  selectedCategoryValue,
   handleOwnerEmailChange,
   handleOwnerPasswordChange,
   handleNameChange,
@@ -97,7 +97,7 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
 
             <FormControl id="categoryId">
               <FormLabel htmlFor="categoryId">お店のカテゴリー</FormLabel>
-              <RadioGroup colorScheme='green' value={selectedValue} onChange={handleRadioGroupChange}>
+              <RadioGroup colorScheme='green' value={selectedCategoryValue} onChange={handleRadioGroupChange}>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                   {
                     restaurantCategory.map((item, index) => {

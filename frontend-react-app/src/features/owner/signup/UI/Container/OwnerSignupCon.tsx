@@ -13,7 +13,7 @@ export const OwnerSignupCon: FC = () => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string>('1');
+  const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
   const [errorMsg, setErrorMsg] = useState<number>(0);
 
   const handleOwnerEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +41,7 @@ export const OwnerSignupCon: FC = () => {
   };
 
   const handleRadioGroupChange = (value: string) => {
-    setSelectedValue(value);
+    setSelectedCategoryValue(value);
   };
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -65,7 +65,7 @@ export const OwnerSignupCon: FC = () => {
       } else if (description.split(' ').join('').split('　').join('') === '') {
         setErrorMsg(6);
 
-      } else if (selectedValue === '') {
+      } else if (selectedCategoryValue === '') {
         setErrorMsg(7);
 
       }
@@ -82,7 +82,7 @@ export const OwnerSignupCon: FC = () => {
           'phone_number': phoneNumber,
           'address': address,
           'description': description,
-          'category_id': parseInt(selectedValue)
+          'category_id': parseInt(selectedCategoryValue)
         })
       });
       console.log(responce);
@@ -97,7 +97,7 @@ export const OwnerSignupCon: FC = () => {
     const response = await fetch('http://localhost:8080/restaurants/categories');
     const data: CategoryResponce = await response.json();
     setRestaurantCategory(data.categories);
-    setSelectedValue(data.categories[0].id.toString());
+    setSelectedCategoryValue(data.categories[0].id.toString());
     console.log(data);
   };
 
@@ -112,7 +112,7 @@ export const OwnerSignupCon: FC = () => {
     phoneNumber={phoneNumber}
     address={address}
     description={description}
-    selectedValue={selectedValue}
+    selectedCategoryValue={selectedCategoryValue}
     handleOwnerEmailChange={handleOwnerEmailChange}
     handleOwnerPasswordChange={handleOwnerPasswordChange}
     handleNameChange={handleSetNameChange}

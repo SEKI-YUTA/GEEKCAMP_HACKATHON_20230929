@@ -2,7 +2,7 @@ import { Box, ModalContent, ModalOverlay, Modal, ModalBody, ModalHeader, ModalCl
 import type { ChangeEvent, FC, FormEvent } from 'react';
 import type { CategoryType } from '../../../../../application/@types/Category';
 
-interface AddMenuModalProps {
+export interface AddMenuModalProps {
   isOpen: boolean
   menuName: string
   menuPrice: number
@@ -10,6 +10,7 @@ interface AddMenuModalProps {
   imgLink: string
   categoryList: CategoryType[]
   categoryValue: string
+  mode: "add" | "edit"
   onClose: () => void
   handleSetCategoryValue: (categoryId: string) => void
   handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
@@ -17,6 +18,7 @@ interface AddMenuModalProps {
   handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
   handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
 }
 
 export const AddMenuModal: FC<AddMenuModalProps> = ({
@@ -27,6 +29,7 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
   imgLink,
   categoryList,
   categoryValue,
+  mode,
   handleSetMenuName,
   onClose,
   handleSetCategoryValue,
@@ -34,6 +37,7 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
   handleSetMenuDetail,
   handleSetImgLink,
   handleAddMenuSubmit,
+  handleUpdateMenuSubmit,
 }) => {
 
   return (
@@ -41,8 +45,8 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
       <Modal isCentered isOpen={isOpen} size='2xl' onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <form onSubmit={handleAddMenuSubmit}>
-            <ModalHeader>メニュー登録</ModalHeader>
+          <form onSubmit={mode === "add" ? handleAddMenuSubmit : handleUpdateMenuSubmit}>
+            <ModalHeader>{mode === "add"  ? "メニュー登録" : "メニュー編集"}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Box py={2}>
@@ -73,7 +77,7 @@ export const AddMenuModal: FC<AddMenuModalProps> = ({
               </FormControl>
             </ModalBody>
             <ModalFooter justifyContent='center'>
-              <Button type='submit'>登録</Button>
+              <Button type='submit'>{mode === "add" ? "登録" : "編集"}</Button>
             </ModalFooter>
           </form>
         </ModalContent>

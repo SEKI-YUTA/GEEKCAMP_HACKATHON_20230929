@@ -4,7 +4,7 @@ import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
-import { AddMenuModal } from '../Components/AddMenuModal';
+import { AddMenuModal, AddMenuModalProps } from '../Components/AddMenuModal';
 import type { CategoryType } from '../../../../../application/@types/Category';
 import { MenuViewModal } from '../Components/MenuVIewModal';
 
@@ -38,6 +38,7 @@ interface OwnerHomePreProps {
   categoryValue: string
   selectedMenuItem: MenuItemType | undefined
   isMenuViewModalOpen: boolean
+  menuModalMode: AddMenuModalProps["mode"]
   /**
    * 新規登録ボタンを押したときの処理
    */
@@ -52,6 +53,7 @@ interface OwnerHomePreProps {
   handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
   handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
   handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -79,6 +81,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   categoryValue,
   isMenuViewModalOpen,
   selectedMenuItem,
+  menuModalMode,
   menuViewModalOnClose,
   onClickMenuEdit,
   onClickMenu,
@@ -91,6 +94,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   handleSetMenuDetail,
   handleSetImgLink,
   handleAddMenuSubmit,
+  handleUpdateMenuSubmit
 }) => {
   return (
     <>
@@ -105,12 +109,14 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
         imgLink={imgLink}
         categoryList={categoryList}
         categoryValue={categoryValue}
+        mode={menuModalMode}
         handleSetCategoryValue={handleSetCategoryValue}
         handleSetMenuName={handleSetMenuName}
         handleSetMenuPrice={handleSetMenuPrice}
         handleSetMenuDetail={handleSetMenuDetail}
         handleSetImgLink={handleSetImgLink}
         handleAddMenuSubmit={handleAddMenuSubmit}
+        handleUpdateMenuSubmit={handleUpdateMenuSubmit}
         onClose={addMenuModalOnClose}
       />
       <Layout title='MaaS'>

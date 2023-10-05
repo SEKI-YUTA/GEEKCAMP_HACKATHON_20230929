@@ -5,6 +5,7 @@ import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
+import { AddMenuModalProps } from '../Components/AddMenuModal';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -23,6 +24,7 @@ export const OwnerHomeCon: FC = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItemType | undefined>();
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({ id: -1, name: '' });
+  const [menuModalMode, setModalMode] = useState<AddMenuModalProps["mode"]>("add")
   const { isOpen: isAddMenuModalOpen, onOpen: addMenuModalOnOpen, onClose: addMenuModalOnClose } = useDisclosure();
   const { isOpen: isMenuViewModalOpen, onOpen: menuViewModalOnOpen, onClose: menuViewModalOnClose } = useDisclosure();
   // メデイアクエリ
@@ -60,6 +62,7 @@ export const OwnerHomeCon: FC = () => {
    */
   const onClickAddMenuButton = () => {
     console.log('新規登録');
+    setModalMode('add')
     addMenuModalOnOpen();
   };
 
@@ -90,7 +93,12 @@ export const OwnerHomeCon: FC = () => {
     }
   };
 
+  /**
+   * メニュー詳細モーダルの編集ボタンをクリック時のイベント
+   * @param item 
+   */
   const onClickMenuEdit = (item: MenuItemType) => {
+    setModalMode('edit')
     setCategoryValue(categoryList.find(category => category.name === item.category)?.id.toString() ?? "1")
     setMenuName(item.name)
     setMenuPrice(item.price)
@@ -98,6 +106,17 @@ export const OwnerHomeCon: FC = () => {
     setImgLink(item.photo_url)
 
     addMenuModalOnOpen()
+  }
+
+  /**
+   * メニューモーダルの入力値のリセット
+   */
+  const resetMenuValues = () => {
+    setCategoryValue('1');
+    setMenuName('');
+    setMenuPrice(0);
+    setMenuDetail('');
+    setImgLink('');
   }
 
   /**
@@ -145,11 +164,74 @@ export const OwnerHomeCon: FC = () => {
       
       if (responce.status === 200) {
         // 入力値のリセット
-        setCategoryValue('1');
-        setMenuName('');
-        setMenuPrice(0);
-        setMenuDetail('');
-        setImgLink('');
+        resetMenuValues()
+        // モーダル閉じる
+        addMenuModalOnClose();
+        // データの再同期
+        fetchMenu();
+      }
+
+    } catch (error) {
+      console.log('送信失敗', error);
+    }
+  };
+
+  /**
+   * メニュー更新
+   * @param e 
+   * @returns 
+   */
+  const handleUpdateMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
+      if (categoryValue === '' || menuName === '' || menuPrice == 0 || isNaN(menuPrice) === true || menuDetail === '') {
+        // 空欄がある場合
+        console.log('記入漏れあり');
+        return;
+      }
+      console.log('記入済み', {
+        name: menuName,
+        price: menuPrice,
+        description: menuDetail,
+        category: categoryValue
+      });
+
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/edit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: selectedMenuItem?.id,
+          name: menuName,
+          price: menuPrice,
+          description: menuDetail,
+          restaurant_id: restaurantId,
+          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name,
+          photo_url: imgLink,
+          is_sold_out: false,
+          like_count: 0
+        })
+      });
+      console.log(responce);
+      
+      const data = await responce.json();
+
+      console.log(data);
+      
+      if (responce.status === 200) {
+        // 入力値のリセット
+        resetMenuValues()
+        setSelectedMenuItem({
+          id: selectedMenuItem?.id ?? 0,
+          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name ?? '',
+          description: menuDetail,
+          name: menuName,
+          photo_url: imgLink,
+          price: menuPrice,
+          restaurant_id: restaurantId ?? 0
+        })
         // モーダル閉じる
         addMenuModalOnClose();
         // データの再同期
@@ -236,17 +318,19 @@ export const OwnerHomeCon: FC = () => {
     categoryValue={categoryValue}
     isMenuViewModalOpen={isMenuViewModalOpen}
     selectedMenuItem={selectedMenuItem}
-    menuViewModalOnClose={menuViewModalOnClose}
+    menuModalMode={menuModalMode}
     handleSetCategoryValue={handleSetCategoryValue}
     handleSetMenuName={handleSetMenuName}
     handleSetMenuPrice={handleSetMenuPrice}
     handleSetMenuDetail={handleSetMenuDetail}
     handleSetImgLink={handleSetImgLink}
-    handleAddMenuSubmit={handleAddMenuSubmit}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
-    onClickMenu={onClickMenu}
-    addMenuModalOnClose={addMenuModalOnClose}
     onClickMenuEdit={onClickMenuEdit}
+    onClickMenu={onClickMenu}
+    menuViewModalOnClose={() => {resetMenuValues();menuViewModalOnClose()}}
+    addMenuModalOnClose={() => {resetMenuValues();addMenuModalOnClose()}}
+    handleAddMenuSubmit={handleAddMenuSubmit}
+    handleUpdateMenuSubmit={handleUpdateMenuSubmit}
   />;
 };

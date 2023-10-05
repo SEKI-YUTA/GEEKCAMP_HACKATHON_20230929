@@ -10,7 +10,7 @@ interface HeaderItemPreProps {
 export const HeaderItemPre: FC<HeaderItemPreProps> = ({ title, handleLogout, isOwner }) => {
   return (
     <Flex as='header' css={headerStyle}>
-      <Heading css={headerIconText} as="a" href="/">{title}</Heading>
+      <Heading css={headerIconText} {...(isOwner && {as:"a", href:"/"})}>{title}</Heading>
       <Flex flex={1} justify='end' gap={4}>
         {
           isOwner &&

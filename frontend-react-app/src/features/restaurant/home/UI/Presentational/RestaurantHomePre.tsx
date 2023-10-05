@@ -50,7 +50,7 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
 }) => {
   return (
     <>
-      <Layout title={`${restaurantName}`}>
+      <Layout title={`${restaurantName}メニューアプリ`}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>
           <HStack py={5}>
             <HStack overflowX='auto' flex={4} spacing={1}>

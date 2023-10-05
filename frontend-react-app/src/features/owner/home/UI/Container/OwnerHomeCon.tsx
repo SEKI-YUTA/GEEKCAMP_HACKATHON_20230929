@@ -90,6 +90,16 @@ export const OwnerHomeCon: FC = () => {
     }
   };
 
+  const onClickMenuEdit = (item: MenuItemType) => {
+    setCategoryValue(categoryList.find(category => category.name === item.category)?.id.toString() ?? "1")
+    setMenuName(item.name)
+    setMenuPrice(item.price)
+    setMenuDetail(item.description)
+    setImgLink(item.photo_url)
+
+    addMenuModalOnOpen()
+  }
+
   /**
    * メニュー追加
    * @param e 
@@ -150,6 +160,8 @@ export const OwnerHomeCon: FC = () => {
       console.log('送信失敗', error);
     }
   };
+
+
 
   /**
    * カテゴリー一覧取得関数
@@ -235,5 +247,6 @@ export const OwnerHomeCon: FC = () => {
     onClickCategory={onClickCategory}
     onClickMenu={onClickMenu}
     addMenuModalOnClose={addMenuModalOnClose}
+    onClickMenuEdit={onClickMenuEdit}
   />;
 };

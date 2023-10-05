@@ -6,6 +6,7 @@ import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { AddMenuModal } from '../Components/AddMenuModal';
 import type { CategoryType } from '../../../../../application/@types/Category';
+import { MenuViewModal } from '../Components/MenuVIewModal';
 
 interface OwnerHomePreProps {
   /**
@@ -28,11 +29,6 @@ interface OwnerHomePreProps {
    * 1200px以上かどうか
    */
   isLargerThan1200: boolean
-  /**
-   * 新規登録ボタンを押したときの処理
-   */
-  onClickAddMenuButton: () => void
-  onClickMenu: (menuItem: MenuItemType) => void
   // モーダル呼び出し
   isAddMenuModalOpen: boolean
   menuName: string
@@ -40,6 +36,14 @@ interface OwnerHomePreProps {
   menuDetail: string
   imgLink: string
   categoryValue: string
+  selectedMenuItem: MenuItemType | undefined
+  isMenuViewModalOpen: boolean
+  /**
+   * 新規登録ボタンを押したときの処理
+   */
+  onClickAddMenuButton: () => void
+  onClickMenu: (menuItem: MenuItemType) => void
+  menuViewModalOnClose: () => void
   addMenuModalOnClose: () => void
   handleSetCategoryValue: (categoryId: string) => void
   handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
@@ -72,6 +76,9 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   isLargerThan800,
   isLargerThan1200,
   categoryValue,
+  isMenuViewModalOpen,
+  selectedMenuItem,
+  menuViewModalOnClose,
   onClickMenu,
   onClickAddMenuButton,
   onClickCategory,
@@ -85,6 +92,9 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
 }) => {
   return (
     <>
+      <MenuViewModal 
+        isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose}
+      />
       <AddMenuModal
         isOpen={isAddMenuModalOpen}
         menuName={menuName}

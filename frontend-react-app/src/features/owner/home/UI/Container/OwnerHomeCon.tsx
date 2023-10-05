@@ -222,6 +222,9 @@ export const OwnerHomeCon: FC = () => {
     menuDetail={menuDetail}
     imgLink={imgLink}
     categoryValue={categoryValue}
+    isMenuViewModalOpen={isMenuViewModalOpen}
+    selectedMenuItem={selectedMenuItem}
+    menuViewModalOnClose={menuViewModalOnClose}
     handleSetCategoryValue={handleSetCategoryValue}
     handleSetMenuName={handleSetMenuName}
     handleSetMenuPrice={handleSetMenuPrice}

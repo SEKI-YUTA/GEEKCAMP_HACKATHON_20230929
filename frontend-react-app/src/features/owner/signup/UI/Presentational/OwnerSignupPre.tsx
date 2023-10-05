@@ -20,7 +20,7 @@ interface OwnerSignupProps {
   ownerEmail: string
   ownerPassword: string
   name: string
-  phone_number: string
+  phoneNumber: string
   address: string
   description: string
   selectedValue: string
@@ -29,7 +29,7 @@ interface OwnerSignupProps {
   handleOwnerEmailChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleOwnerPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleNameChange: (e: ChangeEvent<HTMLInputElement>) => void
-  handlePhone_numberChange: (e: ChangeEvent<HTMLInputElement>) => void
+  handlePhoneNumberChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleSetAddress: (e: ChangeEvent<HTMLInputElement>) => void
   handleDescription: (e: ChangeEvent<HTMLInputElement>) => void
   handleRadioGroupChange: (value: string) => void
@@ -41,14 +41,14 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
   ownerEmail,
   ownerPassword,
   name,
-  phone_number,
+  phoneNumber,
   address,
   description,
   selectedValue,
   handleOwnerEmailChange,
   handleOwnerPasswordChange,
   handleNameChange,
-  handlePhone_numberChange,
+  handlePhoneNumberChange,
   handleSetAddress,
   handleDescription,
   handleRadioGroupChange,
@@ -82,7 +82,7 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
 
             <FormControl id="phone_number">
               <FormLabel htmlFor="phone_number">電話番号</FormLabel>
-              <Input type="text" id="phone_number" placeholder="名前を入力" value={phone_number} onChange={handlePhone_numberChange} />
+              <Input type="text" id="phone_number" placeholder="名前を入力" value={phoneNumber} onChange={handlePhoneNumberChange} />
             </FormControl>
 
             <FormControl id="address">
@@ -95,8 +95,8 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
               <Input type="text" id="description" placeholder="お店の説明を入力" value={description} onChange={handleDescription} />
             </FormControl>
 
-            <FormControl id="category_id">
-              <FormLabel htmlFor="category_id">お店のカテゴリー</FormLabel>
+            <FormControl id="categoryId">
+              <FormLabel htmlFor="categoryId">お店のカテゴリー</FormLabel>
               <RadioGroup colorScheme='green' value={selectedValue} onChange={handleRadioGroupChange}>
                 <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                   {

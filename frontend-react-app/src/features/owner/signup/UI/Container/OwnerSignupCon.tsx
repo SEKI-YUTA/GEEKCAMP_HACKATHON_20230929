@@ -9,7 +9,7 @@ export const OwnerSignupCon: FC = () => {
   const [ownerEmail, setOwnerEmail] = useState<string>('');
   const [ownerPassword, setOwnerPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
-  const [phone_number, setPhone_number] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
@@ -28,8 +28,8 @@ export const OwnerSignupCon: FC = () => {
     setName(e.target.value);
   };
 
-  const handlePhone_numberChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPhone_number(e.target.value);
+  const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value);
   };
 
   const handleSetAddress = (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +56,7 @@ export const OwnerSignupCon: FC = () => {
       } else if (name === '' || name.split(' ').join('').split('　').join('') === '') {
         setErrorMsg(3);
 
-      } else if (phone_number.split(' ').join('').split('　').join('') === '') {
+      } else if (phoneNumber.split(' ').join('').split('　').join('') === '') {
         setErrorMsg(4);
 
       } else if (address.split(' ').join('').split('　').join('') === '') {
@@ -79,7 +79,7 @@ export const OwnerSignupCon: FC = () => {
           'email': ownerEmail,
           'password': ownerPassword,
           'name': name,
-          'phone_number': phone_number,
+          'phone_number': phoneNumber,
           'address': address,
           'description': description,
           'category_id': parseInt(selectedValue)
@@ -109,14 +109,14 @@ export const OwnerSignupCon: FC = () => {
     ownerEmail={ownerEmail}
     ownerPassword={ownerPassword}
     name={name}
-    phone_number={phone_number}
+    phoneNumber={phoneNumber}
     address={address}
     description={description}
     selectedValue={selectedValue}
     handleOwnerEmailChange={handleOwnerEmailChange}
     handleOwnerPasswordChange={handleOwnerPasswordChange}
     handleNameChange={handleSetNameChange}
-    handlePhone_numberChange={handlePhone_numberChange}
+    handlePhoneNumberChange={handlePhoneNumberChange}
     handleSetAddress={handleSetAddress}
     handleDescription={handleDescription}
     handleRadioGroupChange={handleRadioGroupChange}

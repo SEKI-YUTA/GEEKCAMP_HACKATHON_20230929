@@ -282,8 +282,9 @@ export const OwnerHomeCon: FC = () => {
         id: item.id,
         category: item.category,
         description: item.description,
+        // photo_url がない場合は仮の画像を表示
+        photo_url: item.photo_url ? item.photo_url : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
         name: item.name,
-        photo_url: 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
         price: item.price,
         restaurant_id: item.restaurant_id
       }));

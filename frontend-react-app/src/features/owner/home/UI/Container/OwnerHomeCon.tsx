@@ -40,12 +40,10 @@ export const OwnerHomeCon: FC = () => {
   const handleSetMenuName = (e: ChangeEvent<HTMLInputElement>) => {
     setMenuName(e.target.value);
   };
-  const [menuPrice, setMenuPrice] = useState<number>(0);
+  const [menuPrice, setMenuPrice] = useState<string>('');
   const handleSetMenuPrice = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
-      setMenuPrice(parseInt(e.target.value));
-    } else {
-      setMenuPrice(0);
+    if (parseInt(e.target.value) >= 0 || e.target.value === '') {
+      setMenuPrice(e.target.value);
     }
   };
   const [menuDetail, setMenuDetail] = useState<string>('');
@@ -115,7 +113,7 @@ export const OwnerHomeCon: FC = () => {
   const resetMenuValues = () => {
     setCategoryValue('1');
     setMenuName('');
-    setMenuPrice(0);
+    setMenuPrice('');
     setMenuDetail('');
     setImgLink('');
   };
@@ -129,7 +127,7 @@ export const OwnerHomeCon: FC = () => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || menuName === '' || menuPrice == 0 || isNaN(menuPrice) === true || menuDetail === '') {
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
         return;
@@ -148,7 +146,7 @@ export const OwnerHomeCon: FC = () => {
         },
         body: JSON.stringify({
           name: menuName,
-          price: menuPrice,
+          price: parseInt(menuPrice),
           description: menuDetail,
           restaurant_id: restaurantId,
           category: categoryList.find(category => category.id === parseInt(categoryValue))?.name,
@@ -186,7 +184,7 @@ export const OwnerHomeCon: FC = () => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || menuName === '' || menuPrice == 0 || isNaN(menuPrice) === true || menuDetail === '') {
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
         return;
@@ -206,7 +204,7 @@ export const OwnerHomeCon: FC = () => {
         body: JSON.stringify({
           id: selectedMenuItem?.id,
           name: menuName,
-          price: menuPrice,
+          price: parseInt(menuPrice),
           description: menuDetail,
           restaurant_id: restaurantId,
           category: categoryList.find(category => category.id === parseInt(categoryValue))?.name,

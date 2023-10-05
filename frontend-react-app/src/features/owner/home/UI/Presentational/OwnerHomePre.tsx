@@ -33,7 +33,7 @@ interface OwnerHomePreProps {
   // モーダル呼び出し
   isMenuEditModalOpen: boolean
   menuName: string
-  menuPrice: number
+  menuPrice: string
   menuDetail: string
   imgLink: string
   categoryValue: string

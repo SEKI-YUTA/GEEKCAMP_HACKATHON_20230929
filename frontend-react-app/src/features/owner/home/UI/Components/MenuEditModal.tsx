@@ -5,7 +5,7 @@ import type { CategoryType } from '../../../../../application/@types/Category';
 export interface MenuEditModalProps {
   isOpen: boolean
   menuName: string
-  menuPrice: number
+  menuPrice: string
   menuDetail: string
   imgLink: string
   categoryList: CategoryType[]

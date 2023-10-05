@@ -1,4 +1,5 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
+import { CategoryType } from '../../../../../application/@types/Category';
 
 import {
   Box,
@@ -15,8 +16,6 @@ import {
   GridItem
 } from '@chakra-ui/react';
 
-import type { OwnerRestaurantCategoryType } from '../Container/OwnerSignupCon';
-
 interface OwnerSignupProps {
   ownerEmail: string
   ownerPassword: string
@@ -25,7 +24,7 @@ interface OwnerSignupProps {
   address: string
   description: string
   selectedValue: string
-  restaurantCategory: OwnerRestaurantCategoryType[]
+  restaurantCategory: CategoryType[]
   errorMsg: number
   handleOwnerEmailChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleOwnerPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void

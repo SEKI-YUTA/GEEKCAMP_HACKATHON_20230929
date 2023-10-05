@@ -2,16 +2,7 @@ import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useState, useEffect } from 'react';
 
 import { OwnerSignupPre } from '../Presentational/OwnerSignupPre';
-
-export interface OwnerRestaurantCategoryType {
-  id: number
-  name: string
-}
-
-interface OwnerRestaurantCategoryResponse {
-  category_name: string
-  categories: OwnerRestaurantCategoryType[]
-}
+import { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 
 export const OwnerSignupCon: FC = () => {
 
@@ -21,7 +12,7 @@ export const OwnerSignupCon: FC = () => {
   const [phone_number, setPhone_number] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [restaurantCategory, setRestaurantCategory] = useState<OwnerRestaurantCategoryType[]>([]);
+  const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedValue, setSelectedValue] = useState<string>('1');
   const [errorMsg, setErrorMsg] = useState<number>(0);
 
@@ -104,7 +95,7 @@ export const OwnerSignupCon: FC = () => {
 
   const fetchRestaurantCategorys = async () => {
     const response = await fetch('http://localhost:8080/restaurants/categories');
-    const data: OwnerRestaurantCategoryResponse = await response.json();
+    const data: CategoryResponce = await response.json();
     setRestaurantCategory(data.categories);
     setSelectedValue(data.categories[0].id.toString());
     console.log(data);

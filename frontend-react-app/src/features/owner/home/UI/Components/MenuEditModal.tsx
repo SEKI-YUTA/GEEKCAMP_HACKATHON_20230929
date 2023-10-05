@@ -6,7 +6,7 @@ export interface MenuEditModalProps {
   isOpen: boolean
   menuName: string
   menuPrice: string
-  blurMsg: Boolean
+  blurMsg: boolean
   menuDetail: string
   imgLink: string
   categoryList: CategoryType[]
@@ -63,17 +63,17 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
                   <Input id='menuPrice' type='number' value={menuPrice} onChange={handleSetMenuPrice} onBlur={(handleBlur)} />円
                 </Flex>
                 <Box>
-                {
-                (()=>{
-                  switch (blurMsg) {
-                    case true:
-                      return <Text color="red">0円は設定できません</Text>;
-                    default:
-                      return <></>;
-                  }
-                })()
+                  {
+                    (()=>{
+                      switch (blurMsg) {
+                        case true:
+                          return <Text color="red">0円は設定できません</Text>;
+                        default:
+                          return <></>;
+                      }
+                    })()
 
-                }
+                  }
                 </Box>
               </Box>
               <Box py={2}>

@@ -41,7 +41,7 @@ export const OwnerHomeCon: FC = () => {
     setMenuName(e.target.value);
   };
   const [menuPrice, setMenuPrice] = useState<string>('');
-  const [blurMsg, setBlurMsg] = useState<Boolean>(false);
+  const [blurMsg, setBlurMsg] = useState<boolean>(false);
   const handleSetMenuPrice = (e: ChangeEvent<HTMLInputElement>) => {
     if (parseInt(e.target.value) >= 0 || e.target.value === '') {
       setMenuPrice(e.target.value);
@@ -52,13 +52,13 @@ export const OwnerHomeCon: FC = () => {
   const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
     if (parseInt(e.target.value) === 0){
       //入力欄が0円の状態でフォーカスが外れた場合
-      console.log("error");
+      console.log('error');
       setBlurMsg(true);
     }
     else{
       setBlurMsg(false);
     }
-  }
+  };
   const [menuDetail, setMenuDetail] = useState<string>('');
   const handleSetMenuDetail = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMenuDetail(e.target.value);
@@ -342,11 +342,11 @@ export const OwnerHomeCon: FC = () => {
     MenuEditModalOnClose={() => {resetMenuValues();MenuEditModalOnClose();}}
     handleAddMenuSubmit={handleAddMenuSubmit}
     handleUpdateMenuSubmit={handleUpdateMenuSubmit}
+    handleBlur={handleBlur}
+    blurMsg={blurMsg}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClickMenuEdit={onClickMenuEdit}
     onClickMenu={onClickMenu}
-    handleBlur={handleBlur}
-    blurMsg={blurMsg}
   />;
 };

@@ -54,7 +54,7 @@ export const RestaurantHomeCon: FC = () => {
       setMenuItemList(allMenus);
     }
     else {
-      const filteredMenu = allMenus.filter((item: MenuItemType) => item.name === category.name);
+      const filteredMenu = allMenus.filter((item: MenuItemType) => item.category === category.name);
       setMenuItemList(filteredMenu);
     }
   };

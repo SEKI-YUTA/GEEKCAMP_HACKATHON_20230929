@@ -67,6 +67,7 @@ func main() {
 	router.GET("/menus/categories", responseMenuCategories)
 	router.POST("/restaurants/:id/menus/add", addMenuFunc)
 	router.POST("/restaurants/:id/menus/edit", editMenuFunc)
+	router.POST("/restaurants/:id/menus/delete", deleteMenuFunc)
 	router.POST("/restaurants/login", loginFunc)
 	router.POST("/restaurants/signup", signupFunc)
 	router.POST("/restaurants/edit", editRestaurantFunc)
@@ -148,6 +149,27 @@ func editMenuFunc(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{
 			"message": "ok",
 			"menu": editMenu,
+		})
+	}
+}
+
+func deleteMenuFunc(ctx *gin.Context) {
+	var deleteMenu common.Menu
+	ctx.BindJSON(&deleteMenu)
+	deletedMenuId := 0
+	pool.QueryRow(
+		context.Background(),
+		"DELETE FROM menus WHERE id = $1 RETURNING id;",
+		deleteMenu.Id,
+	).Scan(&deletedMenuId)
+	if(deletedMenuId == 0) {
+		ctx.JSON(400, gin.H{
+			"message": "failed to delete menu",
+		})
+	} else {
+		ctx.JSON(200, gin.H{
+			"message": "ok",
+			"menu": "deleted",
 		})
 	}
 }

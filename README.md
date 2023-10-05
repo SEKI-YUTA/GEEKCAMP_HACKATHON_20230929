@@ -147,6 +147,15 @@ method POST
 }
 ```
 
+## メニューを削除する方法
+method POST
+/restaurants/:id/menus/deleteのbodyに以下のようなjsonを入れてPOSTしてください。
+``` json
+{
+    "id": 17
+}
+```
+
 
 ## 実装予定のエンドポイント
 自分実装する場合はGitHubのissueにアサインしてください。

@@ -13,9 +13,10 @@ export const OwnerSignupCon: FC = () => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
-  const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
+  const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('0');
   const [errorMsg, setErrorMsg] = useState<number>(0);
-  const [errorMsgArray, setErrorMsgArray] = useState<string[]>([])
+  const [errorMsgObject, setErrorMsgObject] = useState<{ [key: string]: string }>({});
+  const [spaceMsgObject, setSpaceMsgObject] = useState<{ [key: string]: string }>({});
 
   const handleOwnerEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setOwnerEmail(e.target.value);
@@ -45,77 +46,58 @@ export const OwnerSignupCon: FC = () => {
     setSelectedCategoryValue(value);
   };
 
-  // const inputCheck = (str: string, isEmptyCheck?: boolean) => {
-
-  //   if (isEmptyCheck) {
-  //     return str == '' || str.match(/^[ 　\r\n\t]*$/);
-  //   }
-  //   return str.match(/^[ 　\r\n\t]*$/);
-    
-  // };
-
   const inputCheck = (input: string, isEmptyCheck?: boolean) => {
     // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
     const regex = /^[ 　]+$/;
-    if (isEmptyCheck) {
-    return input == '' || regex.test(input);
-    }
-    return regex.test(input);
-  };
 
-  // const spaceFilling = (str: string) => {
-  //   return str.split(' ').join('').split('　').join('') ==  ''
-  // };
+    if (isEmptyCheck) {
+      return input == '' || regex.test(input);
+    }
+    return input.split(' ').join('').split('　').join('') == ''
+  };
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const errors: string[] = [];
+    const errors: { [key: string]: string } = {};
+    const spaceErrors: { [key: string]: string } = {};
 
-    try {
+    try {   
       let flag = false;
 
       if (inputCheck(ownerEmail, true)) {
-        setErrorMsg(1);
-        errors.push('メールアドレスが入力されていません')
-        console.log('メールアドレス');
+        errors['ownerEmail'] = 'メールアドレスが入力されていません'
         flag = true
 
-      } 
+      }
       if (inputCheck(ownerPassword, true)) {
-        setErrorMsg(2);
-        errors.push('パスワードが入力されていません')
-        console.log('パスワード');
+        errors['ownerPassword'] = 'パスワードが入力されていません'
         flag = true
 
-      } 
+      }
       if (inputCheck(name, true)) {
-        setErrorMsg(3);
-        errors.push('名前が入力されていません')
-        console.log('名前');
+        errors['name'] = '名前が入力されていません'
         flag = true
 
-      } 
+      }
       if (inputCheck(phoneNumber)) {
-        setErrorMsg(4);
-        console.log('電話番号');
+        spaceErrors['phoneNumber'] = 'スペースが含まれています'
         flag = true
 
-      } 
+      }
       if (inputCheck(address)) {
-        setErrorMsg(5);
-        console.log('住所');
+        spaceErrors['address'] = 'スペースが含まれています'
         flag = true
 
-      } 
+      }
       if (inputCheck(description)) {
-        setErrorMsg(6);
-        console.log('お店の説明');
+        spaceErrors['description'] = 'スペースが含まれています'
         flag = true
 
       }
       if (flag) {
-        setErrorMsgArray(errors);
+        setErrorMsgObject(errors);
+        setSpaceMsgObject(spaceErrors)
         return
       }
 
@@ -134,11 +116,31 @@ export const OwnerSignupCon: FC = () => {
           'category_id': parseInt(selectedCategoryValue)
         })
       });
+
       console.log(responce);
 
+      const json = await responce.json();
+      console.log(json);
+
+      if (json.message === 'ok') {
+        setOwnerEmail('');
+        setOwnerPassword('');
+        setName('');
+        setPhoneNumber('');
+        setAddress('');
+        setDescription('');
+        setSelectedCategoryValue('1');
+      }
+      else {
+        // サインインに失敗
+        console.log('failed to sign up');
+        setErrorMsg(1);
+      }
+
     } catch (error) {
-      setErrorMsg(8);
+      // 送信に失敗
       console.log(error);
+      setErrorMsg(2);
     }
   };
 
@@ -172,7 +174,7 @@ export const OwnerSignupCon: FC = () => {
     handleFormSubmit={handleFormSubmit}
     restaurantCategory={restaurantCategory}
     errorMsg={errorMsg}
-    errorMsgArray={errorMsgArray  }
+    errorMsgObject={errorMsgObject}
+    spaceMsgObject={spaceMsgObject}
   />;
-
 };

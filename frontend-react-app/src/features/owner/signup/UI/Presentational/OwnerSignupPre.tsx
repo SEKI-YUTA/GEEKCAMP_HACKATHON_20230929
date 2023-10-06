@@ -3,7 +3,6 @@ import { CategoryType } from '../../../../../application/@types/Category';
 
 import {
   Box,
-  FormControl,
   FormLabel,
   Input,
   Stack,
@@ -13,7 +12,8 @@ import {
   Radio,
   RadioGroup,
   Grid,
-  GridItem
+  GridItem,
+  FormControl
 } from '@chakra-ui/react';
 
 interface OwnerSignupProps {
@@ -26,7 +26,8 @@ interface OwnerSignupProps {
   selectedCategoryValue: string
   restaurantCategory: CategoryType[]
   errorMsg: number
-  errorMsgArray: string[]
+  errorMsgObject: { [key: string]: string }
+  spaceMsgObject: { [key: string]: string }
   handleOwnerEmailChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleOwnerPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleNameChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -46,7 +47,8 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
   description,
   selectedCategoryValue,
   errorMsg,
-  errorMsgArray,
+  errorMsgObject,
+  spaceMsgObject,
   handleOwnerEmailChange,
   handleOwnerPasswordChange,
   handleNameChange,
@@ -67,48 +69,59 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
           boxShadow="lg"
           p={8}>
           <Stack spacing={4}>
-            <FormControl id="email">
-              <FormLabel htmlFor="ownerEmail">メールアドレス</FormLabel>
-              <Input type="email" id="ownerEmail" placeholder="メールアドレスを入力" value={ownerEmail} onChange={handleOwnerEmailChange}  />
-            </FormControl>
+            <Box py={2}>
+              <FormControl isRequired>
+                <FormLabel htmlFor="ownerEmail">メールアドレス</FormLabel>
+                <Input mb={1.5} type="email" id="ownerEmail" placeholder="メールアドレスを入力" value={ownerEmail} onChange={handleOwnerEmailChange} />
+                <Box color='red' >{errorMsgObject['ownerEmail']}</Box>
+              </FormControl>
+            </Box>
 
 
-            <FormLabel htmlFor="ownerpassword">パスワード</FormLabel>
-            <Input type="password" id="ownerpassword" placeholder="パスワードを入力" value={ownerPassword} onChange={handleOwnerPasswordChange}  />
+            <Box py={2}>
+              <FormControl isRequired>
+                <FormLabel htmlFor="ownerpassword">パスワード</FormLabel>
+                <Input mb={1.5} type="password" id="ownerpassword" placeholder="パスワードを入力" value={ownerPassword} onChange={handleOwnerPasswordChange} />
+                <Box color='red' >{errorMsgObject['ownerPassword']}</Box>
+              </FormControl>
+            </Box>
 
+            <Box py={2}>
+              <FormControl isRequired>
+                <FormLabel htmlFor="name">名前</FormLabel>
+                <Input mb={1.5} type="text" id="name" placeholder="名前を入力" value={name} onChange={handleNameChange} />
+                <Box color='red' >{errorMsgObject['name']}</Box>
+              </FormControl>
+            </Box>
 
-            <FormControl id="name">
-              <FormLabel htmlFor="name">名前</FormLabel>
-              <Input type="text" id="name" placeholder="名前を入力" value={name} onChange={handleNameChange}  />
-            </FormControl>
+            <Box py={2}>
+              <FormLabel htmlFor="phoneNumber">電話番号</FormLabel>
+              <Input type="text" id="phoneNumber" placeholder="名前を入力" value={phoneNumber} onChange={handlePhoneNumberChange} />
+              <Box color='red' >{spaceMsgObject['phoneNumber']}</Box>
+            </Box>
 
-            <FormControl id="phone_number">
-              <FormLabel htmlFor="phone_number">電話番号</FormLabel>
-              <Input type="text" id="phone_number" placeholder="名前を入力" value={phoneNumber} onChange={handlePhoneNumberChange} />
-            </FormControl>
-
-            <FormControl id="address">
+            <Box py={2}>
               <FormLabel htmlFor="address">住所</FormLabel>
-              <Input type="text" id="address" placeholder="住所を入力" value={address} onChange={handleSetAddress} />
-            </FormControl>
+              <Input mb={1.5} type="text" id="address" placeholder="住所を入力" value={address} onChange={handleSetAddress} />
+              <Box color='red' >{spaceMsgObject['address']}</Box>
+            </Box>
 
-            <FormControl id="description">
+            <Box py={2}>
               <FormLabel htmlFor="description">お店の説明</FormLabel>
-              <Input type="text" id="description" placeholder="お店の説明を入力" value={description} onChange={handleDescription} />
-            </FormControl>
+              <Input mb={1.5} type="text" id="description" placeholder="お店の説明を入力" value={description} onChange={handleDescription} />
+              <Box color='red' >{spaceMsgObject['description']}</Box>
+            </Box>
 
-            <FormControl id="categoryId">
-              <FormLabel htmlFor="categoryId">お店のカテゴリー</FormLabel>
-              <RadioGroup colorScheme='green' value={selectedCategoryValue} onChange={handleRadioGroupChange}>
-                <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-                  {
-                    restaurantCategory.map((item, index) => {
-                      return <GridItem key={index} w='100%' h='10'> <Radio borderColor="gray" value={item.id.toString()}>{item.name}</Radio> </GridItem>;
-                    })
-                  }
-                </Grid>
-              </RadioGroup>
-            </FormControl>
+            <FormLabel htmlFor="categoryId">お店のカテゴリー</FormLabel>
+            <RadioGroup colorScheme='green' value={selectedCategoryValue} onChange={handleRadioGroupChange}>
+              <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+                {
+                  restaurantCategory.map((item, index) => {
+                    return <GridItem key={index} w='100%' h='10'> <Radio borderColor="gray" value={item.id.toString()}>{item.name}</Radio> </GridItem>;
+                  })
+                }
+              </Grid>
+            </RadioGroup>
             <Button
               bg="blue.400"
               color="white"
@@ -118,9 +131,18 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
               Sign in
             </Button>
           </Stack>
-          {errorMsgArray.length > 0 && errorMsgArray.map((msg, index) => (
-            <Box key={index}>{msg}</Box>
-          ))}
+          {
+            (() => {
+              switch (errorMsg) {
+                case 1:
+                  return 'サインアップに失敗、もう一度やり直してください';
+                case 2:
+                  return '送信に失敗しました、もう一度やり直してください';
+                default:
+                  return <></>;
+              }
+            })()
+          }
         </Box>
       </form>
     </VStack>

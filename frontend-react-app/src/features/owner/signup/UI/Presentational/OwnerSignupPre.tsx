@@ -49,6 +49,7 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
   errorMsg,
   errorMsgObject,
   spaceMsgObject,
+  restaurantCategory,
   handleOwnerEmailChange,
   handleOwnerPasswordChange,
   handleNameChange,
@@ -57,7 +58,6 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
   handleDescription,
   handleRadioGroupChange,
   handleFormSubmit,
-  restaurantCategory,
 }) => {
 
   return (

@@ -160,6 +160,10 @@ export const OwnerSignupCon: FC = () => {
     address={address}
     description={description}
     selectedCategoryValue={selectedCategoryValue}
+    restaurantCategory={restaurantCategory}
+    errorMsg={errorMsg}
+    errorMsgObject={errorMsgObject}
+    spaceMsgObject={spaceMsgObject}
     handleOwnerEmailChange={handleOwnerEmailChange}
     handleOwnerPasswordChange={handleOwnerPasswordChange}
     handleNameChange={handleSetNameChange}
@@ -168,9 +172,5 @@ export const OwnerSignupCon: FC = () => {
     handleDescription={handleDescription}
     handleRadioGroupChange={handleRadioGroupChange}
     handleFormSubmit={handleFormSubmit}
-    restaurantCategory={restaurantCategory}
-    errorMsg={errorMsg}
-    errorMsgObject={errorMsgObject}
-    spaceMsgObject={spaceMsgObject}
   />;
 };

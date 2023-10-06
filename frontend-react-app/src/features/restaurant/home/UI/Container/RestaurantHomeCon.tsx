@@ -1,10 +1,11 @@
 import { useEffect, type FC, useState } from 'react';
 import { RestaurantHomePre } from '../Presentational/RestaurantHomePre';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
-import { filter, useMediaQuery } from '@chakra-ui/react';
+import { useMediaQuery } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
 import type { RestaurantType } from '../../../../../application/@types/Restaurant';
+
 /**
  * レストラン, ホーム画面のコンポーネント（Container）
  * ここにコンポーネントのロジックを書いて、RestaurantHomePreに渡す
@@ -21,6 +22,7 @@ export const RestaurantHomeCon: FC = () => {
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({ id: -1, name: '' });
+  // 絞り込みモーダル
 
   // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
@@ -121,19 +123,9 @@ export const RestaurantHomeCon: FC = () => {
     fetchRestaurantInfo();
   }, []);
 
-  const filterMenuModal: JSX.Element = <FilterMenu
-    isOpen={true}
-    KeyWord=""
-    menuPriceLower={0}
-    menuPriceUpper={10000}
-    categoryList={categoryList}
-    categoryValue={selectedCategory.id.toString()}
-    onClose={() => { console.log('閉じる'); }}
-    handleSetCategoryValue={(categoryId: string) => { console.log(categoryId); }}
-    handleSetKeyWord={(e) => { console.log(e.target.value); }}
-    handleSetMenuPrice={(e) => { console.log(e.target.value); }}
-    handleFilterMenuSubmit={async (e) => { e.preventDefault(); console.log('絞り込み'); }}
-  />;
+  const onClickFilterButton = () => {
+    console.log('絞り込み');
+  }
 
   return <RestaurantHomePre
     restaurantName={restaurantName}
@@ -143,10 +135,6 @@ export const RestaurantHomeCon: FC = () => {
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
     onClickCategory={onClickCategory}
-<<<<<<< HEAD
-=======
     onClickFilterButton={onClickFilterButton}
-    filterModal={filterMenuModal}
->>>>>>> 27d0f88 (絞り込みモーダルのコンポーネント)
   />;
 };

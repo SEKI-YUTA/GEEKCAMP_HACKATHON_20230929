@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
 import { MenuItem } from '../../../../owner/home/UI/Components/MenuItem';
 import { Category } from '../../../../owner/home/UI/Components/Category';
-import { Box, Grid, HStack } from '@chakra-ui/react';
+import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryType } from '../../../../../application/@types/Category';
 
@@ -37,6 +37,10 @@ interface RestaurantHomePreProps {
    * @returns 
    */
   onClickCategory: (category: CategoryType) => void
+  /**
+   * 絞り込みボタンを押したときの処理
+   */
+  onClickFilterButton: () => void
 }
 
 export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
@@ -47,6 +51,7 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
   isLargerThan800,
   isLargerThan1200,
   onClickCategory,
+  onClickFilterButton,
 }) => {
   return (
     <>
@@ -58,6 +63,26 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
                 <Category key={index} category={category} isSelected={category.id === selectedCategory.id} isLargerThan1200={isLargerThan1200} onClick={() => onClickCategory(category)} />
               ))}
             </HStack>
+            <Box
+              flex={2}
+              textAlign="right"
+            >
+              <Button
+                border="solid 1px #833F29"
+                borderRadius="10px"
+                color="#B14B4B"
+                backgroundColor="#FBFBFB"
+                {...(isLargerThan1200 && {
+                  size: 'lg',
+                  fontSize: '3xl',
+                  px: 10,
+                  py: 7,
+                })}
+                onClick={() => { onClickFilterButton(); }}
+              >
+                絞り込み
+              </Button>
+            </Box>
           </HStack>
           <Box>
             <Grid gridTemplateColumns={isLargerThan800 ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'} rowGap={5} columnGap={isLargerThan800 ? 10 : 5}>

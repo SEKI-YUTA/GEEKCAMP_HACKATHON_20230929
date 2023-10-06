@@ -1,7 +1,7 @@
 import { useEffect, type FC, useState } from 'react';
 import { RestaurantHomePre } from '../Presentational/RestaurantHomePre';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
-import { useMediaQuery } from '@chakra-ui/react';
+import { filter, useMediaQuery } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
 import type { RestaurantType } from '../../../../../application/@types/Restaurant';
@@ -121,6 +121,20 @@ export const RestaurantHomeCon: FC = () => {
     fetchRestaurantInfo();
   }, []);
 
+  const filterMenuModal: JSX.Element = <FilterMenu
+    isOpen={true}
+    KeyWord=""
+    menuPriceLower={0}
+    menuPriceUpper={10000}
+    categoryList={categoryList}
+    categoryValue={selectedCategory.id.toString()}
+    onClose={() => { console.log('閉じる'); }}
+    handleSetCategoryValue={(categoryId: string) => { console.log(categoryId); }}
+    handleSetKeyWord={(e) => { console.log(e.target.value); }}
+    handleSetMenuPrice={(e) => { console.log(e.target.value); }}
+    handleFilterMenuSubmit={async (e) => { e.preventDefault(); console.log('絞り込み'); }}
+  />;
+
   return <RestaurantHomePre
     restaurantName={restaurantName}
     categoryList={categoryList}
@@ -129,5 +143,10 @@ export const RestaurantHomeCon: FC = () => {
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
     onClickCategory={onClickCategory}
+<<<<<<< HEAD
+=======
+    onClickFilterButton={onClickFilterButton}
+    filterModal={filterMenuModal}
+>>>>>>> 27d0f88 (絞り込みモーダルのコンポーネント)
   />;
 };

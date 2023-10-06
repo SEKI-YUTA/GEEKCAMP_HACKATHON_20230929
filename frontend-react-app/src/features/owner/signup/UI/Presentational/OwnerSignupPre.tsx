@@ -3,6 +3,7 @@ import type { CategoryType } from '../../../../../application/@types/Category';
 
 import {
   Box,
+  FormControl,
   FormLabel,
   Input,
   Stack,

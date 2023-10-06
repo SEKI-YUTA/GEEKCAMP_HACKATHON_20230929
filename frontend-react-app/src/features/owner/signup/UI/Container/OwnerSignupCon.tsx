@@ -13,10 +13,10 @@ export const OwnerSignupCon: FC = () => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
-  const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('0');
-  const [errorMsg, setErrorMsg] = useState<number>(0);
   const [errorMsgObject, setErrorMsgObject] = useState<{ [key: string]: string }>({});
   const [spaceMsgObject, setSpaceMsgObject] = useState<{ [key: string]: string }>({});
+  const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
+  const [errorMsg, setErrorMsg] = useState<number>(0);
 
   const handleOwnerEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setOwnerEmail(e.target.value);
@@ -100,7 +100,6 @@ export const OwnerSignupCon: FC = () => {
         setSpaceMsgObject(spaceErrors);
         return;
       }
-
       const responce = await fetch('http://localhost:8080/restaurants/signup', {
         method: 'POST',
         headers: {
@@ -117,8 +116,6 @@ export const OwnerSignupCon: FC = () => {
         })
       });
 
-      console.log(responce);
-
       const json = await responce.json();
       console.log(json);
 
@@ -130,8 +127,7 @@ export const OwnerSignupCon: FC = () => {
         setAddress('');
         setDescription('');
         setSelectedCategoryValue('1');
-      }
-      else {
+      } else {
         // サインインに失敗
         console.log('failed to sign up');
         setErrorMsg(1);

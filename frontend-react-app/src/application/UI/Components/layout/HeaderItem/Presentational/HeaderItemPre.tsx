@@ -1,4 +1,4 @@
-import type { ChangeEvent, FC, FormEvent, MouseEvent } from 'react';
+import type { ChangeEvent, FC, FormEvent, MouseEvent, RefObject } from 'react';
 import { headerIconText, headerStyle } from './HeaderItemPre.css';
 import { Flex, Heading, Link, Text, } from '@chakra-ui/react';
 import { ProfileModal } from '../Components/ProfileModal';
@@ -18,6 +18,7 @@ interface HeaderItemPreProps {
   selectedCategoryValue: string
   isQRViewModal: boolean
   url :string
+  urlInputRef: RefObject<HTMLInputElement>
   QRViewModalOnOpen: (e: MouseEvent) => void
   QRViewModalOnClose: () => void
   handleLogout: (e: MouseEvent) => void
@@ -30,6 +31,7 @@ interface HeaderItemPreProps {
   handlePhoneNumberChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleDescription: (e: ChangeEvent<HTMLTextAreaElement>) => void
   handleRadioGroupChange: (value: string) => void
+  onURLCopy: () => Promise<void>
 }
 export const HeaderItemPre: FC<HeaderItemPreProps> = ({
   title,
@@ -44,6 +46,7 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
   phoneNumber,
   isQRViewModal,
   url,
+  urlInputRef,
   QRViewModalOnOpen,
   QRViewModalOnClose,
   handleRadioGroupChange,
@@ -56,13 +59,16 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
   handleNameChange,
   handlePhoneNumberChange,
   handleDescription,
+  onURLCopy
 }) => {
   return (
     <>
       <QRViewModal 
         isOpen={isQRViewModal}
-        onClose={QRViewModalOnClose}
+        urlInputRef={urlInputRef}
         url={url}
+        onClose={QRViewModalOnClose}
+        onURLCopy={onURLCopy}
       />
       <ProfileModal 
         address={address}

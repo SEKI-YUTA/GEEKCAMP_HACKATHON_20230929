@@ -1,17 +1,21 @@
-import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react";
-import { FC } from "react";
+import { Button, Input, InputGroup, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react";
+import { FC, RefObject } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 
 interface QRViewModalProps {
     isOpen: boolean
     url: string
+    urlInputRef: RefObject<HTMLInputElement>
     onClose: () => void
+    onURLCopy: () => Promise<void>
 }
 
 export const QRViewModal: FC<QRViewModalProps> = ({
     isOpen,
     url,
+    urlInputRef,
     onClose,
+    onURLCopy,
 }) => {
     return <Modal isCentered isOpen={isOpen} size='2xl' onClose={onClose}>
         <ModalOverlay />
@@ -20,7 +24,12 @@ export const QRViewModal: FC<QRViewModalProps> = ({
             <ModalCloseButton />
             <ModalBody>
                 <VStack>
-                    <Input type="url" value={url} onChange={() => {}} />
+                    <InputGroup>
+                        <Input type="url" value={url} readOnly ref={urlInputRef} />
+                        <InputRightElement width='4.5rem'>
+                            <Button onClick={onURLCopy}>コピー</Button>
+                        </InputRightElement>
+                    </InputGroup>
                     <QRCodeCanvas
                         value={url}
                         size={128}

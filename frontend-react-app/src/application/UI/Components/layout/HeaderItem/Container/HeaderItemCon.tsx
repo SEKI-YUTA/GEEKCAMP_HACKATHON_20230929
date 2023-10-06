@@ -1,5 +1,5 @@
 import type { ChangeEvent, FormEvent, MouseEvent } from 'react';
-import { useContext, type FC, useState, useEffect } from 'react';
+import { useContext, type FC, useState, useEffect, useRef } from 'react';
 import { HeaderItemPre } from '../Presentational/HeaderItemPre';
 import { StateContext } from '../../../../../lib/state/AuthContext';
 import { useDisclosure } from '@chakra-ui/react';
@@ -21,7 +21,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
-
+  const urlInputRef = useRef<HTMLInputElement>(null)
   const url = `http://${window.location.hostname}:${window.location.port}/restaurant/${restaurantId}`
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +70,15 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const QRViewModalOnOpen = (e: MouseEvent) => {
     e.preventDefault()
     QRViewModalOnOpen_()
+  }
+  /**
+   * リンクのコピー
+   */
+  const onURLCopy = async () => {
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(url)
+    } 
+    urlInputRef?.current?.select()
   }
   const handleProfileUpdate = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -127,6 +136,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       phoneNumber,
       isQRViewModal,
       url,
+      urlInputRef,
       handleProfileUpdate,
       handleAddressChange,
       handleEmailChange,
@@ -136,6 +146,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       handleRadioGroupChange,
       QRViewModalOnOpen,
       QRViewModalOnClose,
+      onURLCopy,
     }}
   />;
 };

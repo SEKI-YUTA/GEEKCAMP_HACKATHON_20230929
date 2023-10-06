@@ -88,7 +88,7 @@ func editRestaurantFunc(ctx *gin.Context) {
 		context.Background(),
 		"UPDATE restaurants SET email = $1, password = $2, name = $3, phone_number = $4, address = $5, description = $6, category_id = $7 " +
 		"WHERE id = $8 RETURNING id;",
-		editRestaurant.Email, editRestaurant.Password, editRestaurant.Name, editRestaurant.PhoneNumber, editRestaurant.Address, editRestaurant.Description, editRestaurant.CategoryId, editRestaurant.Id,
+		&editRestaurant.Email, &editRestaurant.Password, &editRestaurant.Name, &editRestaurant.PhoneNumber, &editRestaurant.Address, &editRestaurant.Description, &editRestaurant.CategoryId, &editRestaurant.Id,
 	).Scan(&editedId)
 
 	if(editedId == 0) {
@@ -225,7 +225,7 @@ func queryAllRestaurants(keyword string) []common.Restaurant {
 	var category_id int
 	rows, err := pool.Query(
 		context.Background(),
-		"SELECT id, email, name, address, description, category_id FROM restaurants WHERE name LIKE '%" + keyword + "%';",
+		"SELECT id, email, name, phone_number, address, description, category_id FROM restaurants WHERE name LIKE '%" + keyword + "%';",
 	)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to query restaurants \n%s\n", err)
@@ -233,7 +233,7 @@ func queryAllRestaurants(keyword string) []common.Restaurant {
 	restaurants := []common.Restaurant{}
 	for rows.Next() {
 		var r common.Restaurant
-		err := rows.Scan(&r.Id,&r.Email, &r.Name, &r.Address, &r.Description, &category_id)
+		err := rows.Scan(&r.Id,&r.Email, &r.Name, &r.PhoneNumber, &r.Address, &r.Description, &category_id)
 		categoryName := queryCategoryName(category_id, "restaurant_categories")
 		r.Category = categoryName
 		if err != nil {
@@ -270,9 +270,9 @@ func queryRestaurantById(id int) common.Restaurant {
 	categoryId := 0
 	pool.QueryRow(
 		context.Background(),
-		"SELECT id, email, name, address, description, category_id FROM restaurants WHERE id = $1;",
+		"SELECT id, email, name, phone_number, address, description, category_id FROM restaurants WHERE id = $1;",
 		id,
-	).Scan(&restaurant.Id, &restaurant.Email, &restaurant.Name, &restaurant.Address, &restaurant.Description, &categoryId)
+	).Scan(&restaurant.Id, &restaurant.Email, &restaurant.Name, &restaurant.PhoneNumber, &restaurant.Address, &restaurant.Description, &categoryId)
 	categoryName := queryCategoryName(categoryId, "restaurant_categories")
 	restaurant.Category = categoryName
 	return restaurant

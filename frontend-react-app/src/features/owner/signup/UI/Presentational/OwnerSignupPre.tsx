@@ -1,5 +1,5 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
-import { CategoryType } from '../../../../../application/@types/Category';
+import type { CategoryType } from '../../../../../application/@types/Category';
 
 import {
   Box,
@@ -36,7 +36,7 @@ interface OwnerSignupProps {
   handleDescription: (e: ChangeEvent<HTMLInputElement>) => void
   handleRadioGroupChange: (value: string) => void
   handleFormSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
-};
+}
 
 export const OwnerSignupPre: FC<OwnerSignupProps> = ({
   ownerEmail,

@@ -2,7 +2,7 @@ import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useState, useEffect } from 'react';
 
 import { OwnerSignupPre } from '../Presentational/OwnerSignupPre';
-import { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
+import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 
 export const OwnerSignupCon: FC = () => {
 
@@ -48,12 +48,12 @@ export const OwnerSignupCon: FC = () => {
 
   const inputCheck = (input: string, isEmptyCheck?: boolean) => {
     // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
-    const regex = /^[ 　]+$/;
+    const regex = /^[\x20\u3000]+$/;
 
     if (isEmptyCheck) {
       return input == '' || regex.test(input);
     }
-    return input.split(' ').join('').split('　').join('') == ''
+    return input.split(' ').join('').split('　').join('') == '';
   };
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -66,39 +66,39 @@ export const OwnerSignupCon: FC = () => {
       let flag = false;
 
       if (inputCheck(ownerEmail, true)) {
-        errors['ownerEmail'] = 'メールアドレスが入力されていません'
-        flag = true
+        errors['ownerEmail'] = 'メールアドレスが入力されていません';
+        flag = true;
 
       }
       if (inputCheck(ownerPassword, true)) {
-        errors['ownerPassword'] = 'パスワードが入力されていません'
-        flag = true
+        errors['ownerPassword'] = 'パスワードが入力されていません';
+        flag = true;
 
       }
       if (inputCheck(name, true)) {
-        errors['name'] = '名前が入力されていません'
-        flag = true
+        errors['name'] = '名前が入力されていません';
+        flag = true;
 
       }
       if (inputCheck(phoneNumber)) {
-        spaceErrors['phoneNumber'] = 'スペースが含まれています'
-        flag = true
+        spaceErrors['phoneNumber'] = 'スペースが含まれています';
+        flag = true;
 
       }
       if (inputCheck(address)) {
-        spaceErrors['address'] = 'スペースが含まれています'
-        flag = true
+        spaceErrors['address'] = 'スペースが含まれています';
+        flag = true;
 
       }
       if (inputCheck(description)) {
-        spaceErrors['description'] = 'スペースが含まれています'
-        flag = true
+        spaceErrors['description'] = 'スペースが含まれています';
+        flag = true;
 
       }
       if (flag) {
         setErrorMsgObject(errors);
-        setSpaceMsgObject(spaceErrors)
-        return
+        setSpaceMsgObject(spaceErrors);
+        return;
       }
 
       const responce = await fetch('http://localhost:8080/restaurants/signup', {

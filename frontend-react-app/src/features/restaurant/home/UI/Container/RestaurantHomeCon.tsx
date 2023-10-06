@@ -80,19 +80,22 @@ export const RestaurantHomeCon: FC = () => {
         menuPriceUpper: menuPriceUpper,
         categoryValue: categoryValue
       });
-
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/${menuPriceUpper}`);
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus?${menuPriceUpper}`);
       console.log('responce', responce);
-      const data = await responce.json() as MenuSetResponse;
-      console.log('data', data);
+      // 型が違う?
+      const json: MenuSetResponse = await responce.json();
+      console.log('json', json);
+      const data: MenuItemType[] = json.menuSet;
       if (responce.status === 200) {
+        console.log('status', responce.status);
         // キーワードで絞り込み
-        data.menuSet = data.menuSet.filter((item: MenuItemType) => item.name.includes(keyWord));
+        const filteredMenu = data.filter((item: MenuItemType) => item.name.includes(keyWord));
         // Lower以上で絞り込み
-        data.menuSet = data.menuSet.filter((item: MenuItemType) => item.price >= menuPriceLower);
+        const filteredMenu2 = filteredMenu.filter((item: MenuItemType) => item.price >= menuPriceLower);
         // メニューを表示する
-        setMenuItemList(data.menuSet);
+        setMenuItemList(filteredMenu2);
       }
+
     } catch (error) {
       console.log('送信失敗', error);
     }

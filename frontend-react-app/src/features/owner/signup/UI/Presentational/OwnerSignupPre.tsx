@@ -1,6 +1,5 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
 import { CategoryType } from '../../../../../application/@types/Category';
-import { FieldValues, UseFormHandleSubmit, UseFormRegister, Controller } from 'react-hook-form';
 
 import {
   Box,
@@ -119,19 +118,9 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
               Sign in
             </Button>
           </Stack>
-
-            <>
-          {
-            (() => {
-              {errorMsgArray.length > 0 && (
-                errorMsgArray.map(msg, index) => (
-                  <Box key={index}>{msg}</Box>
-                )
-              )}
-            })()
-
-          }
-          </>
+          {errorMsgArray.length > 0 && errorMsgArray.map((msg, index) => (
+            <Box key={index}>{msg}</Box>
+          ))}
         </Box>
       </form>
     </VStack>

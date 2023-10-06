@@ -93,13 +93,15 @@ export const RestaurantHomeCon: FC = () => {
       console.log(json);
       const data: MenuItemType[] = json.map((item: MenuItemType) => ({
         id: item.id,
-        category: item.category,
-        description: item.description,
         name: item.name,
+        price: item.price,
+        description: item.description,
+        restaurant_id: item.restaurant_id,
         // photo_url がない場合は仮の画像を表示
         photo_url: item.photo_url ? item.photo_url : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
-        price: item.price,
-        restaurant_id: item.restaurant_id
+        category: item.category,
+        is_sold_out: item.is_sold_out,
+        like_count: item.like_count,
       }));
       // allMenusにセット
       setAllMenus(data);

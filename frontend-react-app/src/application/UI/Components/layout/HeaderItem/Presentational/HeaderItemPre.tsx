@@ -3,6 +3,7 @@ import { headerIconText, headerStyle } from './HeaderItemPre.css';
 import { Flex, Heading, Link, Text, } from '@chakra-ui/react';
 import { ProfileModal } from '../Components/ProfileModal';
 import type { CategoryType } from '../../../../../@types/Category';
+import { QRViewModal } from '../Components/QRViewModal';
 
 interface HeaderItemPreProps {
   title: string
@@ -15,6 +16,10 @@ interface HeaderItemPreProps {
   phoneNumber: string
   restaurantCategory: CategoryType[]
   selectedCategoryValue: string
+  isQRViewModal: boolean
+  url :string
+  QRViewModalOnOpen: (e: MouseEvent) => void
+  QRViewModalOnClose: () => void
   handleLogout: (e: MouseEvent) => void
   handleProfileShow: (e: MouseEvent) => Promise<void>
   handleProfileHide: () => void
@@ -37,6 +42,10 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
   email,
   name,
   phoneNumber,
+  isQRViewModal,
+  url,
+  QRViewModalOnOpen,
+  QRViewModalOnClose,
   handleRadioGroupChange,
   handleLogout,
   handleProfileShow,
@@ -50,6 +59,11 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
 }) => {
   return (
     <>
+      <QRViewModal 
+        isOpen={isQRViewModal}
+        onClose={QRViewModalOnClose}
+        url={url}
+      />
       <ProfileModal 
         address={address}
         description={description}
@@ -72,11 +86,12 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
         <Heading css={headerIconText}>
           <Text {...(isOwner && { as: 'a', href: '/' })}>{title}</Text>
         </Heading>
-        <Flex flex={1} justify='end' gap={4}>
+        <Flex flex={2} justify='end' gap={4}>
           {
             isOwner &&
             // レストラン側の場合のみ表示
             <>
+              <Link href='/' color="white" onClick={QRViewModalOnOpen}>QRコード</Link>
               <Link href='/' color="white" onClick={handleProfileShow}>店舗情報</Link>
               {/* 後でボタンにする↓ */}
               <Link href='/signin' color="white" onClick={handleLogout}>ログアウト</Link>

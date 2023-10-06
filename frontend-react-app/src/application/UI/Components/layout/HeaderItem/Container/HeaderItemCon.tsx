@@ -13,6 +13,7 @@ interface HeaderItemConProps {
 export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const { restaurantId, onLogout } = useContext(StateContext);
   const { isOpen: isProfileViewModal, onOpen: profileViewModalOnOpen, onClose: profileViewModalOnClose } = useDisclosure();
+  const { isOpen: isQRViewModal, onOpen: QRViewModalOnOpen_, onClose: QRViewModalOnClose } = useDisclosure();
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -20,6 +21,8 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
+
+  const url = `http://${window.location.hostname}:${window.location.port}/restaurant/${restaurantId}`
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
@@ -64,6 +67,10 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const handleProfileHide = () => {
     profileViewModalOnClose();
   };
+  const QRViewModalOnOpen = (e: MouseEvent) => {
+    e.preventDefault()
+    QRViewModalOnOpen_()
+  }
   const handleProfileUpdate = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -118,6 +125,8 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       email,
       name,
       phoneNumber,
+      isQRViewModal,
+      url,
       handleProfileUpdate,
       handleAddressChange,
       handleEmailChange,
@@ -125,6 +134,8 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       handlePhoneNumberChange,
       handleDescription,
       handleRadioGroupChange,
+      QRViewModalOnOpen,
+      QRViewModalOnClose,
     }}
   />;
 };

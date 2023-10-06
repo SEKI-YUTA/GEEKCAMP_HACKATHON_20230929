@@ -15,6 +15,7 @@ export const OwnerSignupCon: FC = () => {
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
   const [errorMsg, setErrorMsg] = useState<number>(0);
+  const [errorMsgArray, setErrorMsgArray] = useState<string[]>([])
 
   const handleOwnerEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setOwnerEmail(e.target.value);
@@ -44,32 +45,80 @@ export const OwnerSignupCon: FC = () => {
     setSelectedCategoryValue(value);
   };
 
+  // const inputCheck = (str: string, isEmptyCheck?: boolean) => {
+
+  //   if (isEmptyCheck) {
+  //     return str == '' || str.match(/^[ 　\r\n\t]*$/);
+  //   }
+  //   return str.match(/^[ 　\r\n\t]*$/);
+    
+  // };
+
+  const inputCheck = (input: string, isEmptyCheck?: boolean) => {
+    // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
+    const regex = /^[ 　]+$/;
+    if (isEmptyCheck) {
+    return input == '' || regex.test(input);
+    }
+    return regex.test(input);
+  };
+
+  // const spaceFilling = (str: string) => {
+  //   return str.split(' ').join('').split('　').join('') ==  ''
+  // };
+
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const errors: string[] = [];
+
     try {
-      if (ownerEmail === '' || ownerEmail.split(' ').join('').split('　').join('') === '') {
+      let flag = false;
+
+      if (inputCheck(ownerEmail, true)) {
         setErrorMsg(1);
+        errors.push('メールアドレスが入力されていません')
+        console.log('メールアドレス');
+        flag = true
 
-      } else if (ownerPassword === '' || ownerPassword.split(' ').join('').split('　').join('') === '') {
+      } 
+      if (inputCheck(ownerPassword, true)) {
         setErrorMsg(2);
+        errors.push('パスワードが入力されていません')
+        console.log('パスワード');
+        flag = true
 
-      } else if (name === '' || name.split(' ').join('').split('　').join('') === '') {
+      } 
+      if (inputCheck(name, true)) {
         setErrorMsg(3);
+        errors.push('名前が入力されていません')
+        console.log('名前');
+        flag = true
 
-      } else if (phoneNumber.split(' ').join('').split('　').join('') === '') {
+      } 
+      if (inputCheck(phoneNumber)) {
         setErrorMsg(4);
+        console.log('電話番号');
+        flag = true
 
-      } else if (address.split(' ').join('').split('　').join('') === '') {
+      } 
+      if (inputCheck(address)) {
         setErrorMsg(5);
+        console.log('住所');
+        flag = true
 
-      } else if (description.split(' ').join('').split('　').join('') === '') {
+      } 
+      if (inputCheck(description)) {
         setErrorMsg(6);
-
-      } else if (selectedCategoryValue === '') {
-        setErrorMsg(7);
+        console.log('お店の説明');
+        flag = true
 
       }
-      
+      if (flag) {
+        setErrorMsgArray(errors);
+        return
+      }
+
       const responce = await fetch('http://localhost:8080/restaurants/signup', {
         method: 'POST',
         headers: {
@@ -123,6 +172,7 @@ export const OwnerSignupCon: FC = () => {
     handleFormSubmit={handleFormSubmit}
     restaurantCategory={restaurantCategory}
     errorMsg={errorMsg}
+    errorMsgArray={errorMsgArray  }
   />;
 
 };

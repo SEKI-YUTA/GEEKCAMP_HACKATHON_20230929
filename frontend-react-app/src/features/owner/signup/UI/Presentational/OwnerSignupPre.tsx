@@ -1,5 +1,6 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
 import { CategoryType } from '../../../../../application/@types/Category';
+import { FieldValues, UseFormHandleSubmit, UseFormRegister, Controller } from 'react-hook-form';
 
 import {
   Box,
@@ -26,6 +27,7 @@ interface OwnerSignupProps {
   selectedCategoryValue: string
   restaurantCategory: CategoryType[]
   errorMsg: number
+  errorMsgArray: string[]
   handleOwnerEmailChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleOwnerPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleNameChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -34,8 +36,7 @@ interface OwnerSignupProps {
   handleDescription: (e: ChangeEvent<HTMLInputElement>) => void
   handleRadioGroupChange: (value: string) => void
   handleFormSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
-}
-
+};
 
 export const OwnerSignupPre: FC<OwnerSignupProps> = ({
   ownerEmail,
@@ -45,6 +46,8 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
   address,
   description,
   selectedCategoryValue,
+  errorMsg,
+  errorMsgArray,
   handleOwnerEmailChange,
   handleOwnerPasswordChange,
   handleNameChange,
@@ -67,17 +70,17 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
           <Stack spacing={4}>
             <FormControl id="email">
               <FormLabel htmlFor="ownerEmail">メールアドレス</FormLabel>
-              <Input type="email" id="ownerEmail" placeholder="メールアドレスを入力" value={ownerEmail} onChange={handleOwnerEmailChange} />
+              <Input type="email" id="ownerEmail" placeholder="メールアドレスを入力" value={ownerEmail} onChange={handleOwnerEmailChange}  />
             </FormControl>
 
-            <FormControl id="password">
-              <FormLabel htmlFor="ownerpassword">パスワード</FormLabel>
-              <Input type="password" id="ownerpassword" placeholder="パスワードを入力" value={ownerPassword} onChange={handleOwnerPasswordChange} />
-            </FormControl>
+
+            <FormLabel htmlFor="ownerpassword">パスワード</FormLabel>
+            <Input type="password" id="ownerpassword" placeholder="パスワードを入力" value={ownerPassword} onChange={handleOwnerPasswordChange}  />
+
 
             <FormControl id="name">
               <FormLabel htmlFor="name">名前</FormLabel>
-              <Input type="text" id="name" placeholder="名前を入力" value={name} onChange={handleNameChange} />
+              <Input type="text" id="name" placeholder="名前を入力" value={name} onChange={handleNameChange}  />
             </FormControl>
 
             <FormControl id="phone_number">
@@ -116,6 +119,19 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
               Sign in
             </Button>
           </Stack>
+
+            <>
+          {
+            (() => {
+              {errorMsgArray.length > 0 && (
+                errorMsgArray.map(msg, index) => (
+                  <Box key={index}>{msg}</Box>
+                )
+              )}
+            })()
+
+          }
+          </>
         </Box>
       </form>
     </VStack>

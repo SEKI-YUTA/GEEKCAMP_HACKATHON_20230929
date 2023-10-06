@@ -136,5 +136,6 @@ export const RestaurantHomeCon: FC = () => {
     isLargerThan1200={isLargerThan1200}
     onClickCategory={onClickCategory}
     onClickFilterButton={onClickFilterButton}
+    filterModal={<></>}
   />;
 };

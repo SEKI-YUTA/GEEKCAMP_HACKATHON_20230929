@@ -41,6 +41,11 @@ interface RestaurantHomePreProps {
    * 絞り込みボタンを押したときの処理
    */
   onClickFilterButton: () => void
+
+  /**
+   * 絞り込みボタンを押したときモーダル
+   */
+  filterModal: JSX.Element
 }
 
 export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
@@ -52,9 +57,11 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
   isLargerThan1200,
   onClickCategory,
   onClickFilterButton,
+  filterModal,
 }) => {
   return (
     <>
+      {filterModal}
       <Layout title={`${restaurantName}メニューアプリ`}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>
           <HStack py={5}>

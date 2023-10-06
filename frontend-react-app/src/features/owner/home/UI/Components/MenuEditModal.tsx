@@ -72,7 +72,6 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
                           return <></>;
                       }
                     })()
-
                   }
                 </Box>
               </Box>

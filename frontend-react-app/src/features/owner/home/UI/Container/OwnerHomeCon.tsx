@@ -140,9 +140,14 @@ export const OwnerHomeCon: FC = () => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || menuPrice.match(/^[0\r\n\t]*$/) || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
+        return;
+      }
+      else if(menuName.match(/^[ 　\r\n\t]*$/)){
+        //全ての文字列がスペースの場合
+        alert("space")
         return;
       }
       console.log('記入済み', {
@@ -201,6 +206,11 @@ export const OwnerHomeCon: FC = () => {
       if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
+        return;
+      }
+      else if(menuName.match(/^[ 　\r\n\t]*$/)){
+        //全ての文字列がスペースの場合
+        alert("space")
         return;
       }
       console.log('記入済み', {

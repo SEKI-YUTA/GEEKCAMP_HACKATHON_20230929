@@ -1,6 +1,6 @@
 import { Box, Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Textarea } from '@chakra-ui/react';
 import type { ChangeEvent, FC, FormEvent } from 'react';
-import { CategoryType } from '../../../../../@types/Category';
+import type { CategoryType } from '../../../../../@types/Category';
 
 interface ProfileModalProps {
     isOpen: boolean

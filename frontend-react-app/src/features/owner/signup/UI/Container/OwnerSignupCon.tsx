@@ -2,7 +2,7 @@ import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useState, useEffect } from 'react';
 
 import { OwnerSignupPre } from '../Presentational/OwnerSignupPre';
-import { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
+import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 
 export const OwnerSignupCon: FC = () => {
 

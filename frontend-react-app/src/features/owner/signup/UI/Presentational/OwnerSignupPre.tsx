@@ -1,5 +1,5 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
-import { CategoryType } from '../../../../../application/@types/Category';
+import type { CategoryType } from '../../../../../application/@types/Category';
 
 import {
   Box,

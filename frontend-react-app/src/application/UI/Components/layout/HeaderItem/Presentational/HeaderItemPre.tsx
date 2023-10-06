@@ -2,7 +2,7 @@ import type { ChangeEvent, FC, FormEvent, MouseEvent } from 'react';
 import { headerIconText, headerStyle } from './HeaderItemPre.css';
 import { Flex, Heading, Link, Text, } from '@chakra-ui/react';
 import { ProfileModal } from '../Components/ProfileModal';
-import { CategoryType } from '../../../../../@types/Category';
+import type { CategoryType } from '../../../../../@types/Category';
 
 interface HeaderItemPreProps {
   title: string
@@ -65,8 +65,8 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
         handleNameChange = {handleNameChange}
         handlePhoneNumberChange = {handlePhoneNumberChange}
         handleDescription = {handleDescription}
-        onClose={handleProfileHide}
         handleRadioGroupChange = {handleRadioGroupChange}
+        onClose={handleProfileHide}
       />
       <Flex as='header' css={headerStyle}>
         <Heading css={headerIconText}>

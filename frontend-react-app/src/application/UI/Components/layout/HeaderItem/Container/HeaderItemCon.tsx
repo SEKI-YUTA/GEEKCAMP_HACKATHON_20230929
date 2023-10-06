@@ -4,7 +4,7 @@ import { HeaderItemPre } from '../Presentational/HeaderItemPre';
 import { StateContext } from '../../../../../lib/state/AuthContext';
 import { useDisclosure } from '@chakra-ui/react';
 import type { RestaurantType } from '../../../../../@types/Restaurant';
-import { CategoryResponce, CategoryType } from '../../../../../@types/Category';
+import type { CategoryResponce, CategoryType } from '../../../../../@types/Category';
 
 interface HeaderItemConProps {
   title: string
@@ -56,9 +56,9 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       setEmail(data.email);
       setName(data.name);
       setPhoneNumber(data.phone_number);
-      setSelectedCategoryValue((restaurantCategory.find(item => item.name === data.category)?.id ?? 0).toString())
+      setSelectedCategoryValue((restaurantCategory.find(item => item.name === data.category)?.id ?? 0).toString());
     } catch (error) {
-     console.log(error);
+      console.log(error);
     }
   };
   const handleProfileHide = () => {
@@ -81,7 +81,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
           description: description,
           category_id: parseInt(selectedCategoryValue)
         })
-      })
+      });
       console.log(responce.ok);
       
     } catch (error) {
@@ -101,8 +101,8 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   };
 
   useEffect(()=>{
-    fetchRestaurantCategorys()
-  }, [restaurantId])
+    fetchRestaurantCategorys();
+  }, [restaurantId]);
   return <HeaderItemPre
     {...{
       title,

@@ -49,6 +49,8 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
     try {
       const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
       const data:RestaurantType = await responce.json();
+      console.log(data);
+      
       setAddress(data.address);
       setDescription(data.description);
       setEmail(data.email);
@@ -64,6 +66,27 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   };
   const handleProfileUpdate = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const responce = await fetch('http://localhost:8080/restaurants/edit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: restaurantId,
+          email: email,
+          name: name,
+          phone_number: phoneNumber,
+          address: address,
+          description: description,
+          category_id: parseInt(selectedCategoryValue)
+        })
+      })
+      console.log(responce.ok);
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
   const fetchRestaurantCategorys = async () => {
     try {

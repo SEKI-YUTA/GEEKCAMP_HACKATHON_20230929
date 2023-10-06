@@ -2,17 +2,19 @@ import type { ChangeEvent, FC, FormEvent, MouseEvent } from 'react';
 import { headerIconText, headerStyle } from './HeaderItemPre.css';
 import { Flex, Heading, Link, Text, } from '@chakra-ui/react';
 import { ProfileModal } from '../Components/ProfileModal';
+import { CategoryType } from '../../../../../@types/Category';
 
 interface HeaderItemPreProps {
   title: string
   isOwner?: boolean
   isProfileViewModal: boolean
   address: string
-  category: string
   description: string
   email: string
   name: string
   phoneNumber: string
+  restaurantCategory: CategoryType[]
+  selectedCategoryValue: string
   handleLogout: (e: MouseEvent) => void
   handleProfileShow: (e: MouseEvent) => Promise<void>
   handleProfileHide: () => void
@@ -22,17 +24,20 @@ interface HeaderItemPreProps {
   handleNameChange: (e: ChangeEvent<HTMLInputElement>) => void
   handlePhoneNumberChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleDescription: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  handleRadioGroupChange: (value: string) => void
 }
 export const HeaderItemPre: FC<HeaderItemPreProps> = ({
   title,
   isOwner,
   isProfileViewModal,
   address,
-  category,
+  selectedCategoryValue,
+  restaurantCategory,
   description,
   email,
   name,
   phoneNumber,
+  handleRadioGroupChange,
   handleLogout,
   handleProfileShow,
   handleProfileHide,
@@ -47,12 +52,13 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
     <>
       <ProfileModal 
         address={address}
-        category={category}
         description={description}
         email={email}
         name={name}
         phoneNumber={phoneNumber}
         isOpen={isProfileViewModal}
+        selectedCategoryValue = {selectedCategoryValue}
+        restaurantCategory = {restaurantCategory}
         handleProfileUpdate={handleProfileUpdate}
         handleAddressChange = {handleAddressChange}
         handleEmailChange = {handleEmailChange}
@@ -60,6 +66,7 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
         handlePhoneNumberChange = {handlePhoneNumberChange}
         handleDescription = {handleDescription}
         onClose={handleProfileHide}
+        handleRadioGroupChange = {handleRadioGroupChange}
       />
       <Flex as='header' css={headerStyle}>
         <Heading css={headerIconText}>

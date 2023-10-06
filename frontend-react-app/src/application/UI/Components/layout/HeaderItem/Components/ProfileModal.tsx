@@ -1,14 +1,16 @@
-import { Box, Button, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Textarea } from '@chakra-ui/react';
 import type { ChangeEvent, FC, FormEvent } from 'react';
+import { CategoryType } from '../../../../../@types/Category';
 
 interface ProfileModalProps {
     isOpen: boolean
     address: string
-    category: string
     description: string
     email: string
     name: string
     phoneNumber: string
+    restaurantCategory: CategoryType[]
+    selectedCategoryValue: string
     onClose: () => void
     handleProfileUpdate: (e:FormEvent<HTMLFormElement>) => Promise<void>
     handleAddressChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -16,16 +18,18 @@ interface ProfileModalProps {
     handleNameChange: (e: ChangeEvent<HTMLInputElement>) => void
     handlePhoneNumberChange: (e: ChangeEvent<HTMLInputElement>) => void
     handleDescription: (e: ChangeEvent<HTMLTextAreaElement>) => void
+    handleRadioGroupChange: (value: string) => void
 }
 
 export const ProfileModal: FC<ProfileModalProps> = ({
   isOpen,
   address,
-  category,
   description,
   email,
   name,
   phoneNumber,
+  restaurantCategory,
+  selectedCategoryValue,
   onClose,
   handleProfileUpdate,
   handleAddressChange,
@@ -33,6 +37,7 @@ export const ProfileModal: FC<ProfileModalProps> = ({
   handleNameChange,
   handlePhoneNumberChange,
   handleDescription,
+  handleRadioGroupChange,
 }) => {
   return <Modal isCentered isOpen={isOpen} size='2xl' onClose={onClose}>
     <ModalOverlay />
@@ -61,14 +66,14 @@ export const ProfileModal: FC<ProfileModalProps> = ({
             <FormLabel htmlFor='restaurantDetail'>詳細</FormLabel>
             <Textarea id='restaurantDetail' value={description} onChange={handleDescription}/>
           </Box>
-          {/* <FormControl>
+          <FormControl>
             <FormLabel htmlFor="restaurantCategory">カテゴリー</FormLabel>
-            <RadioGroup id="restaurantCategory" colorScheme='orange' value={categoryValue} onChange={handleSetCategoryValue}>
-              {categoryList.filter(item => item.id !== 0).map((category, index) => (
+            <RadioGroup id="restaurantCategory" colorScheme='orange' value={selectedCategoryValue} onChange={handleRadioGroupChange}>
+              {restaurantCategory.filter(item => item.id !== 0).map((category, index) => (
                 <Radio key={index} pr={2} borderColor="gray" value={category.id.toString()}>{category.name}</Radio>
               ))}
             </RadioGroup>
-          </FormControl> */}
+          </FormControl>
         </ModalBody>
         <ModalFooter justifyContent='center'>
           <Button type='submit'>変更</Button>

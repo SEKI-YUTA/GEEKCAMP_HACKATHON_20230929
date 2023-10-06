@@ -1,9 +1,10 @@
 import type { ChangeEvent, FormEvent, MouseEvent } from 'react';
-import { useContext, type FC, useState } from 'react';
+import { useContext, type FC, useState, useEffect } from 'react';
 import { HeaderItemPre } from '../Presentational/HeaderItemPre';
 import { StateContext } from '../../../../../lib/state/AuthContext';
 import { useDisclosure } from '@chakra-ui/react';
 import type { RestaurantType } from '../../../../../@types/Restaurant';
+import { CategoryResponce, CategoryType } from '../../../../../@types/Category';
 
 interface HeaderItemConProps {
   title: string
@@ -13,11 +14,12 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const { restaurantId, onLogout } = useContext(StateContext);
   const { isOpen: isProfileViewModal, onOpen: profileViewModalOnOpen, onClose: profileViewModalOnClose } = useDisclosure();
   const [address, setAddress] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
+  const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
@@ -34,6 +36,9 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const handleDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value);
   };
+  const handleRadioGroupChange = (value: string) => {
+    setSelectedCategoryValue(value);
+  };
   const handleLogout = (e: MouseEvent) => {
     e.preventDefault();
     onLogout();
@@ -41,14 +46,18 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const handleProfileShow = async (e: MouseEvent) => {
     e.preventDefault();
     profileViewModalOnOpen();
-    const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
-    const data:RestaurantType = await responce.json();
-    setAddress(data.address);
-    setCategory(data.category);
-    setDescription(data.description);
-    setEmail(data.email);
-    setName(data.name);
-    setPhoneNumber(data.phone_number);
+    try {
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
+      const data:RestaurantType = await responce.json();
+      setAddress(data.address);
+      setDescription(data.description);
+      setEmail(data.email);
+      setName(data.name);
+      setPhoneNumber(data.phone_number);
+      setSelectedCategoryValue((restaurantCategory.find(item => item.name === data.category)?.id ?? 0).toString())
+    } catch (error) {
+     console.log(error);
+    }
   };
   const handleProfileHide = () => {
     profileViewModalOnClose();
@@ -56,6 +65,21 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const handleProfileUpdate = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+  const fetchRestaurantCategorys = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/restaurants/categories');
+      const data: CategoryResponce = await response.json();
+      setRestaurantCategory(data.categories);
+      setSelectedCategoryValue(data.categories[0].id.toString());
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchRestaurantCategorys()
+  }, [restaurantId])
   return <HeaderItemPre
     {...{
       title,
@@ -65,7 +89,8 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       handleProfileShow,
       handleProfileHide,
       address,
-      category,
+      selectedCategoryValue,
+      restaurantCategory,
       description,
       email,
       name,
@@ -76,6 +101,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       handleNameChange,
       handlePhoneNumberChange,
       handleDescription,
+      handleRadioGroupChange,
     }}
   />;
 };

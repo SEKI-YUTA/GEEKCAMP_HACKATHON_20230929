@@ -1,10 +1,12 @@
-import { useEffect, type FC, useState } from 'react';
+import { useEffect, type FC, useState, ChangeEvent, FormEvent } from 'react';
 import { RestaurantHomePre } from '../Presentational/RestaurantHomePre';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
-import { useMediaQuery } from '@chakra-ui/react';
+import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
 import type { RestaurantType } from '../../../../../application/@types/Restaurant';
+import { FilterMenuModal } from '../Components/FilterMenuModal';
+import { MenuSetResponse } from '../../../../../application/@types/MenuSetResponse';
 
 /**
  * レストラン, ホーム画面のコンポーネント（Container）
@@ -27,6 +29,99 @@ export const RestaurantHomeCon: FC = () => {
   // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
+
+  /////// 絞り込みモーダル ///////
+  const { isOpen: isFilterMenuModalOpen, onOpen: filterMenuModalOnOpen, onClose: filterMenuModalOnClose } = useDisclosure();
+  const [categoryValue, setCategoryValue] = useState<string>('1');
+  const handleSetCategoryValue = (category: string) => {
+    setCategoryValue(category);
+  };
+
+  const [keyWord, setKeyWord] = useState<string>('');
+  const handleSetKeyWord = (e: ChangeEvent<HTMLInputElement>) => {
+    setKeyWord(e.target.value);
+  };
+
+  const [menuPriceLower, setMenuPriceLower] = useState<number>(0);
+  const handleSetMenuPriceLower = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
+      setMenuPriceLower(parseInt(e.target.value));
+    } else {
+      setMenuPriceLower(0);
+    }
+  };
+
+  const [menuPriceUpper, setMenuPriceUpper] = useState<number>(0);
+  const handleSetMenuPriceUpper = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
+      setMenuPriceUpper(parseInt(e.target.value));
+    } else {
+      setMenuPriceUpper(0);
+    }
+  };
+
+  /**
+   * メニュー追加
+   * @param e 
+   * @returns 
+   */
+  const handleFilterMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
+      if (categoryValue === '' || isNaN(menuPriceLower) || isNaN(menuPriceUpper)) {
+        // 空欄がある場合
+        console.log('不正な値');
+        return;
+      }
+      console.log('入力値', {
+        keyWord: keyWord,
+        menuPriceLower: menuPriceLower,
+        menuPriceUpper: menuPriceUpper,
+        categoryValue: categoryValue
+      });
+
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/${menuPriceUpper}`);
+      console.log('responce', responce);
+      const data = await responce.json() as MenuSetResponse;
+      console.log('data', data);
+      if (responce.status === 200) {
+        // キーワードで絞り込み
+        data.menuSet = data.menuSet.filter((item: MenuItemType) => item.name.includes(keyWord));
+        // Lower以上で絞り込み
+        data.menuSet = data.menuSet.filter((item: MenuItemType) => item.price >= menuPriceLower);
+        // メニューを表示する
+        setMenuItemList(data.menuSet);
+      }
+    } catch (error) {
+      console.log('送信失敗', error);
+    }
+  };
+
+  /**
+   * メニュー新規登録ボタンをクリック時イベント
+   */
+  const onClickFilterButton = () => {
+    console.log('新規登録');
+    filterMenuModalOnOpen();
+  };
+
+  const filterMenuModal: JSX.Element = <FilterMenuModal
+    isOpen={isFilterMenuModalOpen}
+    KeyWord={keyWord}
+    menuPriceLower={menuPriceLower}
+    menuPriceUpper={menuPriceUpper}
+    categoryList={categoryList}
+    categoryValue={categoryValue}
+    handleSetCategoryValue={handleSetCategoryValue}
+    handleSetKeyWord={handleSetKeyWord}
+    handleSetMenuPriceLower={handleSetMenuPriceLower}
+    handleSetMenuPriceUpper={handleSetMenuPriceUpper}
+    onClose={filterMenuModalOnClose}
+    handleFilterMenuSubmit={handleFilterMenuSubmit}
+  />;
+
+  ////// 絞り込みモーダル ここまで///////
 
   const fetchRestaurantInfo = async () => {
     try {
@@ -123,10 +218,6 @@ export const RestaurantHomeCon: FC = () => {
     fetchRestaurantInfo();
   }, []);
 
-  const onClickFilterButton = () => {
-    console.log('絞り込み');
-  }
-
   return <RestaurantHomePre
     restaurantName={restaurantName}
     categoryList={categoryList}
@@ -136,6 +227,6 @@ export const RestaurantHomeCon: FC = () => {
     isLargerThan1200={isLargerThan1200}
     onClickCategory={onClickCategory}
     onClickFilterButton={onClickFilterButton}
-    filterModal={<></>}
+    filterModal={filterMenuModal}
   />;
 };

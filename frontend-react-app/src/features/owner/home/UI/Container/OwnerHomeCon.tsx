@@ -43,6 +43,10 @@ export const OwnerHomeCon: FC = () => {
   const [menuPrice, setMenuPrice] = useState<string>('');
   const [blurMsg, setBlurMsg] = useState<boolean>(false);
   const handleSetMenuPrice = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== '' && inputAllZero(e.target.value)) {
+      setMenuPrice('0');
+      return;
+    }
     if (parseInt(e.target.value) >= 0 || e.target.value === '') {
       setMenuPrice(e.target.value);
     }
@@ -51,9 +55,10 @@ export const OwnerHomeCon: FC = () => {
   const [isSpace, setIsSpace] = useState<boolean>(false);
   const inputCheck = (input: string, isSpace?: boolean) => {
     // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
+    // eslint-disable-next-line no-irregular-whitespace
     const regex = /^[ 　]+$/;
     if (isSpace) {
-    return input == '' || regex.test(input);
+      return input == '' || regex.test(input);
     }
     return regex.test(input);
   };
@@ -155,18 +160,18 @@ export const OwnerHomeCon: FC = () => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || menuName === '' || menuPrice == '0' || inputAllZero(menuPrice) || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
         return;
       }
       else if(inputCheck(menuName)){
         //全ての文字列がスペースの場合
-        console.log("全てスペース");
-        setIsSpace(true)
+        console.log('全てスペース');
+        setIsSpace(true);
         return;
       }
-      setIsSpace(false)
+      setIsSpace(false);
       console.log('記入済み', {
         name: menuName,
         price: menuPrice,
@@ -220,18 +225,18 @@ export const OwnerHomeCon: FC = () => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || menuName === '' || menuPrice == '0' || menuPrice.match(/^[0\r\n\t]*$/) || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
         return;
       }
-      else if(menuName.match(/^[ 　\r\n\t]*$/)){
+      else if(inputCheck(menuName)){
         //全ての文字列がスペースの場合
-        console.log("全てスペース");
-        setIsSpace(true)
+        console.log('全てスペース');
+        setIsSpace(true);
         return;
       }
-      setIsSpace(false)
+      setIsSpace(false);
       console.log('記入済み', {
         name: menuName,
         price: menuPrice,
@@ -367,8 +372,8 @@ export const OwnerHomeCon: FC = () => {
     handleSetMenuPrice={handleSetMenuPrice}
     handleSetMenuDetail={handleSetMenuDetail}
     handleSetImgLink={handleSetImgLink}
-    menuViewModalOnClose={() => {resetMenuValues();menuViewModalOnClose();}}
-    MenuEditModalOnClose={() => {resetMenuValues();MenuEditModalOnClose();}}
+    menuViewModalOnClose={() => {resetMenuValues();menuViewModalOnClose();setBlurMsg(false);}}
+    MenuEditModalOnClose={() => {resetMenuValues();MenuEditModalOnClose();setBlurMsg(false);}}
     handleAddMenuSubmit={handleAddMenuSubmit}
     handleUpdateMenuSubmit={handleUpdateMenuSubmit}
     handleBlur={handleBlur}

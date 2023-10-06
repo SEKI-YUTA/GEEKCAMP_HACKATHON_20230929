@@ -60,17 +60,17 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
                 <Input id='menuName' type='text' value={menuName} onChange={handleSetMenuName} />
               </Box>
               <Box>
-                  {
-                    (()=>{
-                      switch (isSpace) {
-                        case true:
-                          return <Text color="red">空白のみの名前は使用できません</Text>;
-                        default:
-                          return <></>;
-                      }
-                    })()
-                  }
-                </Box>
+                {
+                  (()=>{
+                    switch (isSpace) {
+                      case true:
+                        return <Text color="red">空白のみの名前は使用できません</Text>;
+                      default:
+                        return <></>;
+                    }
+                  })()
+                }
+              </Box>
               <Box py={2}>
                 <FormLabel htmlFor='menuPrice'>価格</FormLabel>
                 <Flex alignItems="center" gap={3}>

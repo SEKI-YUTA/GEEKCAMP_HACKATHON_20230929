@@ -2,7 +2,7 @@ import type { ChangeEvent, FormEvent, MouseEvent } from 'react';
 import { useContext, type FC, useState, useEffect } from 'react';
 import { HeaderItemPre } from '../Presentational/HeaderItemPre';
 import { StateContext } from '../../../../../lib/state/AuthContext';
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure, useToast } from '@chakra-ui/react';
 import type { RestaurantType } from '../../../../../@types/Restaurant';
 import type { CategoryResponce, CategoryType } from '../../../../../@types/Category';
 
@@ -20,6 +20,16 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
+
+  const toast = useToast();
+
+  const addToast = () => {
+    toast({
+      description: '更新しました。',
+      status: 'success',
+      isClosable: true
+    });
+  };
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
@@ -83,6 +93,9 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
         })
       });
       console.log(responce.ok);
+      if (responce.ok) {
+        addToast();
+      }
       
     } catch (error) {
       console.log(error);

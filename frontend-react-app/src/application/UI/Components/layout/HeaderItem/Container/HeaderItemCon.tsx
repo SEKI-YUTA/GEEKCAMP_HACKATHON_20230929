@@ -22,6 +22,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
   const urlInputRef = useRef<HTMLInputElement>(null)
+  // const QRCanvasRef = useRef<HTMLCanvasElement>(null)
   const url = `http://${window.location.hostname}:${window.location.port}/restaurant/${restaurantId}`
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -104,6 +105,21 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       console.log(error);
     }
   };
+  /**
+   * QRコードの保存
+   */
+  const saveQR = () => {
+    const QRCanvas = document.getElementById('qr-canvas') as HTMLCanvasElement
+    QRCanvas?.toBlob(blob => {
+      if (blob) {
+        const a:HTMLAnchorElement = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'QRCode.jpg';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+    })
+  }
   const fetchRestaurantCategorys = async () => {
     try {
       const response = await fetch('http://localhost:8080/restaurants/categories');
@@ -147,6 +163,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       QRViewModalOnOpen,
       QRViewModalOnClose,
       onURLCopy,
+      saveQR,
     }}
   />;
 };

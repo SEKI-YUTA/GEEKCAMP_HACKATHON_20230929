@@ -32,6 +32,7 @@ interface HeaderItemPreProps {
   handleDescription: (e: ChangeEvent<HTMLTextAreaElement>) => void
   handleRadioGroupChange: (value: string) => void
   onURLCopy: () => Promise<void>
+  saveQR: () => void
 }
 export const HeaderItemPre: FC<HeaderItemPreProps> = ({
   title,
@@ -59,7 +60,8 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
   handleNameChange,
   handlePhoneNumberChange,
   handleDescription,
-  onURLCopy
+  onURLCopy,
+  saveQR,
 }) => {
   return (
     <>
@@ -69,6 +71,7 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
         url={url}
         onClose={QRViewModalOnClose}
         onURLCopy={onURLCopy}
+        saveQR={saveQR}
       />
       <ProfileModal 
         address={address}

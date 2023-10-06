@@ -8,6 +8,7 @@ interface QRViewModalProps {
     urlInputRef: RefObject<HTMLInputElement>
     onClose: () => void
     onURLCopy: () => Promise<void>
+    saveQR: () => void
 }
 
 export const QRViewModal: FC<QRViewModalProps> = ({
@@ -16,6 +17,7 @@ export const QRViewModal: FC<QRViewModalProps> = ({
     urlInputRef,
     onClose,
     onURLCopy,
+    saveQR,
 }) => {
     return <Modal isCentered isOpen={isOpen} size='2xl' onClose={onClose}>
         <ModalOverlay />
@@ -31,6 +33,7 @@ export const QRViewModal: FC<QRViewModalProps> = ({
                         </InputRightElement>
                     </InputGroup>
                     <QRCodeCanvas
+                        id="qr-canvas"
                         value={url}
                         size={128}
                         bgColor={"#fff"}
@@ -45,11 +48,12 @@ export const QRViewModal: FC<QRViewModalProps> = ({
                             width: 24,
                             excavate: true,
                         }}
+                        
                     />
                 </VStack>
             </ModalBody>
             <ModalFooter justifyContent='center'>
-                <Button type='submit'>QRコードを保存</Button>
+                <Button type='submit' onClick={saveQR}>QRコードを保存</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>;

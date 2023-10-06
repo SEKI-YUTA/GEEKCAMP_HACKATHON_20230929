@@ -7,6 +7,7 @@ export interface MenuEditModalProps {
   menuName: string
   menuPrice: string
   blurMsg: boolean
+  isSpace: boolean
   menuDetail: string
   imgLink: string
   categoryList: CategoryType[]
@@ -28,6 +29,7 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
   menuName,
   menuPrice,
   blurMsg,
+  isSpace,
   menuDetail,
   imgLink,
   categoryList,
@@ -57,6 +59,18 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
                 <FormLabel htmlFor='menuName'>メニュー名</FormLabel>
                 <Input id='menuName' type='text' value={menuName} onChange={handleSetMenuName} />
               </Box>
+              <Box>
+                  {
+                    (()=>{
+                      switch (isSpace) {
+                        case true:
+                          return <Text color="red">空白のみの名前は使用できません</Text>;
+                        default:
+                          return <></>;
+                      }
+                    })()
+                  }
+                </Box>
               <Box py={2}>
                 <FormLabel htmlFor='menuPrice'>価格</FormLabel>
                 <Flex alignItems="center" gap={3}>

@@ -57,6 +57,7 @@ interface OwnerHomePreProps {
   handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
   handleBlur: (e: ChangeEvent<HTMLInputElement>) => void
   blurMsg: boolean
+  isSpace: boolean
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -99,7 +100,8 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   handleAddMenuSubmit,
   handleUpdateMenuSubmit,
   handleBlur,
-  blurMsg
+  blurMsg,
+  isSpace
 }) => {
   return (
     <>
@@ -124,6 +126,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
         handleUpdateMenuSubmit={handleUpdateMenuSubmit}
         handleBlur={handleBlur}
         blurMsg={blurMsg}
+        isSpace={isSpace}
         onClose={MenuEditModalOnClose}
       />
       <Layout title='MaaS' isOwner={true}>

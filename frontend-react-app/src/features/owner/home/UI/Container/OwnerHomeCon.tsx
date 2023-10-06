@@ -48,7 +48,22 @@ export const OwnerHomeCon: FC = () => {
     }
     setBlurMsg(false);
   };
-  //const [blurMsg, setBlurMsg] = useState<Boolean>(false);
+  const [isSpace, setIsSpace] = useState<boolean>(false);
+  const inputCheck = (input: string, isSpace?: boolean) => {
+    // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
+    const regex = /^[ 　]+$/;
+    if (isSpace) {
+    return input == '' || regex.test(input);
+    }
+    return regex.test(input);
+  };
+
+  const inputAllZero = (input: string) => {
+    // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
+
+    const regex = /^[0]+$/;
+    return input !== '0' && regex.test(input);
+  };
   const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
     if (parseInt(e.target.value) === 0){
       //入力欄が0円の状態でフォーカスが外れた場合
@@ -140,16 +155,18 @@ export const OwnerHomeCon: FC = () => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || menuName === '' || menuPrice == '0' || menuPrice.match(/^[0\r\n\t]*$/) || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || inputAllZero(menuPrice) || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
         return;
       }
-      else if(menuName.match(/^[ 　\r\n\t]*$/)){
+      else if(inputCheck(menuName)){
         //全ての文字列がスペースの場合
-        alert("space")
+        console.log("全てスペース");
+        setIsSpace(true)
         return;
       }
+      setIsSpace(false)
       console.log('記入済み', {
         name: menuName,
         price: menuPrice,
@@ -203,16 +220,18 @@ export const OwnerHomeCon: FC = () => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || menuPrice.match(/^[0\r\n\t]*$/) || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
         // 空欄がある場合
         console.log('記入漏れあり');
         return;
       }
       else if(menuName.match(/^[ 　\r\n\t]*$/)){
         //全ての文字列がスペースの場合
-        alert("space")
+        console.log("全てスペース");
+        setIsSpace(true)
         return;
       }
+      setIsSpace(false)
       console.log('記入済み', {
         name: menuName,
         price: menuPrice,
@@ -308,7 +327,7 @@ export const OwnerHomeCon: FC = () => {
         // photo_url がない場合は仮の画像を表示
         photo_url: item.photo_url ? item.photo_url : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
         name: item.name,
-        price: item.price,
+        price: item.price.toString(),
         restaurant_id: item.restaurant_id
       }));
       // allMenusにセット
@@ -354,6 +373,7 @@ export const OwnerHomeCon: FC = () => {
     handleUpdateMenuSubmit={handleUpdateMenuSubmit}
     handleBlur={handleBlur}
     blurMsg={blurMsg}
+    isSpace={isSpace}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClickMenuEdit={onClickMenuEdit}

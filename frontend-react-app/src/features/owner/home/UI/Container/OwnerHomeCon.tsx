@@ -55,8 +55,7 @@ export const OwnerHomeCon: FC = () => {
   const [isSpace, setIsSpace] = useState<boolean>(false);
   const inputCheck = (input: string, isSpace?: boolean) => {
     // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
-    // eslint-disable-next-line no-irregular-whitespace
-    const regex = /^[ 　]+$/;
+    const regex = /^[\x20\u3000]+$/;
     if (isSpace) {
       return input == '' || regex.test(input);
     }

@@ -21,9 +21,9 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
-  const urlInputRef = useRef<HTMLInputElement>(null)
+  const urlInputRef = useRef<HTMLInputElement>(null);
   // const QRCanvasRef = useRef<HTMLCanvasElement>(null)
-  const url = `http://${window.location.hostname}:${window.location.port}/restaurant/${restaurantId}`
+  const url = `http://${window.location.hostname}:${window.location.port}/restaurant/${restaurantId}`;
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
@@ -69,18 +69,18 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
     profileViewModalOnClose();
   };
   const QRViewModalOnOpen = (e: MouseEvent) => {
-    e.preventDefault()
-    QRViewModalOnOpen_()
-  }
+    e.preventDefault();
+    QRViewModalOnOpen_();
+  };
   /**
    * リンクのコピー
    */
   const onURLCopy = async () => {
     if (navigator.clipboard) {
-      await navigator.clipboard.writeText(url)
+      await navigator.clipboard.writeText(url);
     } 
-    urlInputRef?.current?.select()
-  }
+    urlInputRef?.current?.select();
+  };
   const handleProfileUpdate = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -109,7 +109,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
    * QRコードの保存
    */
   const saveQR = () => {
-    const QRCanvas = document.getElementById('qr-canvas') as HTMLCanvasElement
+    const QRCanvas = document.getElementById('qr-canvas') as HTMLCanvasElement;
     QRCanvas?.toBlob(blob => {
       if (blob) {
         const a:HTMLAnchorElement = document.createElement('a');
@@ -118,8 +118,8 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
         a.click();
         URL.revokeObjectURL(a.href);
       }
-    })
-  }
+    });
+  };
   const fetchRestaurantCategorys = async () => {
     try {
       const response = await fetch('http://localhost:8080/restaurants/categories');

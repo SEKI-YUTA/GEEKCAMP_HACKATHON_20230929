@@ -69,9 +69,9 @@ export const HeaderItemPre: FC<HeaderItemPreProps> = ({
         isOpen={isQRViewModal}
         urlInputRef={urlInputRef}
         url={url}
+        saveQR={saveQR}
         onClose={QRViewModalOnClose}
         onURLCopy={onURLCopy}
-        saveQR={saveQR}
       />
       <ProfileModal 
         address={address}

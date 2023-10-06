@@ -82,20 +82,22 @@ export const RestaurantHomeCon: FC = () => {
       });
       const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus?${menuPriceUpper}`);
       console.log('responce', responce);
-      // 型が違う?
-      const json: MenuSetResponse = await responce.json();
+      const json: MenuItemType[] = await responce.json();
       console.log('json', json);
-      const data: MenuItemType[] = json.menuSet;
-      if (responce.status === 200) {
-        console.log('status', responce.status);
-        // キーワードで絞り込み
-        const filteredMenu = data.filter((item: MenuItemType) => item.name.includes(keyWord));
-        // Lower以上で絞り込み
-        const filteredMenu2 = filteredMenu.filter((item: MenuItemType) => item.price >= menuPriceLower);
-        // メニューを表示する
-        setMenuItemList(filteredMenu2);
-      }
-
+      const data = json.map((item: MenuItemType) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        description: item.description,
+        restaurant_id: item.restaurant_id,
+        // photo_url がない場合は仮の画像を表示
+        photo_url: item.photo_url ? item.photo_url : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
+        category: item.category,
+        is_sold_out: item.is_sold_out,
+        like_count: item.like_count,
+      }));
+      // menuItemListにセット
+      setMenuItemList(data);
     } catch (error) {
       console.log('送信失敗', error);
     }

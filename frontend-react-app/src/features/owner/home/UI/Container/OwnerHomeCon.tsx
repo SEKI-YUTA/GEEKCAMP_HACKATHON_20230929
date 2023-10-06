@@ -5,6 +5,7 @@ import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
+import { AddMenuModal } from '../Components/AddMenuModal';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -112,6 +113,7 @@ export const OwnerHomeCon: FC = () => {
       console.log('送信失敗', error);
     }
   };
+
   /**
    * メニュー新規登録ボタンをクリック時イベント
    */
@@ -119,6 +121,23 @@ export const OwnerHomeCon: FC = () => {
     console.log('新規登録');
     addMenuModalOnOpen();
   };
+
+  const addMenuModal: JSX.Element = <AddMenuModal
+    isOpen={isAddMenuModalOpen}
+    menuName={menuName}
+    menuPrice={menuPrice}
+    menuDetail={menuDetail}
+    imgLink={imgLink}
+    categoryList={categoryList}
+    categoryValue={categoryValue}
+    handleSetCategoryValue={handleSetCategoryValue}
+    handleSetMenuName={handleSetMenuName}
+    handleSetMenuPrice={handleSetMenuPrice}
+    handleSetMenuDetail={handleSetMenuDetail}
+    handleSetImgLink={handleSetImgLink}
+    handleAddMenuSubmit={handleAddMenuSubmit}
+    onClose={addMenuModalOnClose}
+  />;
 
   /**
    * カテゴリータブをクリック時のイベント
@@ -204,22 +223,10 @@ export const OwnerHomeCon: FC = () => {
     menuItemList={menuItemList}
     categoryList={categoryList}
     selectedCategory={selectedCategory}
-    isOpen={isAddMenuModalOpen}
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
-    menuName={menuName}
-    menuPrice={menuPrice}
-    menuDetail={menuDetail}
-    imgLink={imgLink}
-    categoryValue={categoryValue}
-    handleSetCategoryValue={handleSetCategoryValue}
-    handleSetMenuName={handleSetMenuName}
-    handleSetMenuPrice={handleSetMenuPrice}
-    handleSetMenuDetail={handleSetMenuDetail}
-    handleSetImgLink={handleSetImgLink}
-    handleAddMenuSubmit={handleAddMenuSubmit}
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
-    onClose={addMenuModalOnClose}
+    addMenuModal={addMenuModal}
   />;
 };

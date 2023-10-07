@@ -50,7 +50,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const handleProfileShow = async (e: MouseEvent) => {
     e.preventDefault();
     profileViewModalOnOpen();
-    await fetchRestaurantProfile()
+    await fetchRestaurantProfile();
   };
   const handleProfileHide = () => {
     profileViewModalOnClose();
@@ -122,7 +122,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   const fetchRestaurantCategorys = async () => {
     try {
       const response = await fetch('http://localhost:8080/restaurants/categories');
@@ -136,7 +136,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   };
 
   useEffect(()=>{
-    fetchRestaurantProfile()
+    fetchRestaurantProfile();
     fetchRestaurantCategorys();
   }, [restaurantId]);
   return <HeaderItemPre

@@ -50,20 +50,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const handleProfileShow = async (e: MouseEvent) => {
     e.preventDefault();
     profileViewModalOnOpen();
-    try {
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
-      const data:RestaurantType = await responce.json();
-      console.log(data);
-      
-      setAddress(data.address);
-      setDescription(data.description);
-      setEmail(data.email);
-      setName(data.name);
-      setPhoneNumber(data.phone_number);
-      setSelectedCategoryValue((restaurantCategory.find(item => item.name === data.category)?.id ?? 0).toString());
-    } catch (error) {
-      console.log(error);
-    }
+    await fetchRestaurantProfile()
   };
   const handleProfileHide = () => {
     profileViewModalOnClose();
@@ -114,12 +101,28 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       if (blob) {
         const a:HTMLAnchorElement = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'QRCode.jpg';
+        a.download = `${name}_QRCode.jpg`;
         a.click();
         URL.revokeObjectURL(a.href);
       }
     });
   };
+  const fetchRestaurantProfile = async () => {
+    try {
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
+      const data:RestaurantType = await responce.json();
+      console.log(data);
+      
+      setAddress(data.address);
+      setDescription(data.description);
+      setEmail(data.email);
+      setName(data.name);
+      setPhoneNumber(data.phone_number);
+      setSelectedCategoryValue((restaurantCategory.find(item => item.name === data.category)?.id ?? 0).toString());
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const fetchRestaurantCategorys = async () => {
     try {
       const response = await fetch('http://localhost:8080/restaurants/categories');
@@ -133,6 +136,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   };
 
   useEffect(()=>{
+    fetchRestaurantProfile()
     fetchRestaurantCategorys();
   }, [restaurantId]);
   return <HeaderItemPre

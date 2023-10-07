@@ -61,7 +61,7 @@ export const RestaurantHomeCon: FC = () => {
   };
 
   /**
-   * メニュー追加
+   * メニュー絞り込み
    * @param e 
    * @returns 
    */
@@ -82,8 +82,10 @@ export const RestaurantHomeCon: FC = () => {
       });
       const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus?keyword=${keyWord}&lower=${menuPriceUpper}&higher=${menuPriceLower}`);
       console.log('responce', responce);
+
       const json: MenuItemType[] = await responce.json();
       console.log('json', json);
+
       const data = json.map((item: MenuItemType) => ({
         id: item.id,
         name: item.name,
@@ -104,10 +106,10 @@ export const RestaurantHomeCon: FC = () => {
   };
 
   /**
-   * メニュー新規登録ボタンをクリック時イベント
+   * 絞り込みボタンを押したときの処理
    */
   const onClickFilterButton = () => {
-    console.log('新規登録');
+    console.log('絞り込み');
     filterMenuModalOnOpen();
   };
 

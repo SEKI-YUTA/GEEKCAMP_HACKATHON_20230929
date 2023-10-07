@@ -13,7 +13,9 @@ import {
   RadioGroup,
   Grid,
   GridItem,
-  FormControl
+  FormControl,
+  Heading,
+  Link
 } from '@chakra-ui/react';
 
 interface OwnerSignupProps {
@@ -62,6 +64,7 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
 
   return (
     <VStack spacing={8} mx="auto" maxW="2xl" py={12} px={6} align="stretch">
+      <Heading py={2} textAlign='center' >サインアップ</Heading>
       <form onSubmit={handleFormSubmit}>
         <Box
           rounded="lg"
@@ -122,13 +125,16 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
                 }
               </Grid>
             </RadioGroup>
+            <Box py={2} textAlign='center'>
+              <Link href="/signin" fontWeight='bold' >登録済みの方はこちらから</Link>
+            </Box>
             <Button
               bg="blue.400"
               color="white"
               _hover={{
                 bg: 'blue.500',
               }} type='submit'>
-              Sign in
+              サインアップ
             </Button>
           </Stack>
           {

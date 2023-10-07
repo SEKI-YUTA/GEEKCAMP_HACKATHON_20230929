@@ -22,7 +22,6 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
   const urlInputRef = useRef<HTMLInputElement>(null);
-  // const QRCanvasRef = useRef<HTMLCanvasElement>(null)
   const url = `http://${window.location.hostname}:${window.location.port}/restaurant/${restaurantId}`;
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {

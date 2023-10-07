@@ -1,4 +1,5 @@
-import { useEffect, type FC, useState, ChangeEvent, FormEvent } from 'react';
+import { useEffect, type FC, useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { RestaurantHomePre } from '../Presentational/RestaurantHomePre';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
@@ -6,7 +7,6 @@ import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
 import type { RestaurantType } from '../../../../../application/@types/Restaurant';
 import { FilterMenuModal } from '../Components/FilterMenuModal';
-import { MenuSetResponse } from '../../../../../application/@types/MenuSetResponse';
 
 /**
  * レストラン, ホーム画面のコンポーネント（Container）
@@ -122,8 +122,8 @@ export const RestaurantHomeCon: FC = () => {
     handleSetKeyWord={handleSetKeyWord}
     handleSetMenuPriceLower={handleSetMenuPriceLower}
     handleSetMenuPriceUpper={handleSetMenuPriceUpper}
-    onClose={filterMenuModalOnClose}
     handleFilterMenuSubmit={handleFilterMenuSubmit}
+    onClose={filterMenuModalOnClose}
   />;
 
   ////// 絞り込みモーダル ここまで///////
@@ -230,8 +230,8 @@ export const RestaurantHomeCon: FC = () => {
     selectedCategory={selectedCategory}
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
+    filterModal={filterMenuModal}
     onClickCategory={onClickCategory}
     onClickFilterButton={onClickFilterButton}
-    filterModal={filterMenuModal}
   />;
 };

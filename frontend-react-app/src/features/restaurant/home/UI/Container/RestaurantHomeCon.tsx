@@ -20,11 +20,14 @@ export const RestaurantHomeCon: FC = () => {
 
   // 全メニュー, 毎回フェッチするのは無駄なので、一度取得したら保持しておく
   const [allMenus, setAllMenus] = useState<MenuItemType[]>([]);
+  // 全カテゴリー, 毎回フェッチするのは無駄なので、一度取得したら保持しておく
+  const [allCategories, setAllCategories] = useState<CategoryType[]>([]);
 
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({ id: -1, name: '' });
   // 絞り込みモーダル
+  const [isFiltered, setIsFiltered] = useState<boolean>(false);
 
   // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
@@ -100,6 +103,12 @@ export const RestaurantHomeCon: FC = () => {
       }));
       // menuItemListにセット
       setMenuItemList(data);
+      // カテゴリーを絞り込み結果に変更
+      const filteringCategory: CategoryType = { id: -1, name: '絞り込み結果' };
+      setCategoryList([filteringCategory]);
+      setIsFiltered(true);
+      // 絞り込みモーダルを閉じる
+      filterMenuModalOnClose();
     } catch (error) {
       console.log('送信失敗', error);
     }
@@ -109,7 +118,16 @@ export const RestaurantHomeCon: FC = () => {
    * 絞り込みボタンを押したときの処理
    */
   const onClickFilterButton = () => {
+    if (isFiltered) {
+      console.log('絞り込み解除');
+      // 絞り込み結果が表示されている場合は、絞り込み解除
+      setMenuItemList(allMenus);
+      setCategoryList(allCategories);
+      setIsFiltered(false);
+      return;
+    }
     console.log('絞り込み');
+    // 絞り込みモーダルを開く
     filterMenuModalOnOpen();
   };
 
@@ -150,6 +168,10 @@ export const RestaurantHomeCon: FC = () => {
    * @param category カテゴリー
    */
   const onClickCategory = (category: CategoryType) => {
+    if (isFiltered) {
+      // 何もしない
+      return;
+    }
     console.log(category);
     setSelectedCategory(category);
     // 選択されたカテゴリーのみ表示
@@ -178,6 +200,7 @@ export const RestaurantHomeCon: FC = () => {
       // categoryListにセット
       setCategoryList(data);
       setSelectedCategory(data[0]);
+      setAllCategories(data);
     } catch (error) {
       // 失敗時の処理
       // boolで管理して画面に失敗のメッセージを表示しても良い
@@ -233,6 +256,7 @@ export const RestaurantHomeCon: FC = () => {
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
     filterModal={filterMenuModal}
+    isFiltered={isFiltered}
     onClickCategory={onClickCategory}
     onClickFilterButton={onClickFilterButton}
   />;

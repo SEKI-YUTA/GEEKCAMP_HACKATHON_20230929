@@ -31,6 +31,17 @@ interface RestaurantHomePreProps {
    * 1200px以上かどうか
    */
   isLargerThan1200: boolean
+
+  /**
+   * 絞り込みボタンを押したときモーダル
+   */
+  filterModal: JSX.Element
+
+  /**
+   * 絞り込みされているかどうか
+   */
+  isFiltered: boolean
+
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -41,11 +52,6 @@ interface RestaurantHomePreProps {
    * 絞り込みボタンを押したときの処理
    */
   onClickFilterButton: () => void
-
-  /**
-   * 絞り込みボタンを押したときモーダル
-   */
-  filterModal: JSX.Element
 }
 
 export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
@@ -55,9 +61,10 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
   selectedCategory,
   isLargerThan800,
   isLargerThan1200,
+  filterModal,
+  isFiltered,
   onClickCategory,
   onClickFilterButton,
-  filterModal,
 }) => {
   return (
     <>
@@ -67,7 +74,9 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
           <HStack py={5}>
             <HStack overflowX='auto' flex={4} spacing={1}>
               {categoryList.map((category, index) => (
-                <Category key={index} category={category} isSelected={category.id === selectedCategory.id} isLargerThan1200={isLargerThan1200} onClick={() => onClickCategory(category)} />
+                <Category key={index} category={category} isSelected={category.id === selectedCategory.id} isLargerThan1200={isLargerThan1200} onClick={
+                  () => onClickCategory(category)
+                } />
               ))}
             </HStack>
             <Box
@@ -87,7 +96,7 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
                 })}
                 onClick={() => { onClickFilterButton(); }}
               >
-                絞り込み
+                {isFiltered ? '絞り込み中' : '絞り込み'}
               </Button>
             </Box>
           </HStack>

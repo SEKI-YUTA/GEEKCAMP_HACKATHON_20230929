@@ -4,7 +4,10 @@ import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
+import type { MenuEditModalProps } from '../Components/MenuEditModal';
+import { MenuEditModal } from '../Components/MenuEditModal';
 import type { CategoryType } from '../../../../../application/@types/Category';
+import { MenuViewModal } from '../Components/MenuVIewModal';
 
 interface OwnerHomePreProps {
   /**
@@ -27,10 +30,34 @@ interface OwnerHomePreProps {
    * 1200px以上かどうか
    */
   isLargerThan1200: boolean
+  // モーダル呼び出し
+  isMenuEditModalOpen: boolean
+  menuName: string
+  menuPrice: string
+  menuDetail: string
+  imgLink: string
+  categoryValue: string
+  selectedMenuItem: MenuItemType | undefined
+  isMenuViewModalOpen: boolean
+  menuModalMode: MenuEditModalProps['mode']
   /**
    * 新規登録ボタンを押したときの処理
    */
   onClickAddMenuButton: () => void
+  onClickMenu: (menuItem: MenuItemType) => void
+  menuViewModalOnClose: () => void
+  MenuEditModalOnClose: () => void
+  onClickMenuEdit: (item: MenuItemType) => void
+  handleSetCategoryValue: (categoryId: string) => void
+  handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void
+  handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>
+  handleBlur: (e: ChangeEvent<HTMLInputElement>) => void
+  blurMsg: boolean
+  isSpace: boolean
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -58,10 +85,59 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   onClickAddMenuButton,
   onClickCategory,
   addMenuModal,
+  isMenuEditModalOpen,
+  menuName,
+  menuPrice,
+  menuDetail,
+  imgLink,
+  categoryValue,
+  isMenuViewModalOpen,
+  selectedMenuItem,
+  menuModalMode,
+  menuViewModalOnClose,
+  onClickMenuEdit,
+  onClickMenu,
+  onClickAddMenuButton,
+  onClickCategory,
+  MenuEditModalOnClose,
+  handleSetCategoryValue,
+  handleSetMenuName,
+  handleSetMenuPrice,
+  handleSetMenuDetail,
+  handleSetImgLink,
+  handleAddMenuSubmit,
+  handleUpdateMenuSubmit,
+  handleBlur,
+  blurMsg,
+  isSpace
 }) => {
   return (
     <>
       {addMenuModal}
+      <MenuViewModal 
+        isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose} onClickMenuEdit={onClickMenuEdit}
+      />
+      <MenuEditModal
+        isOpen={isMenuEditModalOpen}
+        menuName={menuName}
+        menuPrice={menuPrice}
+        menuDetail={menuDetail}
+        imgLink={imgLink}
+        categoryList={categoryList}
+        categoryValue={categoryValue}
+        mode={menuModalMode}
+        handleSetCategoryValue={handleSetCategoryValue}
+        handleSetMenuName={handleSetMenuName}
+        handleSetMenuPrice={handleSetMenuPrice}
+        handleSetMenuDetail={handleSetMenuDetail}
+        handleSetImgLink={handleSetImgLink}
+        handleAddMenuSubmit={handleAddMenuSubmit}
+        handleUpdateMenuSubmit={handleUpdateMenuSubmit}
+        handleBlur={handleBlur}
+        blurMsg={blurMsg}
+        isSpace={isSpace}
+        onClose={MenuEditModalOnClose}
+      />
       <Layout title='MaaS' isOwner={true}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>
           <HStack py={5}>
@@ -98,7 +174,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
                   key={index}
                   isLargerThan1200={isLargerThan1200}
                   item={menuItem}
-                  onPress={() => { console.log('アイテム' + menuItem.id); }}
+                  onPress={() => onClickMenu(menuItem)}
                 />
               ))}
             </Grid>

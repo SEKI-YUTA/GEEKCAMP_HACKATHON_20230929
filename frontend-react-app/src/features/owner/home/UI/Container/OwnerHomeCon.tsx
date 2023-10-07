@@ -6,6 +6,7 @@ import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
 import { AddMenuModal } from '../Components/AddMenuModal';
+import type { MenuEditModalProps } from '../Components/MenuEditModal';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -15,14 +16,18 @@ import { AddMenuModal } from '../Components/AddMenuModal';
 export const OwnerHomeCon: FC = () => {
 
   const { restaurantId } = useContext(StateContext);
-
+  const firstCategory = { id: 0, name: '全て' };
   // 全メニュー, 毎回フェッチするのは無駄なので、一度取得したら保持しておく
   const [allMenus, setAllMenus] = useState<MenuItemType[]>([]);
-
+  // 画面上に表示されるメニュー
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
+  // 選択されたメニューの保持
+  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItemType | undefined>();
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({ id: -1, name: '' });
-  const { isOpen: isAddMenuModalOpen, onOpen: addMenuModalOnOpen, onClose: addMenuModalOnClose } = useDisclosure();
+  const [menuModalMode, setModalMode] = useState<MenuEditModalProps['mode']>('add');
+  const { isOpen: isMenuEditModalOpen, onOpen: MenuEditModalOnOpen, onClose: MenuEditModalOnClose } = useDisclosure();
+  const { isOpen: isMenuViewModalOpen, onOpen: menuViewModalOnOpen, onClose: menuViewModalOnClose } = useDisclosure();
   // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
@@ -36,12 +41,42 @@ export const OwnerHomeCon: FC = () => {
   const handleSetMenuName = (e: ChangeEvent<HTMLInputElement>) => {
     setMenuName(e.target.value);
   };
-  const [menuPrice, setMenuPrice] = useState<number>(0);
+  const [menuPrice, setMenuPrice] = useState<string>('');
+  const [blurMsg, setBlurMsg] = useState<boolean>(false);
   const handleSetMenuPrice = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
-      setMenuPrice(parseInt(e.target.value));
-    } else {
-      setMenuPrice(0);
+    if (e.target.value !== '' && inputAllZero(e.target.value)) {
+      setMenuPrice('0');
+      return;
+    }
+    if (parseInt(e.target.value) >= 0 || e.target.value === '') {
+      setMenuPrice(e.target.value);
+    }
+    setBlurMsg(false);
+  };
+  const [isSpace, setIsSpace] = useState<boolean>(false);
+  const inputCheck = (input: string, isSpace?: boolean) => {
+    // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
+    const regex = /^[\x20\u3000]+$/;
+    if (isSpace) {
+      return input == '' || regex.test(input);
+    }
+    return regex.test(input);
+  };
+
+  const inputAllZero = (input: string) => {
+    // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
+
+    const regex = /^[0]+$/;
+    return input !== '0' && regex.test(input);
+  };
+  const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
+    if (parseInt(e.target.value) === 0){
+      //入力欄が0円の状態でフォーカスが外れた場合
+      console.log('error');
+      setBlurMsg(true);
+    }
+    else{
+      setBlurMsg(false);
     }
   };
   const [menuDetail, setMenuDetail] = useState<string>('');
@@ -54,90 +89,23 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-   * メニュー追加
-   * @param e 
-   * @returns 
-   */
-  const handleAddMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || menuName === '' || menuPrice == 0 || isNaN(menuPrice) === true || menuDetail === '') {
-        // 空欄がある場合
-        console.log('記入漏れあり');
-        return;
-      }
-      console.log('記入済み', {
-        name: menuName,
-        price: menuPrice,
-        description: menuDetail,
-        category: categoryValue
-      });
-
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/add`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: menuName,
-          price: menuPrice,
-          description: menuDetail,
-          restaurant_id: restaurantId,
-          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name,
-          photo_url: imgLink,
-          is_sold_out: false,
-          like_count: 0
-        })
-      });
-      console.log(responce);
-      
-      const data = await responce.json();
-
-      console.log(data);
-      
-      if (responce.status === 200) {
-        // 入力値のリセット
-        setCategoryValue('1');
-        setMenuName('');
-        setMenuPrice(0);
-        setMenuDetail('');
-        setImgLink('');
-        // モーダル閉じる
-        addMenuModalOnClose();
-        // データの再同期
-        fetchMenu();
-      }
-
-    } catch (error) {
-      console.log('送信失敗', error);
-    }
-  };
-
-  /**
    * メニュー新規登録ボタンをクリック時イベント
    */
   const onClickAddMenuButton = () => {
     console.log('新規登録');
-    addMenuModalOnOpen();
+    setModalMode('add');
+    MenuEditModalOnOpen();
   };
 
-  const addMenuModal: JSX.Element = <AddMenuModal
-    isOpen={isAddMenuModalOpen}
-    menuName={menuName}
-    menuPrice={menuPrice}
-    menuDetail={menuDetail}
-    imgLink={imgLink}
-    categoryList={categoryList}
-    categoryValue={categoryValue}
-    handleSetCategoryValue={handleSetCategoryValue}
-    handleSetMenuName={handleSetMenuName}
-    handleSetMenuPrice={handleSetMenuPrice}
-    handleSetMenuDetail={handleSetMenuDetail}
-    handleSetImgLink={handleSetImgLink}
-    handleAddMenuSubmit={handleAddMenuSubmit}
-    onClose={addMenuModalOnClose}
-  />;
+  /**
+   * メニュークリック時のイベント
+   * @param id メニューのid
+   */
+  const onClickMenu = (menuItem: MenuItemType) => {
+    // メニュービューのモーダル表示
+    menuViewModalOnOpen();
+    setSelectedMenuItem(menuItem);
+  };
 
   /**
    * カテゴリータブをクリック時のイベント
@@ -158,6 +126,196 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
+   * メニュー詳細モーダルの編集ボタンをクリック時のイベント
+   * @param item 
+   */
+  const onClickMenuEdit = (item: MenuItemType) => {
+    setModalMode('edit');
+    setCategoryValue(categoryList.find(category => category.name === item.category)?.id.toString() ?? '1');
+    setMenuName(item.name);
+    setMenuPrice(item.price);
+    setMenuDetail(item.description);
+    setImgLink(item.photo_url);
+
+    MenuEditModalOnOpen();
+  };
+
+  /**
+   * メニューモーダルの入力値のリセット
+   */
+  const resetMenuValues = () => {
+    setCategoryValue('1');
+    setMenuName('');
+    setMenuPrice('');
+    setMenuDetail('');
+    setImgLink('');
+  };
+
+  /**
+   * メニュー追加
+   * @param e 
+   * @returns 
+   */
+  const handleAddMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
+        // 空欄がある場合
+        console.log('記入漏れあり');
+        return;
+      }
+      else if(inputCheck(menuName)){
+        //全ての文字列がスペースの場合
+        console.log('全てスペース');
+        setIsSpace(true);
+        return;
+      }
+      setIsSpace(false);
+      console.log('記入済み', {
+        name: menuName,
+        price: menuPrice,
+        description: menuDetail,
+        category: categoryValue
+      });
+
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: menuName,
+          price: parseInt(menuPrice),
+          description: menuDetail,
+          restaurant_id: restaurantId,
+          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name,
+          photo_url: imgLink,
+          is_sold_out: false,
+          like_count: 0
+        })
+      });
+      console.log(responce);
+      
+      const data = await responce.json();
+
+      console.log(data);
+      
+      if (responce.status === 200) {
+        // 入力値のリセット
+        resetMenuValues();
+        // モーダル閉じる
+        MenuEditModalOnClose();
+        // データの再同期
+        fetchMenu();
+        onClickCategory(firstCategory);
+      }
+
+    } catch (error) {
+      console.log('送信失敗', error);
+    }
+  };
+  /**
+   * メニュー新規登録ボタンをクリック時イベント
+   */
+  const onClickAddMenuButton = () => {
+    console.log('新規登録');
+    addMenuModalOnOpen();
+  };
+  const addMenuModal: JSX.Element = <AddMenuModal
+    isOpen={isAddMenuModalOpen}
+    menuName={menuName}
+    menuPrice={menuPrice}
+    menuDetail={menuDetail}
+    imgLink={imgLink}
+    categoryList={categoryList}
+    categoryValue={categoryValue}
+    handleSetCategoryValue={handleSetCategoryValue}
+    handleSetMenuName={handleSetMenuName}
+    handleSetMenuPrice={handleSetMenuPrice}
+    handleSetMenuDetail={handleSetMenuDetail}
+    handleSetImgLink={handleSetImgLink}
+    handleAddMenuSubmit={handleAddMenuSubmit}
+    onClose={addMenuModalOnClose}
+  />;
+
+  /**
+   * メニュー更新
+   * @param e 
+   * @returns 
+   */
+  const handleUpdateMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
+      if (categoryValue === '' || menuName === '' || menuPrice == '0' || isNaN(parseInt(menuPrice)) === true || menuDetail === '') {
+        // 空欄がある場合
+        console.log('記入漏れあり');
+        return;
+      }
+      else if(inputCheck(menuName)){
+        //全ての文字列がスペースの場合
+        console.log('全てスペース');
+        setIsSpace(true);
+        return;
+      }
+      setIsSpace(false);
+      console.log('記入済み', {
+        name: menuName,
+        price: menuPrice,
+        description: menuDetail,
+        category: categoryValue
+      });
+
+      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/edit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: selectedMenuItem?.id,
+          name: menuName,
+          price: parseInt(menuPrice),
+          description: menuDetail,
+          restaurant_id: restaurantId,
+          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name,
+          photo_url: imgLink,
+          is_sold_out: false,
+          like_count: 0
+        })
+      });
+      console.log(responce);
+      
+      const data = await responce.json();
+
+      console.log(data);
+      
+      if (responce.status === 200) {
+        // 入力値のリセット
+        resetMenuValues();
+        setSelectedMenuItem({
+          id: selectedMenuItem?.id ?? 0,
+          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name ?? '',
+          description: menuDetail,
+          name: menuName,
+          photo_url: imgLink,
+          price: menuPrice,
+          restaurant_id: restaurantId ?? 0
+        });
+        // モーダル閉じる
+        MenuEditModalOnClose();
+        menuViewModalOnClose();
+        // データの再同期
+        fetchMenu();
+        onClickCategory(firstCategory);
+      }
+
+    } catch (error) {
+      console.log('送信失敗', error);
+    }
+  };
+
+  /**
    * カテゴリー一覧取得関数
    */
   const fetchCategory = async () => {
@@ -168,7 +326,7 @@ export const OwnerHomeCon: FC = () => {
       const json: CategoryResponce = await responce.json();
       console.log(json);
       // すべてのカテゴリーを追加
-      const data: CategoryType[] = [{ id: 0, name: '全て' }, ...json.categories];
+      const data: CategoryType[] = [firstCategory, ...json.categories];
       // categoryListにセット
       setCategoryList(data);
       setSelectedCategory(data[0]);
@@ -201,6 +359,9 @@ export const OwnerHomeCon: FC = () => {
         photo_url: item.photo_url ? item.photo_url : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
         is_sold_out: item.is_sold_out,
         like_count: item.like_count,
+        name: item.name,
+        price: item.price.toString(),
+        restaurant_id: item.restaurant_id
       }));
       // allMenusにセット
       setAllMenus(data);
@@ -228,5 +389,30 @@ export const OwnerHomeCon: FC = () => {
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     addMenuModal={addMenuModal}
+    isMenuEditModalOpen={isMenuEditModalOpen}
+    menuName={menuName}
+    menuPrice={menuPrice}
+    menuDetail={menuDetail}
+    imgLink={imgLink}
+    categoryValue={categoryValue}
+    isMenuViewModalOpen={isMenuViewModalOpen}
+    selectedMenuItem={selectedMenuItem}
+    menuModalMode={menuModalMode}
+    handleSetCategoryValue={handleSetCategoryValue}
+    handleSetMenuName={handleSetMenuName}
+    handleSetMenuPrice={handleSetMenuPrice}
+    handleSetMenuDetail={handleSetMenuDetail}
+    handleSetImgLink={handleSetImgLink}
+    menuViewModalOnClose={() => {resetMenuValues();menuViewModalOnClose();setBlurMsg(false);}}
+    MenuEditModalOnClose={() => {resetMenuValues();MenuEditModalOnClose();setBlurMsg(false);}}
+    handleAddMenuSubmit={handleAddMenuSubmit}
+    handleUpdateMenuSubmit={handleUpdateMenuSubmit}
+    handleBlur={handleBlur}
+    blurMsg={blurMsg}
+    isSpace={isSpace}
+    onClickAddMenuButton={onClickAddMenuButton}
+    onClickCategory={onClickCategory}
+    onClickMenuEdit={onClickMenuEdit}
+    onClickMenu={onClickMenu}
   />;
 };

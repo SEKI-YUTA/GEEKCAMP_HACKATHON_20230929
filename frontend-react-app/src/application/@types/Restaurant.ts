@@ -6,6 +6,6 @@ export interface RestaurantType {
   address: string;
   description: string;
   // category id
-  category: number; 
+  category: string; 
   phone_number: string;
 }

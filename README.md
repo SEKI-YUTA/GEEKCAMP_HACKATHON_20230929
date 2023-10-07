@@ -110,6 +110,16 @@ method POST
 - higher・・・X円以上のメニューを検索する
 - keyword・・・メニュー名で検索する
 
+# X円で注文できるメニューのセットを返す方法
+/restaurants/1/menus/yosan
+に以下のURLパラメーターを付与する事で検索ができます。
+- price・・・注文するセットの予算
+
+2000円で注文できるメニューのセットを返す場合は次のようになります。
+localhost:8080/restaurants/1/menus/yosan?price=2000
+>**Warning**
+>2000円以下の数字を渡すとエラーが返ってきます。
+
 ## 店の検索
 /restaurantsに次のURLパラメーターを付与する事で検索ができます。
 - keyword・・・店名で検索する

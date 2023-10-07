@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
 import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
@@ -64,11 +64,6 @@ interface OwnerHomePreProps {
    * @returns 
    */
   onClickCategory: (category: CategoryType) => void
-
-  /**
-   * 新規登録ボタンを押したときモーダル
-   */
-  addMenuModal: JSX.Element
 }
 
 /**
@@ -82,9 +77,6 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   selectedCategory,
   isLargerThan800,
   isLargerThan1200,
-  onClickAddMenuButton,
-  onClickCategory,
-  addMenuModal,
   isMenuEditModalOpen,
   menuName,
   menuPrice,
@@ -113,7 +105,6 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
 }) => {
   return (
     <>
-      {addMenuModal}
       <MenuViewModal 
         isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose} onClickMenuEdit={onClickMenuEdit}
       />

@@ -5,7 +5,6 @@ import { StateContext } from '../../../../../application/lib/state/AuthContext';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
-import { AddMenuModal } from '../Components/AddMenuModal';
 import type { MenuEditModalProps } from '../Components/MenuEditModal';
 
 /**
@@ -215,29 +214,6 @@ export const OwnerHomeCon: FC = () => {
       console.log('送信失敗', error);
     }
   };
-  /**
-   * メニュー新規登録ボタンをクリック時イベント
-   */
-  const onClickAddMenuButton = () => {
-    console.log('新規登録');
-    addMenuModalOnOpen();
-  };
-  const addMenuModal: JSX.Element = <AddMenuModal
-    isOpen={isAddMenuModalOpen}
-    menuName={menuName}
-    menuPrice={menuPrice}
-    menuDetail={menuDetail}
-    imgLink={imgLink}
-    categoryList={categoryList}
-    categoryValue={categoryValue}
-    handleSetCategoryValue={handleSetCategoryValue}
-    handleSetMenuName={handleSetMenuName}
-    handleSetMenuPrice={handleSetMenuPrice}
-    handleSetMenuDetail={handleSetMenuDetail}
-    handleSetImgLink={handleSetImgLink}
-    handleAddMenuSubmit={handleAddMenuSubmit}
-    onClose={addMenuModalOnClose}
-  />;
 
   /**
    * メニュー更新
@@ -295,12 +271,14 @@ export const OwnerHomeCon: FC = () => {
         resetMenuValues();
         setSelectedMenuItem({
           id: selectedMenuItem?.id ?? 0,
-          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name ?? '',
-          description: menuDetail,
           name: menuName,
-          photo_url: imgLink,
+          category: categoryList.find(category => category.id === parseInt(categoryValue))?.name ?? '',
           price: menuPrice,
-          restaurant_id: restaurantId ?? 0
+          restaurant_id: restaurantId ?? 0,
+          photo_url: imgLink,
+          description: menuDetail,
+          is_sold_out: false,
+          like_count: 0,
         });
         // モーダル閉じる
         MenuEditModalOnClose();
@@ -354,14 +332,11 @@ export const OwnerHomeCon: FC = () => {
         category: item.category,
         price: item.price,
         description: item.description,
-        // photo_url がない場合は仮の画像を表示
         restaurant_id: item.restaurant_id,
+        // photo_url がない場合は仮の画像を表示
         photo_url: item.photo_url ? item.photo_url : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
         is_sold_out: item.is_sold_out,
         like_count: item.like_count,
-        name: item.name,
-        price: item.price.toString(),
-        restaurant_id: item.restaurant_id
       }));
       // allMenusにセット
       setAllMenus(data);
@@ -386,9 +361,6 @@ export const OwnerHomeCon: FC = () => {
     selectedCategory={selectedCategory}
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
-    onClickAddMenuButton={onClickAddMenuButton}
-    onClickCategory={onClickCategory}
-    addMenuModal={addMenuModal}
     isMenuEditModalOpen={isMenuEditModalOpen}
     menuName={menuName}
     menuPrice={menuPrice}

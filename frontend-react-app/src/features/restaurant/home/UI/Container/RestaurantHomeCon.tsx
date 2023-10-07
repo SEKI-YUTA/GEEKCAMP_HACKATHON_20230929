@@ -1,7 +1,7 @@
 import { useEffect, type FC, useState } from 'react';
 import { RestaurantHomePre } from '../Presentational/RestaurantHomePre';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
-import { useMediaQuery } from '@chakra-ui/react';
+import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
 import type { RestaurantType } from '../../../../../application/@types/Restaurant';
@@ -111,7 +111,13 @@ export const RestaurantHomeCon: FC = () => {
       console.log('取得失敗', error);
     }
   };
-
+  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItemType | undefined>();
+  const { isOpen: isMenuViewModalOpen, onOpen: menuViewModalOnOpen, onClose: menuViewModalOnClose } = useDisclosure();
+  const onClickMenu = (menuItem: MenuItemType) => {
+    // メニュービューのモーダル表示
+    menuViewModalOnOpen();
+    setSelectedMenuItem(menuItem);
+  };
   useEffect(() => {
     // 初回のみ実行
     fetchMenu();
@@ -127,5 +133,9 @@ export const RestaurantHomeCon: FC = () => {
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
     onClickCategory={onClickCategory}
+    onClickMenu={onClickMenu}
+    selectedMenuItem={selectedMenuItem}
+    isMenuViewModalOpen={isMenuViewModalOpen}
+    menuViewModalOnClose={menuViewModalOnClose}
   />;
 };

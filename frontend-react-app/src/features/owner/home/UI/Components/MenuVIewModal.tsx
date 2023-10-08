@@ -6,10 +6,11 @@ interface MenuViewModalProps {
     isOpen: boolean
     selectedMenu: MenuItemType | undefined
     onClose: () => void
-    onClickMenuEdit?: (item: MenuItemType) => void
+    onClickMenuEdit?: (item: MenuItemType) => void,
+    onClickMenuDelete?: (item: MenuItemType) => void,
 }
 
-export const MenuViewModal: FC<MenuViewModalProps> = ({ isOpen, onClose, onClickMenuEdit, selectedMenu }) => {
+export const MenuViewModal: FC<MenuViewModalProps> = ({ isOpen, onClose, onClickMenuEdit, onClickMenuDelete, selectedMenu }) => {
   return <Modal isCentered isOpen={isOpen} size='2xl' onClose={onClose}>
     <ModalOverlay />
     <ModalContent>
@@ -31,8 +32,8 @@ export const MenuViewModal: FC<MenuViewModalProps> = ({ isOpen, onClose, onClick
         </HStack>
       </ModalBody>
       <ModalFooter justifyContent='center' gap={3}>
-        {onClickMenuEdit && <>
-          <Button colorScheme="red">削除</Button>
+        {onClickMenuEdit && onClickMenuDelete && <>
+          <Button colorScheme="red" onClick={() => selectedMenu && onClickMenuDelete(selectedMenu)}>削除</Button>
           <Button onClick={() => selectedMenu && onClickMenuEdit(selectedMenu)}>編集</Button>
         </>
         }

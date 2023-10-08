@@ -1,8 +1,10 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { OwnerSignupPre } from '../Presentational/OwnerSignupPre';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
+import { ExchangeHost } from '../../../../../application/lib/host/exchangeHost';
 
 export const OwnerSignupCon: FC = () => {
 
@@ -13,8 +15,11 @@ export const OwnerSignupCon: FC = () => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
+  const [errorMsgObject, setErrorMsgObject] = useState<{ [key: string]: string }>({});
+  const [spaceMsgObject, setSpaceMsgObject] = useState<{ [key: string]: string }>({});
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
   const [errorMsg, setErrorMsg] = useState<number>(0);
+  const navigate = useNavigate();
 
   const handleOwnerEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setOwnerEmail(e.target.value);
@@ -44,33 +49,61 @@ export const OwnerSignupCon: FC = () => {
     setSelectedCategoryValue(value);
   };
 
+  const inputCheck = (input: string, isEmptyCheck?: boolean) => {
+    // 半角スペースまたは全角スペースの正規表現を使って、文字列をチェックします
+    const regex = /^[\x20\u3000]+$/;
+
+    if (isEmptyCheck) {
+      return input == '' || regex.test(input);
+    }
+    return regex.test(input);
+  };
+
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      if (ownerEmail === '' || ownerEmail.split(' ').join('').split('　').join('') === '') {
-        setErrorMsg(1);
 
-      } else if (ownerPassword === '' || ownerPassword.split(' ').join('').split('　').join('') === '') {
-        setErrorMsg(2);
+    const errors: { [key: string]: string } = {};
+    const spaceErrors: { [key: string]: string } = {};
 
-      } else if (name === '' || name.split(' ').join('').split('　').join('') === '') {
-        setErrorMsg(3);
+    try {   
+      let flag = false;
 
-      } else if (phoneNumber.split(' ').join('').split('　').join('') === '') {
-        setErrorMsg(4);
-
-      } else if (address.split(' ').join('').split('　').join('') === '') {
-        setErrorMsg(5);
-
-      } else if (description.split(' ').join('').split('　').join('') === '') {
-        setErrorMsg(6);
-
-      } else if (selectedCategoryValue === '') {
-        setErrorMsg(7);
+      if (inputCheck(ownerEmail, true)) {
+        errors['ownerEmail'] = 'メールアドレスが入力されていません';
+        flag = true;
 
       }
-      
-      const responce = await fetch('http://localhost:8080/restaurants/signup', {
+      if (inputCheck(ownerPassword, true)) {
+        errors['ownerPassword'] = 'パスワードが入力されていません';
+        flag = true;
+
+      }
+      if (inputCheck(name, true)) {
+        errors['name'] = '名前が入力されていません';
+        flag = true;
+
+      }
+      if (inputCheck(phoneNumber, false)) {
+        spaceErrors['phoneNumber'] = 'スペースが含まれています';
+        flag = true;
+
+      }
+      if (inputCheck(address, false)) {
+        spaceErrors['address'] = 'スペースが含まれています';
+        flag = true;
+
+      }
+      if (inputCheck(description, false)) {
+        spaceErrors['description'] = 'スペースが含まれています';
+        flag = true;
+
+      }
+      if (flag) {
+        setErrorMsgObject(errors);
+        setSpaceMsgObject(spaceErrors);
+        return;
+      }
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -85,16 +118,36 @@ export const OwnerSignupCon: FC = () => {
           'category_id': parseInt(selectedCategoryValue)
         })
       });
-      console.log(responce);
+
+      const json = await responce.json();
+      
+      console.log(json);
+
+      if (json.message === 'ok') {
+        setOwnerEmail('');
+        setOwnerPassword('');
+        setName('');
+        setPhoneNumber('');
+        setAddress('');
+        setDescription('');
+        setSelectedCategoryValue('1');
+        navigate('/signin');
+
+      } else {
+        // サインインに失敗
+        console.log('failed to sign up');
+        setErrorMsg(1);
+      }
 
     } catch (error) {
-      setErrorMsg(8);
+      // 送信に失敗
       console.log(error);
+      setErrorMsg(2);
     }
   };
 
   const fetchRestaurantCategorys = async () => {
-    const response = await fetch('http://localhost:8080/restaurants/categories');
+    const response = await fetch(`http://${ExchangeHost()}:8080/restaurants/categories`);
     const data: CategoryResponce = await response.json();
     setRestaurantCategory(data.categories);
     setSelectedCategoryValue(data.categories[0].id.toString());
@@ -113,6 +166,10 @@ export const OwnerSignupCon: FC = () => {
     address={address}
     description={description}
     selectedCategoryValue={selectedCategoryValue}
+    restaurantCategory={restaurantCategory}
+    errorMsg={errorMsg}
+    errorMsgObject={errorMsgObject}
+    spaceMsgObject={spaceMsgObject}
     handleOwnerEmailChange={handleOwnerEmailChange}
     handleOwnerPasswordChange={handleOwnerPasswordChange}
     handleNameChange={handleSetNameChange}
@@ -121,8 +178,5 @@ export const OwnerSignupCon: FC = () => {
     handleDescription={handleDescription}
     handleRadioGroupChange={handleRadioGroupChange}
     handleFormSubmit={handleFormSubmit}
-    restaurantCategory={restaurantCategory}
-    errorMsg={errorMsg}
   />;
-
 };

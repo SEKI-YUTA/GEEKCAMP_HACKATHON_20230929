@@ -1,6 +1,14 @@
 # 環境構築
 
-以下を実行
+`.env`ファイルを作成
+
+```sh
+touch .env
+# Windowsは ni .env
+```
+`HOST_IP`に自分のパソコンのIPアドレスを代入する
+
+起動は以下を実行
 
 ```
 docker compose run --rm frontend-react-app npm i

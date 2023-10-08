@@ -1,14 +1,12 @@
-import type { ChangeEvent, FC, FormEvent } from "react";
-import { OwnerHomePre } from "../Presentational/OwnerHomePre";
-import { useContext, useEffect, useState } from "react";
-import { StateContext } from "../../../../../application/lib/state/AuthContext";
-import type { MenuItemType } from "../../../../../application/@types/Menu";
-import type {
-    CategoryResponce,
-    CategoryType,
-} from "../../../../../application/@types/Category";
-import { useMediaQuery, useDisclosure } from "@chakra-ui/react";
-import type { MenuEditModalProps } from "../Components/MenuEditModal";
+import type { ChangeEvent, FC, FormEvent } from 'react';
+import { OwnerHomePre } from '../Presentational/OwnerHomePre';
+import { useContext, useEffect, useState } from 'react';
+import { StateContext } from '../../../../../application/lib/state/AuthContext';
+import type { MenuItemType } from '../../../../../application/@types/Menu';
+import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
+import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
+import type { MenuEditModalProps } from '../Components/MenuEditModal';
+import { ExchangeHost } from '../../../../../application/lib/host/exchangeHost';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -231,7 +229,7 @@ export const OwnerHomeCon: FC = () => {
             });
 
             const responce = await fetch(
-                `http://localhost:8080/restaurants/${restaurantId}/menus/add`,
+                `http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus/add`,
                 {
                     method: "POST",
                     headers: {
@@ -306,7 +304,7 @@ export const OwnerHomeCon: FC = () => {
             });
 
             const responce = await fetch(
-                `http://localhost:8080/restaurants/${restaurantId}/menus/edit`,
+                `http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus/edit`,
                 {
                     method: "POST",
                     headers: {
@@ -331,7 +329,6 @@ export const OwnerHomeCon: FC = () => {
             console.log(responce);
 
             const data = await responce.json();
-
             console.log(data);
 
             if (responce.status === 200) {
@@ -398,7 +395,7 @@ export const OwnerHomeCon: FC = () => {
         try {
             // fetchでAPIにリクエスト
             const responce = await fetch(
-                "http://localhost:8080/menus/categories"
+                `http://${ExchangeHost()}:8080/menus/categories`
             );
             // レスポンスからJSONを取り出し
             const json: CategoryResponce = await responce.json();
@@ -422,7 +419,7 @@ export const OwnerHomeCon: FC = () => {
         try {
             // fetchでAPIにリクエスト
             const responce = await fetch(
-                `http://localhost:8080/restaurants/${restaurantId}/menus`
+                `http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus`
             );
             // レスポンスからJSONを取り出し
             const json: MenuItemType[] = await responce.json();

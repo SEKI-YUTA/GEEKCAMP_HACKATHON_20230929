@@ -2,6 +2,7 @@ import { OwnerSigninPre } from '../Presentational/OwnerSigninPre';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useState, type FC, useContext } from 'react';
 import { StateContext } from '../../../../../application/lib/state/AuthContext';
+import { ExchangeHost } from '../../../../../application/lib/host/exchangeHost';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -29,7 +30,7 @@ export const OwnerSigninCon: FC = () => {
         return;
       }
       console.log(ownerEmail);
-      const response = await fetch('http://localhost:8080/restaurants/login',{
+      const response = await fetch(`http://${ExchangeHost()}:8080/restaurants/login`,{
         method:'POST',
         headers:{
           'Content-Type': 'application/json'

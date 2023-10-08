@@ -11,6 +11,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/gin-contrib/cors"
+	"github.com/joho/godotenv"
 )
 
 var pool *pgxpool.Pool
@@ -38,11 +39,18 @@ func main() {
 	}
 	defer pool.Close()
 
+	host := "localhost" 
+    err = godotenv.Load(".env")
+    if err != nil {
+        host = os.Getenv("HOST_IP")
+    }
+
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		// アクセスを許可したいアクセス元
 		AllowOrigins: []string{
 			"http://localhost:3000",
+			"http://" + host + ":3000",
 		},
 		// アクセス許可するHTTPメソッド
 		AllowMethods: []string{

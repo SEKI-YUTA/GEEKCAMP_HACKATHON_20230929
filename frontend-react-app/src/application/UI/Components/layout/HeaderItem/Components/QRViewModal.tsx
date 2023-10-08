@@ -41,7 +41,7 @@ export const QRViewModal: FC<QRViewModalProps> = ({
             level="L"
             includeMargin={false}
             imageSettings={{
-              src: '/favicon.ico',
+              src: '',
               x: undefined,
               y: undefined,
               height: 24,

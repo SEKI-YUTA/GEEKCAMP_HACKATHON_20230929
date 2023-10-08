@@ -95,7 +95,7 @@ export const RestaurantHomeCon: FC = () => {
         description: item.description,
         restaurant_id: item.restaurant_id,
         // photo_url がない場合は仮の画像を表示
-        photo_url: item.photo_url ? item.photo_url : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
+        photo_url: item.photo_url ? item.photo_url : '/src/assets/GEEKCAMP_HACKATHON2023_UI_Placeholder.png',
         category: item.category,
         is_sold_out: item.is_sold_out,
         like_count: item.like_count,
@@ -224,7 +224,7 @@ export const RestaurantHomeCon: FC = () => {
         description: item.description,
         restaurant_id: item.restaurant_id,
         // photo_url がない場合は仮の画像を表示
-        photo_url: item.photo_url ? item.photo_url : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
+        photo_url: item.photo_url ? item.photo_url : '/src/assets/GEEKCAMP_HACKATHON2023_UI_Placeholder.png',
         category: item.category,
         is_sold_out: item.is_sold_out,
         like_count: item.like_count,

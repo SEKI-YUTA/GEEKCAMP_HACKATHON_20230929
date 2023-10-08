@@ -435,9 +435,7 @@ export const OwnerHomeCon: FC = () => {
         description: item.description,
         restaurant_id: item.restaurant_id,
         // photo_url がない場合は仮の画像を表示
-        photo_url: item.photo_url
-          ? item.photo_url
-          : `http://${ExchangeHost()}:${window.location.port}/src/assets/GEEKCAMP_HACKATHON2023_UI_Placeholder.png`,
+        photo_url: item.photo_url,
         price: item.price.toString(),
         is_sold_out: item.is_sold_out,
         like_count: item.like_count,

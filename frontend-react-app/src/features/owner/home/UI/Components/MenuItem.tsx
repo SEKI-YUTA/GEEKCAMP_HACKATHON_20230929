@@ -17,7 +17,7 @@ export const MenuItem: FC<MenuItemProps> = ({ isLargerThan1200, item, onPress })
       <Card style={{ height: '100%', width: '100%' }} >
         <CardBody>
           <Box className='imgArea'>
-            <Image src={item.photo_url} />
+            <Image src={item.photo_url !== ''  ? item.photo_url : '/src/assets/GEEKCAMP_HACKATHON2023_UI_Placeholder.png' } />
           </Box>
           <VStack className='nameAndPrice' pt={3}>
             <Box className='name' w="full" textAlign='center' flex={1} >

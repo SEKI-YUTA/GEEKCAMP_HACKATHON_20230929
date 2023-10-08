@@ -11,10 +11,9 @@ interface MenuItemProps {
 export const MenuItem: FC<MenuItemProps> = ({ isLargerThan1200, item, onPress }) => {
   return (
     <GridItem className='menuItem'
-      border="solid 1px black"
       p={3}
       onClick={onPress}
-      boxShadow='xl'
+      boxShadow='2xl'
     >
       <Box className='imgArea'>
         <Image src={item.photo_url} />

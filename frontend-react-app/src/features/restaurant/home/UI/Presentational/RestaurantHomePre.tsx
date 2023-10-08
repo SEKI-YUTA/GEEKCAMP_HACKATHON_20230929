@@ -79,7 +79,6 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
 }) => {
   return (
     <>
-      {filterModal}
       <MenuViewModal
         isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose}
       />

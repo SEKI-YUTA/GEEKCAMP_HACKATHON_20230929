@@ -11,6 +11,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/gin-contrib/cors"
+	"github.com/joho/godotenv"
 )
 
 var pool *pgxpool.Pool
@@ -38,11 +39,18 @@ func main() {
 	}
 	defer pool.Close()
 
+	host := "localhost" 
+    err = godotenv.Load(".env")
+    if err != nil {
+        host = os.Getenv("HOST_IP")
+    }
+
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		// アクセスを許可したいアクセス元
 		AllowOrigins: []string{
 			"http://localhost:3000",
+			"http://" + host + ":3000",
 		},
 		// アクセス許可するHTTPメソッド
 		AllowMethods: []string{
@@ -85,12 +93,22 @@ func editRestaurantFunc(ctx *gin.Context) {
 		return
 	}
 	editedId := 0
-	pool.QueryRow(
-		context.Background(),
-		"UPDATE restaurants SET email = $1, password = $2, name = $3, phone_number = $4, address = $5, description = $6, category_id = $7 " +
-		"WHERE id = $8 RETURNING id;",
-		&editRestaurant.Email, &editRestaurant.Password, &editRestaurant.Name, &editRestaurant.PhoneNumber, &editRestaurant.Address, &editRestaurant.Description, &editRestaurant.CategoryId, &editRestaurant.Id,
-	).Scan(&editedId)
+	// パスワードがない場合パスワード以外のみをアップデートする（フロント側でユーザーのパスワードを保持できないため）
+	if editRestaurant.Password == "" {
+		pool.QueryRow(
+			context.Background(),
+			"UPDATE restaurants SET email = $1, name = $2, phone_number = $3, address = $4, description = $5, category_id = $6 " +
+			"WHERE id = $7 RETURNING id;",
+			&editRestaurant.Email, &editRestaurant.Name, &editRestaurant.PhoneNumber, &editRestaurant.Address, &editRestaurant.Description, &editRestaurant.CategoryId, &editRestaurant.Id,
+		).Scan(&editedId)
+	} else {
+		pool.QueryRow(
+			context.Background(),
+			"UPDATE restaurants SET email = $1, password = $2, name = $3, phone_number = $4, address = $5, description = $6, category_id = $7 " +
+			"WHERE id = $8 RETURNING id;",
+			&editRestaurant.Email, &editRestaurant.Password, &editRestaurant.Name, &editRestaurant.PhoneNumber, &editRestaurant.Address, &editRestaurant.Description, &editRestaurant.CategoryId, &editRestaurant.Id,
+		).Scan(&editedId)
+	}
 
 	if(editedId == 0) {
 		ctx.JSON(400, gin.H{

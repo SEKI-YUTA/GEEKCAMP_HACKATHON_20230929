@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { OwnerSignupPre } from '../Presentational/OwnerSignupPre';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
+import { ExchangeHost } from '../../../../../application/lib/host/exchangeHost';
 
 export const OwnerSignupCon: FC = () => {
 
@@ -102,7 +103,7 @@ export const OwnerSignupCon: FC = () => {
         setSpaceMsgObject(spaceErrors);
         return;
       }
-      const responce = await fetch('http://localhost:8080/restaurants/signup', {
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -146,7 +147,7 @@ export const OwnerSignupCon: FC = () => {
   };
 
   const fetchRestaurantCategorys = async () => {
-    const response = await fetch('http://localhost:8080/restaurants/categories');
+    const response = await fetch(`http://${ExchangeHost()}:8080/restaurants/categories`);
     const data: CategoryResponce = await response.json();
     setRestaurantCategory(data.categories);
     setSelectedCategoryValue(data.categories[0].id.toString());

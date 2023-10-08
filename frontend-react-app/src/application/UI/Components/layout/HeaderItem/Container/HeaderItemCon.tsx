@@ -1,10 +1,11 @@
 import type { ChangeEvent, FormEvent, MouseEvent } from 'react';
-import { useContext, type FC, useState, useEffect } from 'react';
+import { useContext, type FC, useState, useEffect, useRef } from 'react';
 import { HeaderItemPre } from '../Presentational/HeaderItemPre';
 import { StateContext } from '../../../../../lib/state/AuthContext';
 import { useDisclosure, useToast } from '@chakra-ui/react';
 import type { RestaurantType } from '../../../../../@types/Restaurant';
 import type { CategoryResponce, CategoryType } from '../../../../../@types/Category';
+import { ExchangeHost } from '../../../../../lib/host/exchangeHost';
 
 interface HeaderItemConProps {
   title: string
@@ -13,6 +14,7 @@ interface HeaderItemConProps {
 export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const { restaurantId, onLogout } = useContext(StateContext);
   const { isOpen: isProfileViewModal, onOpen: profileViewModalOnOpen, onClose: profileViewModalOnClose } = useDisclosure();
+  const { isOpen: isQRViewModal, onOpen: QRViewModalOnOpen_, onClose: QRViewModalOnClose } = useDisclosure();
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -20,6 +22,8 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
+  const urlInputRef = useRef<HTMLInputElement>(null);
+  const url = `http://${ExchangeHost()}:${window.location.port}/restaurant/${restaurantId}`;
 
   const toast = useToast();
 
@@ -27,6 +31,14 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
     toast({
       description: '更新しました。',
       status: 'success',
+      isClosable: true
+    });
+  };
+
+  const clipMsgToast = () => {
+    toast({
+      description: 'コピーされました。',
+      status: 'info',
       isClosable: true
     });
   };
@@ -56,28 +68,29 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const handleProfileShow = async (e: MouseEvent) => {
     e.preventDefault();
     profileViewModalOnOpen();
-    try {
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
-      const data:RestaurantType = await responce.json();
-      console.log(data);
-      
-      setAddress(data.address);
-      setDescription(data.description);
-      setEmail(data.email);
-      setName(data.name);
-      setPhoneNumber(data.phone_number);
-      setSelectedCategoryValue((restaurantCategory.find(item => item.name === data.category)?.id ?? 0).toString());
-    } catch (error) {
-      console.log(error);
-    }
+    await fetchRestaurantProfile();
   };
   const handleProfileHide = () => {
     profileViewModalOnClose();
   };
+  const QRViewModalOnOpen = (e: MouseEvent) => {
+    e.preventDefault();
+    QRViewModalOnOpen_();
+  };
+  /**
+   * リンクのコピー
+   */
+  const onURLCopy = async () => {
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(url);
+      clipMsgToast();
+    } 
+    urlInputRef?.current?.select();
+  };
   const handleProfileUpdate = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const responce = await fetch('http://localhost:8080/restaurants/edit', {
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/edit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -101,9 +114,40 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       console.log(error);
     }
   };
+  /**
+   * QRコードの保存
+   */
+  const saveQR = () => {
+    const QRCanvas = document.getElementById('qr-canvas') as HTMLCanvasElement;
+    QRCanvas?.toBlob(blob => {
+      if (blob) {
+        const a:HTMLAnchorElement = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${name}_QRCode.jpg`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+    });
+  };
+  const fetchRestaurantProfile = async () => {
+    try {
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/${restaurantId}`);
+      const data:RestaurantType = await responce.json();
+      console.log(data);
+      
+      setAddress(data.address);
+      setDescription(data.description);
+      setEmail(data.email);
+      setName(data.name);
+      setPhoneNumber(data.phone_number);
+      setSelectedCategoryValue((restaurantCategory.find(item => item.name === data.category)?.id ?? 0).toString());
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const fetchRestaurantCategorys = async () => {
     try {
-      const response = await fetch('http://localhost:8080/restaurants/categories');
+      const response = await fetch(`http://${ExchangeHost()}:8080/restaurants/categories`);
       const data: CategoryResponce = await response.json();
       setRestaurantCategory(data.categories);
       setSelectedCategoryValue(data.categories[0].id.toString());
@@ -114,6 +158,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   };
 
   useEffect(()=>{
+    fetchRestaurantProfile();
     fetchRestaurantCategorys();
   }, [restaurantId]);
   return <HeaderItemPre
@@ -131,6 +176,9 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       email,
       name,
       phoneNumber,
+      isQRViewModal,
+      url,
+      urlInputRef,
       handleProfileUpdate,
       handleAddressChange,
       handleEmailChange,
@@ -138,6 +186,10 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
       handlePhoneNumberChange,
       handleDescription,
       handleRadioGroupChange,
+      QRViewModalOnOpen,
+      QRViewModalOnClose,
+      onURLCopy,
+      saveQR,
     }}
   />;
 };

@@ -127,7 +127,7 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
                   />
                 ))}
               </Grid>
-              : 
+              :
               <VStack justifyContent="center" height="calc(95svh - 143.9px)">
                 <Center>
                   <Text fontSize="2xl">メニューがありません</Text>

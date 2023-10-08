@@ -3,11 +3,11 @@ import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { Box, Button, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, VStack } from '@chakra-ui/react';
 
 interface MenuViewModalProps {
-    isOpen: boolean
-    selectedMenu: MenuItemType | undefined
-    onClose: () => void
-    onClickMenuEdit?: (item: MenuItemType) => void,
-    onClickMenuDelete?: (item: MenuItemType) => void,
+  isOpen: boolean
+  selectedMenu: MenuItemType | undefined
+  onClose: () => void
+  onClickMenuEdit?: (item: MenuItemType) => void,
+  onClickMenuDelete?: (item: MenuItemType) => void,
 }
 
 export const MenuViewModal: FC<MenuViewModalProps> = ({ isOpen, onClose, onClickMenuEdit, onClickMenuDelete, selectedMenu }) => {

@@ -14,7 +14,7 @@ export const MenuItem: FC<MenuItemProps> = ({ isLargerThan1200, item, onPress })
       // p={3}
       onClick={onPress}
     >
-      <Card style={{height: '100%', width: '100%'}} >
+      <Card style={{ height: '100%', width: '100%' }} >
         <CardBody>
           <Box className='imgArea'>
             <Image src={item.photo_url} />

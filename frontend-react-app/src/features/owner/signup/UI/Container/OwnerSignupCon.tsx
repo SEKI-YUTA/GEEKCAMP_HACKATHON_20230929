@@ -65,7 +65,7 @@ export const OwnerSignupCon: FC = () => {
     const errors: { [key: string]: string } = {};
     const spaceErrors: { [key: string]: string } = {};
 
-    try {   
+    try {
       let flag = false;
 
       if (inputCheck(ownerEmail, true)) {
@@ -120,7 +120,7 @@ export const OwnerSignupCon: FC = () => {
       });
 
       const json = await responce.json();
-      
+
       console.log(json);
 
       if (json.message === 'ok') {

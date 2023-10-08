@@ -2,14 +2,14 @@ import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, Al
 import { useRef, type FC } from 'react';
 
 export interface ConfirmModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    title: string;
-    description: string;
-    positiveText: string;
-    negativeText: string;
-    onPositive: () => void;
-    onNegative: () => void;
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  description: string;
+  positiveText: string;
+  negativeText: string;
+  onPositive: () => void;
+  onNegative: () => void;
 }
 
 export const ConfirmDialog: FC<ConfirmModalProps> = ({

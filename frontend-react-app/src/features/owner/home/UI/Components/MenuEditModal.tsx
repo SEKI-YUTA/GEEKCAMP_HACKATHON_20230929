@@ -52,7 +52,7 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
         <ModalOverlay />
         <ModalContent>
           <form onSubmit={mode === 'add' ? handleAddMenuSubmit : handleUpdateMenuSubmit}>
-            <ModalHeader>{mode === 'add'  ? 'メニュー登録' : 'メニュー編集'}</ModalHeader>
+            <ModalHeader>{mode === 'add' ? 'メニュー登録' : 'メニュー編集'}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Box py={2}>
@@ -61,7 +61,7 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
               </Box>
               <Box>
                 {
-                  (()=>{
+                  (() => {
                     switch (isSpace) {
                       case true:
                         return <Text color="red">空白のみの名前は使用できません</Text>;
@@ -78,7 +78,7 @@ export const MenuEditModal: FC<MenuEditModalProps> = ({
                 </Flex>
                 <Box>
                   {
-                    (()=>{
+                    (() => {
                       switch (blurMsg) {
                         case true:
                           return <Text color="red">0円は設定できません</Text>;

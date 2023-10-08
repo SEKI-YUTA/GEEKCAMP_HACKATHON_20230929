@@ -11,64 +11,64 @@ import { MenuViewModal } from '../Components/MenuVIewModal';
 import { ConfirmDialog } from '../Components/ConfirmDialog';
 
 interface OwnerHomePreProps {
-    /**
-     * 表示するメニューのリスト
-     */
-    menuItemList: MenuItemType[];
-    /**
-     * カテゴリーのリスト
-     */
-    categoryList: CategoryType[];
-    /**
-     * 選択されているカテゴリー
-     */
-    selectedCategory: CategoryType;
-    /**
-     * 800px以上かどうか
-     */
-    isLargerThan800: boolean;
-    /**
-     * 1200px以上かどうか
-     */
-    isLargerThan1200: boolean;
-    // モーダル呼び出し
-    isMenuEditModalOpen: boolean;
-    isConfirmModalOpen: boolean;
-    menuName: string;
-    menuPrice: string;
-    menuDetail: string;
-    imgLink: string;
-    categoryValue: string;
-    selectedMenuItem: MenuItemType | undefined;
-    isMenuViewModalOpen: boolean;
-    menuModalMode: MenuEditModalProps['mode'];
-    /**
-     * 新規登録ボタンを押したときの処理
-     */
-    onClickAddMenuButton: () => void;
-    onClickMenu: (menuItem: MenuItemType) => void;
-    menuViewModalOnClose: () => void;
-    MenuEditModalOnClose: () => void;
-    onClickMenuEdit: (item: MenuItemType) => void;
-    onClickMenuDelete: (item: MenuItemType) => void;
-    handleSetCategoryValue: (categoryId: string) => void;
-    handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-    handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
-    handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
-    handleBlur: (e: ChangeEvent<HTMLInputElement>) => void;
-    blurMsg: boolean;
-    isSpace: boolean;
-    /**
-     * カテゴリーを押したときの処理
-     * @param category
-     * @returns
-     */
-    onClickCategory: (category: CategoryType) => void;
-    onConfirmDialogPositive: () => void;
-    onConfirmDialogNegative: () => void;
+  /**
+   * 表示するメニューのリスト
+   */
+  menuItemList: MenuItemType[];
+  /**
+   * カテゴリーのリスト
+   */
+  categoryList: CategoryType[];
+  /**
+   * 選択されているカテゴリー
+   */
+  selectedCategory: CategoryType;
+  /**
+   * 800px以上かどうか
+   */
+  isLargerThan800: boolean;
+  /**
+   * 1200px以上かどうか
+   */
+  isLargerThan1200: boolean;
+  // モーダル呼び出し
+  isMenuEditModalOpen: boolean;
+  isConfirmModalOpen: boolean;
+  menuName: string;
+  menuPrice: string;
+  menuDetail: string;
+  imgLink: string;
+  categoryValue: string;
+  selectedMenuItem: MenuItemType | undefined;
+  isMenuViewModalOpen: boolean;
+  menuModalMode: MenuEditModalProps['mode'];
+  /**
+   * 新規登録ボタンを押したときの処理
+   */
+  onClickAddMenuButton: () => void;
+  onClickMenu: (menuItem: MenuItemType) => void;
+  menuViewModalOnClose: () => void;
+  MenuEditModalOnClose: () => void;
+  onClickMenuEdit: (item: MenuItemType) => void;
+  onClickMenuDelete: (item: MenuItemType) => void;
+  handleSetCategoryValue: (categoryId: string) => void;
+  handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSetMenuDetail: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  handleSetImgLink: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleAddMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  handleUpdateMenuSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  handleBlur: (e: ChangeEvent<HTMLInputElement>) => void;
+  blurMsg: boolean;
+  isSpace: boolean;
+  /**
+   * カテゴリーを押したときの処理
+   * @param category
+   * @returns
+   */
+  onClickCategory: (category: CategoryType) => void;
+  onConfirmDialogPositive: () => void;
+  onConfirmDialogNegative: () => void;
 }
 
 /**
@@ -196,7 +196,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
                   />
                 ))}
               </Grid>
-              : 
+              :
               <VStack justifyContent="center" height="calc(95svh - 143.9px)">
                 <Center>
                   <Text fontSize="2xl">メニューがありません</Text>

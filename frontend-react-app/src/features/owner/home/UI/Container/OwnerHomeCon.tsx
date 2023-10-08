@@ -106,8 +106,8 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * メニュー新規登録ボタンをクリック時イベント
-     */
+   * メニュー新規登録ボタンをクリック時イベント
+   */
   const onClickAddMenuButton = () => {
     console.log('新規登録');
     setModalMode('add');
@@ -115,9 +115,9 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * メニュークリック時のイベント
-     * @param id メニューのid
-     */
+   * メニュークリック時のイベント
+   * @param id メニューのid
+   */
   const onClickMenu = (menuItem: MenuItemType) => {
     // メニュービューのモーダル表示
     menuViewModalOnOpen();
@@ -125,9 +125,9 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * カテゴリータブをクリック時のイベント
-     * @param category カテゴリー
-     */
+   * カテゴリータブをクリック時のイベント
+   * @param category カテゴリー
+   */
   const onClickCategory = (category: CategoryType) => {
     console.log(category);
     setSelectedCategory(category);
@@ -144,9 +144,9 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * メニュー詳細モーダルの編集ボタンをクリック時のイベント
-     * @param item
-     */
+   * メニュー詳細モーダルの編集ボタンをクリック時のイベント
+   * @param item
+   */
   const onClickMenuEdit = (item: MenuItemType) => {
     setModalMode('edit');
     setCategoryValue(
@@ -162,16 +162,16 @@ export const OwnerHomeCon: FC = () => {
     MenuEditModalOnOpen();
   };
 
-  /*
-     * メニュー詳細モーダルの削除ボタンをクリック時のイベント
-     */
+  /**
+   * メニュー詳細モーダルの削除ボタンをクリック時のイベント
+   */
   const onClickMenuDelete = () => {
     confirmModalOnOpen();
   };
 
   /**
-     * 確認ダイアログで削除ボタンを押したときのイベント
-     */
+   * 確認ダイアログで削除ボタンを押したときのイベント
+   */
   const onClickConfirmDelete = () => {
     confirmModalOnClose();
     handleDeleteMenuSubmit();
@@ -185,8 +185,8 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * メニューモーダルの入力値のリセット
-     */
+   * メニューモーダルの入力値のリセット
+   */
   const resetMenuValues = () => {
     setCategoryValue('1');
     setMenuName('');
@@ -196,10 +196,10 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * メニュー追加
-     * @param e
-     * @returns
-     */
+   * メニュー追加
+   * @param e
+   * @returns
+   */
   const handleAddMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -271,10 +271,10 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * メニュー更新
-     * @param e
-     * @returns
-     */
+   * メニュー更新
+   * @param e
+   * @returns
+   */
   const handleUpdateMenuSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -362,8 +362,8 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * メニューの削除関数
-     */
+   * メニューの削除関数
+   */
   const handleDeleteMenuSubmit = async () => {
     console.log(selectedMenuItem);
     const deleteMenuId = selectedMenuItem?.id;
@@ -392,8 +392,8 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
-     * カテゴリー一覧取得関数
-     */
+   * カテゴリー一覧取得関数
+   */
   const fetchCategory = async () => {
     try {
       // fetchでAPIにリクエスト

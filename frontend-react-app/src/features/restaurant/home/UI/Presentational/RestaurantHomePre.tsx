@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
 import { MenuItem } from '../../../../owner/home/UI/Components/MenuItem';
 import { Category } from '../../../../owner/home/UI/Components/Category';
-import { Box, Center, Grid, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Center, Grid, HStack, Text, VStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryType } from '../../../../../application/@types/Category';
 import { MenuViewModal } from '../../../../owner/home/UI/Components/MenuVIewModal';
@@ -32,6 +32,17 @@ interface RestaurantHomePreProps {
    * 1200px以上かどうか
    */
   isLargerThan1200: boolean
+
+  /**
+   * 絞り込みボタンを押したときモーダル
+   */
+  filterModal: JSX.Element
+
+  /**
+   * 絞り込みされているかどうか
+   */
+  isFiltered: boolean
+
   /**
    * カテゴリーを押したときの処理
    * @param category 
@@ -39,8 +50,9 @@ interface RestaurantHomePreProps {
    */
   onClickCategory: (category: CategoryType) => void
   /**
-   * モーダル呼び出し
-  */
+   * 絞り込みボタンを押したときの処理
+   */
+  onClickFilterButton: () => void
   onClickMenu: (menuItem: MenuItemType) => void
   selectedMenuItem: MenuItemType | undefined
   isMenuViewModalOpen: boolean
@@ -54,7 +66,10 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
   selectedCategory,
   isLargerThan800,
   isLargerThan1200,
+  filterModal,
+  isFiltered,
   onClickCategory,
+  onClickFilterButton,
   isMenuViewModalOpen,
   onClickMenu,
   selectedMenuItem,
@@ -62,6 +77,7 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
 }) => {
   return (
     <>
+      {filterModal}
       <MenuViewModal
         isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose}
       />
@@ -70,9 +86,31 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
           <HStack py={5}>
             <HStack overflowX='auto' flex={4} spacing={1}>
               {categoryList.map((category, index) => (
-                <Category key={index} category={category} isSelected={category.id === selectedCategory.id} isLargerThan1200={isLargerThan1200} onClick={() => onClickCategory(category)} />
+                <Category key={index} category={category} isSelected={category.id === selectedCategory.id} isLargerThan1200={isLargerThan1200} onClick={
+                  () => onClickCategory(category)
+                } />
               ))}
             </HStack>
+            <Box
+              flex={2}
+              textAlign="right"
+            >
+              <Button
+                border="solid 1px #833F29"
+                borderRadius="10px"
+                color="#B14B4B"
+                backgroundColor="#FBFBFB"
+                {...(isLargerThan1200 && {
+                  size: 'lg',
+                  fontSize: '3xl',
+                  px: 10,
+                  py: 7,
+                })}
+                onClick={() => { onClickFilterButton(); }}
+              >
+                {isFiltered ? '絞り込み中' : '絞り込み'}
+              </Button>
+            </Box>
           </HStack>
           <Box>
             {menuItemList.length > 0 ?

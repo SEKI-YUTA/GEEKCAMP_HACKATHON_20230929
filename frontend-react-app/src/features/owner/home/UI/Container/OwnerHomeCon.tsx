@@ -341,11 +341,13 @@ export const OwnerHomeCon: FC = () => {
                           (category) =>
                             category.id === parseInt(categoryValue)
                         )?.name ?? '',
-          description: menuDetail,
           name: menuName,
-          photo_url: imgLink,
           price: menuPrice,
           restaurant_id: restaurantId ?? 0,
+          photo_url: imgLink,
+          description: menuDetail,
+          is_sold_out: false,
+          like_count: 0,
         });
         // モーダル閉じる
         MenuEditModalOnClose();
@@ -428,15 +430,18 @@ export const OwnerHomeCon: FC = () => {
       // photo_urlがないので、追加
       const data: MenuItemType[] = json.map((item: MenuItemType) => ({
         id: item.id,
+        name: item.name,
         category: item.category,
+        price: item.price,
         description: item.description,
+        restaurant_id: item.restaurant_id,
         // photo_url がない場合は仮の画像を表示
         photo_url: item.photo_url
           ? item.photo_url
           : 'https://k-net01.com/wp-content/uploads/2019/01/smartphone-83.jpg',
-        name: item.name,
         price: item.price.toString(),
-        restaurant_id: item.restaurant_id,
+        is_sold_out: item.is_sold_out,
+        like_count: item.like_count,
       }));
       // allMenusにセット
       setAllMenus(data);

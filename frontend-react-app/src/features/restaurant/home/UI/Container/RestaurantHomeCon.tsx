@@ -132,10 +132,10 @@ export const RestaurantHomeCon: FC = () => {
     selectedCategory={selectedCategory}
     isLargerThan800={isLargerThan800}
     isLargerThan1200={isLargerThan1200}
-    onClickCategory={onClickCategory}
-    onClickMenu={onClickMenu}
     selectedMenuItem={selectedMenuItem}
     isMenuViewModalOpen={isMenuViewModalOpen}
     menuViewModalOnClose={menuViewModalOnClose}
+    onClickCategory={onClickCategory}
+    onClickMenu={onClickMenu}
   />;
 };

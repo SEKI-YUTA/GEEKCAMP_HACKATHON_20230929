@@ -6,7 +6,6 @@ import { Box, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryType } from '../../../../../application/@types/Category';
 import { MenuViewModal } from '../../../../owner/home/UI/Components/MenuVIewModal';
-//import { OwnerHomePre } from '../../../../owner/home/UI/Presentational/OwnerHomePre';
 
 interface RestaurantHomePreProps {
   /**
@@ -83,7 +82,7 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
                   isLargerThan1200={isLargerThan1200}
                   item={menuItem}
                   onPress={() => {
-                    onClickMenu(menuItem)
+                    onClickMenu(menuItem);
                     console.log('アイテム' + menuItem.id);
                   }}
                 />

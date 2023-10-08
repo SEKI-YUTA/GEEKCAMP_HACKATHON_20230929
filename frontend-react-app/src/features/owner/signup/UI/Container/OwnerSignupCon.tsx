@@ -1,5 +1,6 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { OwnerSignupPre } from '../Presentational/OwnerSignupPre';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
@@ -17,6 +18,7 @@ export const OwnerSignupCon: FC = () => {
   const [spaceMsgObject, setSpaceMsgObject] = useState<{ [key: string]: string }>({});
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
   const [errorMsg, setErrorMsg] = useState<number>(0);
+  const navigate = useNavigate();
 
   const handleOwnerEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setOwnerEmail(e.target.value);
@@ -53,7 +55,7 @@ export const OwnerSignupCon: FC = () => {
     if (isEmptyCheck) {
       return input == '' || regex.test(input);
     }
-    return input.split(' ').join('').split('　').join('') == '';
+    return regex.test(input);
   };
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -80,17 +82,17 @@ export const OwnerSignupCon: FC = () => {
         flag = true;
 
       }
-      if (inputCheck(phoneNumber)) {
+      if (inputCheck(phoneNumber, false)) {
         spaceErrors['phoneNumber'] = 'スペースが含まれています';
         flag = true;
 
       }
-      if (inputCheck(address)) {
+      if (inputCheck(address, false)) {
         spaceErrors['address'] = 'スペースが含まれています';
         flag = true;
 
       }
-      if (inputCheck(description)) {
+      if (inputCheck(description, false)) {
         spaceErrors['description'] = 'スペースが含まれています';
         flag = true;
 
@@ -117,6 +119,7 @@ export const OwnerSignupCon: FC = () => {
       });
 
       const json = await responce.json();
+      
       console.log(json);
 
       if (json.message === 'ok') {
@@ -127,6 +130,8 @@ export const OwnerSignupCon: FC = () => {
         setAddress('');
         setDescription('');
         setSelectedCategoryValue('1');
+        navigate('/signin')
+
       } else {
         // サインインに失敗
         console.log('failed to sign up');

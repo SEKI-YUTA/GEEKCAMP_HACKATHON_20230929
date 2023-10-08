@@ -6,6 +6,8 @@ import { Box, Button, Center, Grid, HStack, Text, VStack } from '@chakra-ui/reac
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryType } from '../../../../../application/@types/Category';
 import { MenuViewModal } from '../../../../owner/home/UI/Components/MenuVIewModal';
+import type { FilterMenuModalProps } from '../Components/FilterMenuModal';
+import { FilterMenuModal } from '../Components/FilterMenuModal';
 
 interface RestaurantHomePreProps {
   /**
@@ -36,7 +38,7 @@ interface RestaurantHomePreProps {
   /**
    * 絞り込みボタンを押したときモーダル
    */
-  filterModal: JSX.Element
+  filterModal: FilterMenuModalProps
 
   /**
    * 絞り込みされているかどうか
@@ -80,6 +82,9 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
       {filterModal}
       <MenuViewModal
         isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose}
+      />
+      <FilterMenuModal
+        {...filterModal}
       />
       <Layout title={`${restaurantName}メニューアプリ`}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>

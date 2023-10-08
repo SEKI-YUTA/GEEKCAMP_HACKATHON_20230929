@@ -2,7 +2,7 @@ import { Box, ModalContent, ModalOverlay, Modal, ModalBody, ModalHeader, ModalCl
 import type { ChangeEvent, FC, FormEvent } from 'react';
 import type { CategoryType } from '../../../../../application/@types/Category';
 
-interface FilterMenuModalProps {
+export interface FilterMenuModalProps {
   isOpen: boolean
   KeyWord: string
   menuPriceLower: number

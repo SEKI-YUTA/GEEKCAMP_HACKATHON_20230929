@@ -6,7 +6,7 @@ import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
 import type { RestaurantType } from '../../../../../application/@types/Restaurant';
-import { FilterMenuModal } from '../Components/FilterMenuModal';
+import type { FilterMenuModalProps } from '../Components/FilterMenuModal';
 import { ExchangeHost } from '../../../../../application/lib/host/exchangeHost';
 /**
  * レストラン, ホーム画面のコンポーネント（Container）
@@ -130,20 +130,20 @@ export const RestaurantHomeCon: FC = () => {
     filterMenuModalOnOpen();
   };
 
-  const filterMenuModal: JSX.Element = <FilterMenuModal
-    isOpen={isFilterMenuModalOpen}
-    KeyWord={keyWord}
-    menuPriceLower={menuPriceLower}
-    menuPriceUpper={menuPriceUpper}
-    categoryList={categoryList}
-    categoryValue={categoryValue}
-    handleSetCategoryValue={handleSetCategoryValue}
-    handleSetKeyWord={handleSetKeyWord}
-    handleSetMenuPriceLower={handleSetMenuPriceLower}
-    handleSetMenuPriceUpper={handleSetMenuPriceUpper}
-    handleFilterMenuSubmit={handleFilterMenuSubmit}
-    onClose={filterMenuModalOnClose}
-  />;
+  const filterMenuModal: FilterMenuModalProps = {
+    isOpen:isFilterMenuModalOpen,
+    KeyWord:keyWord,
+    menuPriceLower:menuPriceLower,
+    menuPriceUpper:menuPriceUpper,
+    categoryList:categoryList,
+    categoryValue:categoryValue,
+    handleSetCategoryValue:handleSetCategoryValue,
+    handleSetKeyWord:handleSetKeyWord,
+    handleSetMenuPriceLower:handleSetMenuPriceLower,
+    handleSetMenuPriceUpper:handleSetMenuPriceUpper,
+    handleFilterMenuSubmit:handleFilterMenuSubmit,
+    onClose:filterMenuModalOnClose,
+  };
 
   ////// 絞り込みモーダル ここまで///////
 

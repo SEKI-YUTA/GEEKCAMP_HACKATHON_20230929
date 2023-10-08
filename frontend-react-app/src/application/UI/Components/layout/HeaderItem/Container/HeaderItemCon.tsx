@@ -23,7 +23,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
   const urlInputRef = useRef<HTMLInputElement>(null);
-  const url = `http://${window.location.hostname}:${window.location.port}/restaurant/${restaurantId}`;
+  const url = `http://${ExchangeHost()}:${window.location.port}/restaurant/${restaurantId}`;
 
   const toast = useToast();
 

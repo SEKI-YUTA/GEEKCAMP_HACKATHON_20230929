@@ -6,6 +6,7 @@ import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryResponce, CategoryType } from '../../../../../application/@types/Category';
 import { useMediaQuery, useDisclosure } from '@chakra-ui/react';
 import type { MenuEditModalProps } from '../Components/MenuEditModal';
+import { ExchangeHost } from '../../../../../application/lib/host/exchangeHost';
 
 /**
  * ホーム画面のコンポーネント（Container）
@@ -178,7 +179,7 @@ export const OwnerHomeCon: FC = () => {
         category: categoryValue
       });
 
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/add`, {
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -243,7 +244,7 @@ export const OwnerHomeCon: FC = () => {
         category: categoryValue
       });
 
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/edit`, {
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus/edit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -299,7 +300,7 @@ export const OwnerHomeCon: FC = () => {
   const fetchCategory = async () => {
     try {
       // fetchでAPIにリクエスト
-      const responce = await fetch('http://localhost:8080/menus/categories');
+      const responce = await fetch(`http://${ExchangeHost()}:8080/menus/categories`);
       // レスポンスからJSONを取り出し
       const json: CategoryResponce = await responce.json();
       console.log(json);
@@ -321,7 +322,7 @@ export const OwnerHomeCon: FC = () => {
   const fetchMenu = async () => {
     try {
       // fetchでAPIにリクエスト
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus`);
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus`);
       // レスポンスからJSONを取り出し
       const json: MenuItemType[] = await responce.json();
       console.log(json);

@@ -262,11 +262,11 @@ export const RestaurantHomeCon: FC = () => {
     isLargerThan1200={isLargerThan1200}
     filterModal={filterMenuModal}
     isFiltered={isFiltered}
-    onClickCategory={onClickCategory}
-    onClickFilterButton={onClickFilterButton}
     selectedMenuItem={selectedMenuItem}
     isMenuViewModalOpen={isMenuViewModalOpen}
     menuViewModalOnClose={menuViewModalOnClose}
+    onClickCategory={onClickCategory}
+    onClickFilterButton={onClickFilterButton}
     onClickMenu={onClickMenu}
   />;
 };

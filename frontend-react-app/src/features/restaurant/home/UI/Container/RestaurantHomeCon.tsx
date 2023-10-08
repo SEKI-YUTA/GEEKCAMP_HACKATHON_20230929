@@ -240,7 +240,13 @@ export const RestaurantHomeCon: FC = () => {
       console.log('取得失敗', error);
     }
   };
-
+  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItemType | undefined>();
+  const { isOpen: isMenuViewModalOpen, onOpen: menuViewModalOnOpen, onClose: menuViewModalOnClose } = useDisclosure();
+  const onClickMenu = (menuItem: MenuItemType) => {
+    // メニュービューのモーダル表示
+    menuViewModalOnOpen();
+    setSelectedMenuItem(menuItem);
+  };
   useEffect(() => {
     // 初回のみ実行
     fetchMenu();
@@ -259,5 +265,9 @@ export const RestaurantHomeCon: FC = () => {
     isFiltered={isFiltered}
     onClickCategory={onClickCategory}
     onClickFilterButton={onClickFilterButton}
+    selectedMenuItem={selectedMenuItem}
+    isMenuViewModalOpen={isMenuViewModalOpen}
+    menuViewModalOnClose={menuViewModalOnClose}
+    onClickMenu={onClickMenu}
   />;
 };

@@ -5,6 +5,7 @@ import { Category } from '../../../../owner/home/UI/Components/Category';
 import { Box, Button, Grid, HStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { CategoryType } from '../../../../../application/@types/Category';
+import { MenuViewModal } from '../../../../owner/home/UI/Components/MenuVIewModal';
 
 interface RestaurantHomePreProps {
   /**
@@ -52,6 +53,10 @@ interface RestaurantHomePreProps {
    * 絞り込みボタンを押したときの処理
    */
   onClickFilterButton: () => void
+  onClickMenu: (menuItem: MenuItemType) => void
+  selectedMenuItem: MenuItemType | undefined
+  isMenuViewModalOpen: boolean
+  menuViewModalOnClose: () => void
 }
 
 export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
@@ -65,10 +70,17 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
   isFiltered,
   onClickCategory,
   onClickFilterButton,
+  isMenuViewModalOpen,
+  onClickMenu,
+  selectedMenuItem,
+  menuViewModalOnClose
 }) => {
   return (
     <>
       {filterModal}
+      <MenuViewModal
+        isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose}
+      />
       <Layout title={`${restaurantName}メニューアプリ`}>
         <Box px={isLargerThan800 ? 12 : 5} pb={5}>
           <HStack py={5}>
@@ -107,7 +119,10 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
                   key={index}
                   isLargerThan1200={isLargerThan1200}
                   item={menuItem}
-                  onPress={() => { console.log('アイテム' + menuItem.id); }}
+                  onPress={() => {
+                    onClickMenu(menuItem);
+                    console.log('アイテム' + menuItem.id);
+                  }}
                 />
               ))}
             </Grid>

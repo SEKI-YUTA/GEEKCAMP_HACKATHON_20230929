@@ -14,6 +14,7 @@ export const MenuItem: FC<MenuItemProps> = ({ isLargerThan1200, item, onPress })
       border="solid 1px black"
       p={3}
       onClick={onPress}
+      boxShadow='xl'
     >
       <Box className='imgArea'>
         <Image src={item.photo_url} />

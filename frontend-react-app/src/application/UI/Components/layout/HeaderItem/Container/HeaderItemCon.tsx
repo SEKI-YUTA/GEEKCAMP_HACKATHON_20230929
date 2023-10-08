@@ -35,6 +35,14 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
     });
   };
 
+  const clipMsgToast = () => {
+    toast({
+      description: 'コピーされました。',
+      status: 'info',
+      isClosable: true
+    });
+  };
+
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
@@ -75,6 +83,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const onURLCopy = async () => {
     if (navigator.clipboard) {
       await navigator.clipboard.writeText(url);
+      clipMsgToast();
     } 
     urlInputRef?.current?.select();
   };

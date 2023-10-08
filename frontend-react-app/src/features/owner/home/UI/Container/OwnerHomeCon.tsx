@@ -22,15 +22,15 @@ export const OwnerHomeCon: FC = () => {
   const [menuItemList, setMenuItemList] = useState<MenuItemType[]>([]);
   // 選択されたメニューの保持
   const [selectedMenuItem, setSelectedMenuItem] = useState<
-        MenuItemType | undefined
-    >();
+    MenuItemType | undefined
+  >();
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({
     id: -1,
     name: '',
   });
   const [menuModalMode, setModalMode] =
-        useState<MenuEditModalProps['mode']>('add');
+    useState<MenuEditModalProps['mode']>('add');
   const {
     isOpen: isMenuEditModalOpen,
     onOpen: MenuEditModalOnOpen,
@@ -46,7 +46,7 @@ export const OwnerHomeCon: FC = () => {
     onOpen: confirmModalOnOpen,
     onClose: confirmModalOnClose,
   } = useDisclosure();
-    // メデイアクエリ
+  // メデイアクエリ
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)');
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
 
@@ -177,9 +177,9 @@ export const OwnerHomeCon: FC = () => {
     handleDeleteMenuSubmit();
     menuViewModalOnClose();
   };
-    /**
-     * 確認ダイアログでキャンセルボタンを押したときのイベント
-     */
+  /**
+   * 確認ダイアログでキャンセルボタンを押したときのイベント
+   */
   const onClickConfirmCalcel = () => {
     confirmModalOnClose();
   };
@@ -206,10 +206,10 @@ export const OwnerHomeCon: FC = () => {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
       if (
         categoryValue === '' ||
-                menuName === '' ||
-                menuPrice == '0' ||
-                isNaN(parseInt(menuPrice)) === true ||
-                menuDetail === ''
+        menuName === '' ||
+        menuPrice == '0' ||
+        isNaN(parseInt(menuPrice)) === true ||
+        menuDetail === ''
       ) {
         // 空欄がある場合
         console.log('記入漏れあり');
@@ -281,10 +281,10 @@ export const OwnerHomeCon: FC = () => {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
       if (
         categoryValue === '' ||
-                menuName === '' ||
-                menuPrice == '0' ||
-                isNaN(parseInt(menuPrice)) === true ||
-                menuDetail === ''
+        menuName === '' ||
+        menuPrice == '0' ||
+        isNaN(parseInt(menuPrice)) === true ||
+        menuDetail === ''
       ) {
         // 空欄がある場合
         console.log('記入漏れあり');
@@ -337,10 +337,10 @@ export const OwnerHomeCon: FC = () => {
         setSelectedMenuItem({
           id: selectedMenuItem?.id ?? 0,
           category:
-                        categoryList.find(
-                          (category) =>
-                            category.id === parseInt(categoryValue)
-                        )?.name ?? '',
+            categoryList.find(
+              (category) =>
+                category.id === parseInt(categoryValue)
+            )?.name ?? '',
           name: menuName,
           price: menuPrice,
           restaurant_id: restaurantId ?? 0,
@@ -369,13 +369,13 @@ export const OwnerHomeCon: FC = () => {
     const deleteMenuId = selectedMenuItem?.id;
     if (
       deleteMenuId === undefined ||
-            deleteMenuId === null ||
-            deleteMenuId < 0
+      deleteMenuId === null ||
+      deleteMenuId < 0
     ) {
       return;
     }
     await fetch(
-      `http://localhost:8080/restaurants/${restaurantId}/menus/delete`,
+      `http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus/delete`,
       {
         method: 'POST',
         headers: {

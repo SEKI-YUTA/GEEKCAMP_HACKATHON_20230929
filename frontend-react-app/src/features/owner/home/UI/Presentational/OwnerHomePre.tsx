@@ -181,9 +181,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
                   py: 7,
                 })}
                 onClick={onClickAddMenuButton}
-              >
-                                新規登録
-              </Button>
+              >新規登録</Button>
             </Box>
           </HStack>
           <Box>

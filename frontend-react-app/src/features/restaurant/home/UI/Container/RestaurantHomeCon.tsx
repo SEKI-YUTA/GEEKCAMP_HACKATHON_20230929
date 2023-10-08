@@ -82,7 +82,7 @@ export const RestaurantHomeCon: FC = () => {
         menuPriceUpper: menuPriceUpper,
         categoryValue: categoryValue
       });
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus?keyword=${keyWord}&lower=${menuPriceUpper}&higher=${menuPriceLower}`);
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus?keyword=${keyWord}&lower=${menuPriceUpper}&higher=${menuPriceLower}`);
       console.log('responce', responce);
 
       const json: MenuItemType[] = await responce.json();

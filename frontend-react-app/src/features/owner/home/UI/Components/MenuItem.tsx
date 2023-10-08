@@ -11,7 +11,7 @@ interface MenuItemProps {
 export const MenuItem: FC<MenuItemProps> = ({ isLargerThan1200, item, onPress }) => {
   return (
     <GridItem className='menuItem'
-      p={3}
+      // p={3}
       onClick={onPress}
     >
       <Card style={{height: '100%', width: '100%'}} >

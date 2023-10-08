@@ -2,7 +2,7 @@ import type { ChangeEvent, FC, FormEvent } from 'react';
 import { Layout } from '../../../../../application/UI/Components/layout';
 import { MenuItem } from '../Components/MenuItem';
 import { Category } from '../Components/Category';
-import { Box, Button, Grid, HStack } from '@chakra-ui/react';
+import { Box, Button, Center, Grid, HStack, Text, VStack } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import type { MenuEditModalProps } from '../Components/MenuEditModal';
 import { MenuEditModal } from '../Components/MenuEditModal';
@@ -159,16 +159,24 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
             </Box>
           </HStack>
           <Box>
-            <Grid gridTemplateColumns={isLargerThan800 ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'} rowGap={5} columnGap={isLargerThan800 ? 10 : 5}>
-              {menuItemList.map((menuItem, index) => (
-                <MenuItem
-                  key={index}
-                  isLargerThan1200={isLargerThan1200}
-                  item={menuItem}
-                  onPress={() => onClickMenu(menuItem)}
-                />
-              ))}
-            </Grid>
+            {menuItemList.length > 0 ?
+              <Grid gridTemplateColumns={isLargerThan800 ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'} rowGap={5} columnGap={isLargerThan800 ? 10 : 5}>
+                {menuItemList.map((menuItem, index) => (
+                  <MenuItem
+                    key={index}
+                    isLargerThan1200={isLargerThan1200}
+                    item={menuItem}
+                    onPress={() => onClickMenu(menuItem)}
+                  />
+                ))}
+              </Grid>
+              : 
+              <VStack justifyContent="center" height="calc(95svh - 143.9px)">
+                <Center>
+                  <Text fontSize="2xl">メニューがありません</Text>
+                </Center>
+              </VStack>
+            }
           </Box>
         </Box>
       </Layout>

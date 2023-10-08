@@ -145,7 +145,7 @@ export const OwnerHomeCon: FC = () => {
   */
   const onClickMenuDelete = () => {
     handleDeleteMenuSubmit();
-  }
+  };
 
   /**
    * メニューモーダルの入力値のリセット
@@ -303,12 +303,12 @@ export const OwnerHomeCon: FC = () => {
    * メニューの削除巻数
   */
   const handleDeleteMenuSubmit = async () => {
-    console.log(selectedMenuItem)
+    console.log(selectedMenuItem);
     const deleteMenuId = selectedMenuItem?.id;
     if(deleteMenuId === undefined || deleteMenuId === null || deleteMenuId < 0) {
       return;
     }
-    const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/delete`, {
+    await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/delete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

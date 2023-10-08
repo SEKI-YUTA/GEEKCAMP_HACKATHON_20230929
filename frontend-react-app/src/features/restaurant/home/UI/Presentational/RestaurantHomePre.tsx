@@ -75,21 +75,21 @@ export const RestaurantHomePre: FC<RestaurantHomePreProps> = ({
             </HStack>
           </HStack>
           <Box>
-          {menuItemList.length > 0 ?
-            <Grid gridTemplateColumns={isLargerThan800 ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'} rowGap={5} columnGap={isLargerThan800 ? 10 : 5}>
-              {menuItemList.map((menuItem, index) => (
-                <MenuItem
-                  key={index}
-                  isLargerThan1200={isLargerThan1200}
-                  item={menuItem}
-                  onPress={() => {
-                    onClickMenu(menuItem);
-                    console.log('アイテム' + menuItem.id);
-                  }}
-                />
-              ))}
-            </Grid>
-            : 
+            {menuItemList.length > 0 ?
+              <Grid gridTemplateColumns={isLargerThan800 ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'} rowGap={5} columnGap={isLargerThan800 ? 10 : 5}>
+                {menuItemList.map((menuItem, index) => (
+                  <MenuItem
+                    key={index}
+                    isLargerThan1200={isLargerThan1200}
+                    item={menuItem}
+                    onPress={() => {
+                      onClickMenu(menuItem);
+                      console.log('アイテム' + menuItem.id);
+                    }}
+                  />
+                ))}
+              </Grid>
+              : 
               <VStack justifyContent="center" height="calc(95svh - 143.9px)">
                 <Center>
                   <Text fontSize="2xl">メニューがありません</Text>

@@ -11,7 +11,7 @@ export const Layout: FC<Props> = ({ children, title, isOwner }) => {
   return (
     <>
       <HeaderItemCon title={title} isOwner={isOwner} />
-      <main style={{height:"calc(100svh - 143.9px)"}}>{children}</main>
+      <main style={{height:'calc(100svh - 143.9px)'}}>{children}</main>
     </>
   );
 };

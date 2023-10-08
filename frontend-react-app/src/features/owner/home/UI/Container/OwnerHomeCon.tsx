@@ -432,7 +432,6 @@ export const OwnerHomeCon: FC = () => {
         id: item.id,
         name: item.name,
         category: item.category,
-        price: item.price,
         description: item.description,
         restaurant_id: item.restaurant_id,
         // photo_url がない場合は仮の画像を表示

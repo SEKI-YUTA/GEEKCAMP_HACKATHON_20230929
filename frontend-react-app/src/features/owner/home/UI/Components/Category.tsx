@@ -9,12 +9,12 @@ interface CategoryProps {
   onClick: () => void
 }
 
-export const Category: FC<CategoryProps> = ({category, isSelected, isLargerThan1200, onClick}) => {
+export const Category: FC<CategoryProps> = ({ category, isSelected, isLargerThan1200, onClick }) => {
   return (
     <Box>
       <Button
         {...(isLargerThan1200 && {
-          fontSize:30
+          fontSize: 30
         })}
         backgroundColor='white'
         fontWeight='normal'

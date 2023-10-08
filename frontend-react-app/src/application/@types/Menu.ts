@@ -1,9 +1,11 @@
 export interface MenuItemType {
   id: number;
   name: string;
-  price: number;
+  price: string;
   description: string;
-  photo_url: string;
   restaurant_id: number;
+  photo_url: string;
   category: string;
+  is_sold_out: boolean;
+  like_count: number;
 }

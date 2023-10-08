@@ -5,6 +5,7 @@ import { StateContext } from '../../../../../lib/state/AuthContext';
 import { useDisclosure, useToast } from '@chakra-ui/react';
 import type { RestaurantType } from '../../../../../@types/Restaurant';
 import type { CategoryResponce, CategoryType } from '../../../../../@types/Category';
+import { ExchangeHost } from '../../../../../lib/host/exchangeHost';
 
 interface HeaderItemConProps {
   title: string
@@ -22,7 +23,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const [restaurantCategory, setRestaurantCategory] = useState<CategoryType[]>([]);
   const [selectedCategoryValue, setSelectedCategoryValue] = useState<string>('1');
   const urlInputRef = useRef<HTMLInputElement>(null);
-  const url = `http://${window.location.hostname}:${window.location.port}/restaurant/${restaurantId}`;
+  const url = `http://${ExchangeHost()}:${window.location.port}/restaurant/${restaurantId}`;
 
   const toast = useToast();
 
@@ -89,7 +90,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const handleProfileUpdate = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const responce = await fetch('http://localhost:8080/restaurants/edit', {
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/edit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -130,7 +131,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   };
   const fetchRestaurantProfile = async () => {
     try {
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/${restaurantId}`);
       const data:RestaurantType = await responce.json();
       console.log(data);
       
@@ -146,7 +147,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   };
   const fetchRestaurantCategorys = async () => {
     try {
-      const response = await fetch('http://localhost:8080/restaurants/categories');
+      const response = await fetch(`http://${ExchangeHost()}:8080/restaurants/categories`);
       const data: CategoryResponce = await response.json();
       setRestaurantCategory(data.categories);
       setSelectedCategoryValue(data.categories[0].id.toString());

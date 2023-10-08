@@ -5,6 +5,7 @@ import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import type { MenuItemType } from '../../../../../application/@types/Menu';
 import { useParams } from 'react-router-dom';
 import type { RestaurantType } from '../../../../../application/@types/Restaurant';
+import { ExchangeHost } from '../../../../../application/lib/host/exchangeHost';
 /**
  * レストラン, ホーム画面のコンポーネント（Container）
  * ここにコンポーネントのロジックを書いて、RestaurantHomePreに渡す
@@ -29,7 +30,7 @@ export const RestaurantHomeCon: FC = () => {
   const fetchRestaurantInfo = async () => {
     try {
       // fetchでAPIにリクエスト
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}`);
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/${restaurantId}`);
       // レスポンスからJSONを取り出し
       const data = await responce.json() as RestaurantType;
       // レストラン名をセット
@@ -65,7 +66,7 @@ export const RestaurantHomeCon: FC = () => {
   const fetchCategory = async () => {
     try {
       // fetchでAPIにリクエスト
-      const responce = await fetch('http://localhost:8080/menus/categories');
+      const responce = await fetch(`http://${ExchangeHost()}:8080/menus/categories`);
       // レスポンスからJSONを取り出し
       const json: CategoryResponce = await responce.json();
       console.log(json);
@@ -87,7 +88,7 @@ export const RestaurantHomeCon: FC = () => {
   const fetchMenu = async () => {
     try {
       // fetchでAPIにリクエスト
-      const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus`);
+      const responce = await fetch(`http://${ExchangeHost()}:8080/restaurants/${restaurantId}/menus`);
       // レスポンスからJSONを取り出し
       const json: MenuItemType[] = await responce.json();
       console.log(json);

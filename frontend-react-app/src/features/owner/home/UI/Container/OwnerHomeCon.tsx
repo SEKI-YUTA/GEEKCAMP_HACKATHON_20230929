@@ -139,6 +139,14 @@ export const OwnerHomeCon: FC = () => {
     MenuEditModalOnOpen();
   };
 
+  /*
+  * メニュー詳細モーダルの削除ボタンをクリック時のイベント
+  * @param item 
+  */
+  const onClickMenuDelete = () => {
+    handleDeleteMenuSubmit();
+  }
+
   /**
    * メニューモーダルの入力値のリセット
    */
@@ -292,6 +300,28 @@ export const OwnerHomeCon: FC = () => {
   };
 
   /**
+   * メニューの削除巻数
+  */
+  const handleDeleteMenuSubmit = async () => {
+    console.log(selectedMenuItem)
+    const deleteMenuId = selectedMenuItem?.id;
+    if(deleteMenuId === undefined || deleteMenuId === null || deleteMenuId < 0) {
+      return;
+    }
+    const responce = await fetch(`http://localhost:8080/restaurants/${restaurantId}/menus/delete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: selectedMenuItem?.id,
+        })
+    });
+    menuViewModalOnClose();
+    fetchMenu();
+  }
+
+  /**
    * カテゴリー一覧取得関数
    */
   const fetchCategory = async () => {
@@ -381,6 +411,7 @@ export const OwnerHomeCon: FC = () => {
     onClickAddMenuButton={onClickAddMenuButton}
     onClickCategory={onClickCategory}
     onClickMenuEdit={onClickMenuEdit}
+    onClickMenuDelete={onClickMenuDelete}
     onClickMenu={onClickMenu}
   />;
 };

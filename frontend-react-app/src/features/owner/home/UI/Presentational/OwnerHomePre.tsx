@@ -47,7 +47,8 @@ interface OwnerHomePreProps {
   onClickMenu: (menuItem: MenuItemType) => void
   menuViewModalOnClose: () => void
   MenuEditModalOnClose: () => void
-  onClickMenuEdit: (item: MenuItemType) => void
+  onClickMenuEdit: (item: MenuItemType) => void,
+  onClickMenuDelete: (item: MenuItemType) => void,
   handleSetCategoryValue: (categoryId: string) => void
   handleSetMenuName: (e: ChangeEvent<HTMLInputElement>) => void
   handleSetMenuPrice: (e: ChangeEvent<HTMLInputElement>) => void
@@ -88,6 +89,7 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   menuModalMode,
   menuViewModalOnClose,
   onClickMenuEdit,
+  onClickMenuDelete,
   onClickMenu,
   onClickAddMenuButton,
   onClickCategory,
@@ -106,7 +108,8 @@ export const OwnerHomePre: FC<OwnerHomePreProps> = ({
   return (
     <>
       <MenuViewModal 
-        isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem} onClose={menuViewModalOnClose} onClickMenuEdit={onClickMenuEdit}
+        isOpen={isMenuViewModalOpen} selectedMenu={selectedMenuItem}
+        onClose={menuViewModalOnClose} onClickMenuEdit={onClickMenuEdit} onClickMenuDelete={onClickMenuDelete}
       />
       <MenuEditModal
         isOpen={isMenuEditModalOpen}

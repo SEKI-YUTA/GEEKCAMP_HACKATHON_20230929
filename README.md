@@ -28,6 +28,7 @@ GET /restaurants/:id/menus/yosan・・・特定の店舗で予算内でのセッ
 GET /menus/categories・・・メニューのカテゴリ一覧を取得する
 POST /restaurants/:id/menus/add・・・メニューを追加する
 POST /restaurants/:id/menus/edit・・・メニューを編集する
+POST /restaurants/:id/menus/delete・・・メニューを削除する
 POST /restaurants/login・・・ログインする（店）
 POST /restaurants/signup・・・新規登録する（店）
 POST /restaurants/edit・・・店舗情報を編集する

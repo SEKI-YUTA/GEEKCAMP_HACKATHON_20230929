@@ -20,7 +20,7 @@ export const MenuViewModal: FC<MenuViewModalProps> = ({ isOpen, onClose, onClick
         <HStack spacing={10}>
           <VStack spacing={5} flex={1}>
             <Box>
-              <Image src={selectedMenu?.photo_url} />
+              <Image src={selectedMenu?.photo_url ? selectedMenu.photo_url : '/src/assets/GEEKCAMP_HACKATHON2023_UI_Placeholder.png'} />
             </Box>
             <Text fontSize='2xl'>{selectedMenu?.name}</Text>
           </VStack>

@@ -63,14 +63,14 @@ export const OwnerSignupPre: FC<OwnerSignupProps> = ({
 }) => {
 
   return (
-    <VStack spacing={8} mx="auto" maxW="2xl" py={12} px={6} align="stretch">
+    <VStack mx="auto" maxW="2xl" py={12} px={6} align="stretch">
       <Heading py={2} textAlign='center' >サインアップ</Heading>
       <form onSubmit={handleFormSubmit}>
         <Box
           rounded="lg"
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow="lg"
-          p={8}>
+          p={4}>
           <Stack spacing={4}>
             <Box py={2}>
               <FormControl isRequired>

@@ -130,7 +130,7 @@ export const OwnerSignupCon: FC = () => {
         setAddress('');
         setDescription('');
         setSelectedCategoryValue('1');
-        navigate('/signin')
+        navigate('/signin');
 
       } else {
         // サインインに失敗

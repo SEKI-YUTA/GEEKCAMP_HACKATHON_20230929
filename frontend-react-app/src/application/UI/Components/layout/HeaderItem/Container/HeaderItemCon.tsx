@@ -37,7 +37,7 @@ export const HeaderItemCon: FC<HeaderItemConProps> = ({ title, isOwner }) => {
   const clipMsgToast = () => {
     toast({
       description: 'コピーされました。',
-      status: 'success',
+      status: 'info',
       isClosable: true
     });
   };

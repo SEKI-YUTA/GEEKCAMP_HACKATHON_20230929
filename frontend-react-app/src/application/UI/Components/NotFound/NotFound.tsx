@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import { FC } from "react";
+import { Box } from '@chakra-ui/react';
+import type { FC } from 'react';
 
 export const NotFound: FC = () => {
   return (

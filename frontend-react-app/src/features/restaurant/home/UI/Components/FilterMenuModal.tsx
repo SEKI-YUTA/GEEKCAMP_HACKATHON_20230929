@@ -64,7 +64,7 @@ export const FilterMenuModal: FC<FilterMenuModalProps> = ({
               <FormControl>
                 <FormLabel htmlFor="category_id">料理のカテゴリー</FormLabel>
                 <RadioGroup id="category_id" colorScheme='orange' value={categoryValue} onChange={handleSetCategoryValue}>
-                  {categoryList.filter(item => item.id !== 0).map((category, index) => (
+                  {categoryList.map((category, index) => (
                     <Radio key={index} pr={2} borderColor="gray" value={category.id.toString()}>{category.name}</Radio>
                   ))}
                 </RadioGroup>

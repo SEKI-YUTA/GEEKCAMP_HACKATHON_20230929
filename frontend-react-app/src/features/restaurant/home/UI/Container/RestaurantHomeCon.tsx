@@ -47,7 +47,7 @@ export const RestaurantHomeCon: FC = () => {
   const [menuPriceLower, setMenuPriceLower] = useState<string>('0');
   const handleSetMenuPriceLower = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
-      setMenuPriceLower(e.target.value);
+      setMenuPriceLower(parseInt(e.target.value).toString());
     } else {
       setMenuPriceLower('');
     }
@@ -56,7 +56,7 @@ export const RestaurantHomeCon: FC = () => {
   const [menuPriceUpper, setMenuPriceUpper] = useState<string>('0');
   const handleSetMenuPriceUpper = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
-      setMenuPriceUpper(e.target.value);
+      setMenuPriceUpper(parseInt(e.target.value).toString());
     } else {
       setMenuPriceUpper('');
     }

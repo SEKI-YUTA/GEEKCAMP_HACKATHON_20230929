@@ -101,7 +101,7 @@ export const RestaurantHomeCon: FC = () => {
         like_count: item.like_count,
       }));
       // menuItemListにセット
-      setMenuItemList(data);
+      setMenuItemList(data.filter(item => item.category === allCategories.find(category => category.id === parseInt(categoryValue))?.name));
       // カテゴリーを絞り込み結果に変更
       const filteringCategory: CategoryType = { id: -1, name: '絞り込み結果' };
       setCategoryList([filteringCategory]);

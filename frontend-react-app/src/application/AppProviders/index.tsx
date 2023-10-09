@@ -6,6 +6,7 @@ import { OwnerHomeCon } from '../../features/owner/home/UI/Container/OwnerHomeCo
 import { OwnerSigninCon } from '../../features/owner/signin/UI/Container/OwnerSigninCon';
 import { OwnerSignupCon } from '../../features/owner/signup/UI/Container/OwnerSignupCon';
 import { RestaurantHomeCon } from '../../features/restaurant/home/UI/Container/RestaurantHomeCon';
+import { NotFound } from '../UI/Components/NotFound/NotFound';
 /**
  * プロバイダーやルーターをラップしてるやつ
  * @returns 
@@ -27,7 +28,7 @@ export const AppProviders: FC = () => {
           <Route path="/signup" element={ctx.restaurantId ? <Navigate to='/owner' /> : <OwnerSignupCon />} />
           <Route
             path="*"
-            element={<>404 Not Found</>}
+            element={<NotFound />}
           />
         </Routes>
       </BrowserRouter>

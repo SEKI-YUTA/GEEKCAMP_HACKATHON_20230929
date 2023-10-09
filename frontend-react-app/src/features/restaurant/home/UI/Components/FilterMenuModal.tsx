@@ -5,8 +5,8 @@ import type { CategoryType } from '../../../../../application/@types/Category';
 export interface FilterMenuModalProps {
   isOpen: boolean
   KeyWord: string
-  menuPriceLower: number
-  menuPriceUpper: number
+  menuPriceLower: string
+  menuPriceUpper: string
   categoryList: CategoryType[]
   categoryValue: string
   onClose: () => void

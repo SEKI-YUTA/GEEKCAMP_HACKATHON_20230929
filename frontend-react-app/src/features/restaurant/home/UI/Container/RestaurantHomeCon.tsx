@@ -44,21 +44,21 @@ export const RestaurantHomeCon: FC = () => {
     setKeyWord(e.target.value);
   };
 
-  const [menuPriceLower, setMenuPriceLower] = useState<number>(0);
+  const [menuPriceLower, setMenuPriceLower] = useState<string>('0');
   const handleSetMenuPriceLower = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
-      setMenuPriceLower(parseInt(e.target.value));
+      setMenuPriceLower(parseInt(e.target.value).toString());
     } else {
-      setMenuPriceLower(0);
+      setMenuPriceLower('');
     }
   };
 
-  const [menuPriceUpper, setMenuPriceUpper] = useState<number>(0);
+  const [menuPriceUpper, setMenuPriceUpper] = useState<string>('0');
   const handleSetMenuPriceUpper = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value !== '' && parseInt(e.target.value) >= 0) {
-      setMenuPriceUpper(parseInt(e.target.value));
+      setMenuPriceUpper(parseInt(e.target.value).toString());
     } else {
-      setMenuPriceUpper(0);
+      setMenuPriceUpper('');
     }
   };
 
@@ -71,7 +71,7 @@ export const RestaurantHomeCon: FC = () => {
     e.preventDefault();
     try {
       // menuName・menuDetail・imgLinkが空白のみ入力されていた場合もはじく処理をする
-      if (categoryValue === '' || isNaN(menuPriceLower) || isNaN(menuPriceUpper)) {
+      if (categoryValue === '') {
         // 空欄がある場合
         console.log('不正な値');
         return;

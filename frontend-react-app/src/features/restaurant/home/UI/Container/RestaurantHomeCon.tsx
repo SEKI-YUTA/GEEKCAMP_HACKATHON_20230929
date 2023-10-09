@@ -34,7 +34,7 @@ export const RestaurantHomeCon: FC = () => {
 
   /////// 絞り込みモーダル ///////
   const { isOpen: isFilterMenuModalOpen, onOpen: filterMenuModalOnOpen, onClose: filterMenuModalOnClose } = useDisclosure();
-  const [categoryValue, setCategoryValue] = useState<string>('1');
+  const [categoryValue, setCategoryValue] = useState<string>('0');
   const handleSetCategoryValue = (category: string) => {
     setCategoryValue(category);
   };

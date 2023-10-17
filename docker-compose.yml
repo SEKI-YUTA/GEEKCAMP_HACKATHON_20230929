@@ -1,4 +1,4 @@
-version: "1"
+version: "3"
 
 services:
   db:
@@ -22,6 +22,8 @@ services:
     working_dir: /project
     ports:
         - 8080:8080
+    # ホットリロード
+    # command: /bin/bash -c "go get -u github.com/cosmtrek/air && go build -o /go/bin/air github.com/cosmtrek/air && air -c .air.toml"
     # これでもいい
     # command: /bin/bash -c "go mod tidy && go run main.go"
     # command: >
@@ -31,9 +33,12 @@ services:
     #   "
     tty: true
     networks: [restaurant-network]
+    environment:
+        - HOST_IP=${HOST_IP}
     depends_on:
       - db
   frontend-react-app:
+      container_name: frontend-react-app
       image: node:lts-alpine
       working_dir: /app
       volumes:
@@ -42,6 +47,8 @@ services:
       tty: true
       ports:
         - 3000:5173
+      environment:
+        - VITE_HOST_IP=${HOST_IP}
 networks:
   restaurant-network:
     driver: bridge

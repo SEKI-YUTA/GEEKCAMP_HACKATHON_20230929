@@ -1,6 +1,14 @@
 # 環境構築
 
-以下を実行
+`.env`ファイルを作成
+
+```sh
+touch .env
+# Windowsは ni .env
+```
+`HOST_IP`に自分のパソコンのIPアドレスを代入する
+
+起動は以下を実行
 
 ```
 docker compose run --rm frontend-react-app npm i
@@ -28,11 +36,13 @@ GET /restaurants/:id/menus/yosan・・・特定の店舗で予算内でのセッ
 GET /menus/categories・・・メニューのカテゴリ一覧を取得する
 POST /restaurants/:id/menus/add・・・メニューを追加する
 POST /restaurants/:id/menus/edit・・・メニューを編集する
+POST /restaurants/:id/menus/delete・・・メニューを削除する
 POST /restaurants/login・・・ログインする（店）
 POST /restaurants/signup・・・新規登録する（店）
+POST /restaurants/edit・・・店舗情報を編集する
 ```
 
-## 新規登録をする方法
+## 店を新規登録をする方法
 method: POST
 
 bodyに以下のようなjsonを入れることで新規登録ができます。
@@ -86,18 +96,45 @@ bodyに以下のようなjsonを入れてください。
 }
 ```
 
+## 店の情報を編集する方法
+method POST
+
+/restaurants/editに次のようなjsonをbodyに入れてPOSTしてください。
+``` json
+{
+    "id": 3,
+    "email": "fugafuga@gmail.com",
+    "password": "hogehoge",
+    "name": "hogehogeラーメン",
+    "phone_number": "1234556",
+    "address": "地球",
+    "description": "lorem ipsum",
+    "category_id": 1
+}
+```
+
 ## メニューを検索する方法
-/restaurants/{id}/menusに次のURLパラメーターを付与する事で検索ができます。
+/restaurants/{id}/menusに次のURLクエリを付与する事で検索ができます。
 - lower・・・X円以下のメニューを検索する
 - higher・・・X円以上のメニューを検索する
 - keyword・・・メニュー名で検索する
 
+# X円で注文できるメニューのセットを返す方法
+/restaurants/1/menus/yosan
+に以下のURLクエリを付与する事で検索ができます。
+- price・・・注文するセットの予算
+
+2000円で注文できるメニューのセットを返す場合は次のようになります。
+localhost:8080/restaurants/1/menus/yosan?price=2000
+>**Warning**
+>2000円以下の数字を渡すとエラーが返ってきます。
+
 ## 店の検索
-/restaurantsに次のURLパラメーターを付与する事で検索ができます。
+/restaurantsに次のURLクエリを付与する事で検索ができます。
 - keyword・・・店名で検索する
 
 ## メニューを編集する方法
-bodyに以下のようなjsonを入れてください。
+/restaurants/:id/menus/editのbodyに以下のようなjsonを入れてPOSTしてください。
 ``` json
 {
     "id": 17,
@@ -113,7 +150,9 @@ bodyに以下のようなjsonを入れてください。
 ```
 
 ## メニューを追加する方法
-bodyに以下のようなjsonを入れてください。
+method POST
+
+/restaurants/:id/menus/addのbodyに以下のようなjsonを入れてPOSTしてください。
 ``` json
 {
     "name": "鯖",
@@ -124,6 +163,15 @@ bodyに以下のようなjsonを入れてください。
     "photo_url": "",
     "is_sold_out": false,
     "like_count": 0
+}
+```
+
+## メニューを削除する方法
+method POST
+/restaurants/:id/menus/deleteのbodyに以下のようなjsonを入れてPOSTしてください。
+``` json
+{
+    "id": 17
 }
 ```
 

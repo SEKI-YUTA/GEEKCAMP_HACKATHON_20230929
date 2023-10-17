@@ -3,13 +3,13 @@ import { css } from '@emotion/react';
 export const headerStyle = css`
   width: 100vw;
   background-color: #d6620e;
-  padding: 10px;
+  padding: 10px 17.5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  // position: sticky;
-  position: absolute;
+  position: sticky;
   top: 0px;
+  z-index: 999;
 `;
 
 export const headerIconText = css`
